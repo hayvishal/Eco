@@ -19,7 +19,7 @@
             padding: 20px;
             box-sizing: border-box;
         }
-        .quiz-container, .subject-selection-container {
+        .quiz-container, .subject-selection-container, .question-count-container {
             background-color: #ffffff;
             border-radius: 1rem; /* Rounded corners */
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
@@ -37,7 +37,7 @@
             color: #1a202c; /* Darker text */
             margin-bottom: 1.5rem;
         }
-        .option-button, .subject-button {
+        .option-button, .subject-button, .start-practice-button {
             display: block;
             width: 100%;
             padding: 0.8rem 1.2rem;
@@ -51,11 +51,11 @@
             transition: all 0.2s ease-in-out;
             text-align: left; /* Align text to left */
         }
-        .option-button:hover:not(:disabled), .subject-button:hover {
+        .option-button:hover:not(:disabled), .subject-button:hover, .start-practice-button:hover:not(:disabled) {
             background-color: #d1d5db; /* Darker on hover */
             border-color: #a0aec0;
         }
-        .option-button:disabled {
+        .option-button:disabled, .start-practice-button:disabled {
             cursor: not-allowed;
             opacity: 0.7;
         }
@@ -127,6 +127,21 @@
             font-weight: 600;
             color: #1a202c;
         }
+        .question-count-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #cbd5e0;
+            border-radius: 0.75rem;
+            font-size: 1.1rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .error-message {
+            color: #ef4444;
+            font-size: 0.9rem;
+            margin-top: -0.5rem;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -136,6 +151,15 @@
         <button id="politics-button" class="subject-button">Indian Politics</button>
         <button id="history-button" class="subject-button">Indian History</button>
         <button id="geography-button" class="subject-button">Geography</button>
+    </div>
+
+    <div class="question-count-container" id="question-count-container" style="display: none;">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">Practice <span id="selected-subject-title"></span></h1>
+        <p class="text-lg text-gray-700 mb-4">Total questions available: <span id="total-available-questions" class="font-bold"></span></p>
+        <label for="num-questions" class="block text-gray-700 text-lg font-medium mb-2">How many questions do you want to practice?</label>
+        <input type="number" id="num-questions" class="question-count-input" min="1" value="5">
+        <p id="question-count-error" class="error-message" style="display: none;"></p>
+        <button id="start-practice-button" class="next-button">Start Practice</button>
     </div>
 
     <div class="quiz-container" id="quiz-container" style="display: none;">
@@ -8407,6 +8431,7 @@
         let timerInterval;
         const timePerQuestion = 20; // 20 seconds
         let questionStartTime; // To track time taken for each question
+        let selectedSubjectName = ''; // To store the name of the selected subject
 
         // Quiz statistics
         let correctAnswersCount = 0;
@@ -8416,14 +8441,21 @@
 
         // Get references to HTML elements
         const subjectSelectionContainer = document.getElementById('subject-selection-container');
+        const questionCountContainer = document.getElementById('question-count-container');
         const quizContainer = document.getElementById('quiz-container');
+
         const economyButton = document.getElementById('economy-button');
         const politicsButton = document.getElementById('politics-button');
         const historyButton = document.getElementById('history-button');
         const geographyButton = document.getElementById('geography-button');
 
-        const quizSubjectTitle = document.getElementById('quiz-subject-title');
+        const selectedSubjectTitle = document.getElementById('selected-subject-title');
+        const totalAvailableQuestionsSpan = document.getElementById('total-available-questions');
+        const numQuestionsInput = document.getElementById('num-questions');
+        const questionCountError = document.getElementById('question-count-error');
+        const startPracticeButton = document.getElementById('start-practice-button');
 
+        const quizSubjectTitle = document.getElementById('quiz-subject-title');
         const questionDisplay = document.getElementById('question-display');
         const optionsContainer = document.getElementById('options-container');
         const timerDisplay = document.getElementById('timer-display');
@@ -8456,23 +8488,50 @@
          */
         function initQuiz() {
             subjectSelectionContainer.style.display = 'flex'; // Show subject selection
+            questionCountContainer.style.display = 'none'; // Hide question count
             quizContainer.style.display = 'none'; // Hide quiz
             console.log("Quiz initialized, showing subject selection.");
         }
 
         /**
-         * Starts the quiz with questions filtered and shuffled by the selected subject.
+         * Prepares the quiz by filtering and shuffling questions, then shows the question count selection.
          * @param {string} subject - The selected subject (e.g., "Economy", "Politics", "History", "Geography").
          */
-        function startQuiz(subject) {
-            console.log(`Starting quiz for subject: ${subject}`);
-            // Filter questions based on the selected subject
+        function prepareQuiz(subject) {
+            console.log(`Preparing quiz for subject: ${subject}`);
+            selectedSubjectName = subject; // Store the subject name
             questions = allQuestions.filter(q => q.subject === subject);
-            // Randomize the order of questions for the selected subject
-            questions = shuffleArray(questions);
+            questions = shuffleArray(questions); // Shuffle all questions for the subject
 
-            // Update quiz title
-            quizSubjectTitle.textContent = `${subject}`; // Changed to just subject for cleaner title
+            // Show question count selection UI
+            subjectSelectionContainer.style.display = 'none';
+            questionCountContainer.style.display = 'flex';
+            quizContainer.style.display = 'none';
+
+            selectedSubjectTitle.textContent = subject;
+            totalAvailableQuestionsSpan.textContent = questions.length;
+            numQuestionsInput.value = Math.min(10, questions.length); // Default to 10 or max available
+            numQuestionsInput.max = questions.length; // Set max attribute
+            questionCountError.style.display = 'none'; // Hide any previous errors
+            console.log(`Total questions available for ${subject}: ${questions.length}`);
+        }
+
+        /**
+         * Starts the actual quiz after the user has selected the number of questions.
+         */
+        function startActualQuiz() {
+            const desiredCount = parseInt(numQuestionsInput.value, 10);
+            const totalAvailable = questions.length;
+
+            if (isNaN(desiredCount) || desiredCount <= 0 || desiredCount > totalAvailable) {
+                questionCountError.textContent = `Please enter a number between 1 and ${totalAvailable}.`;
+                questionCountError.style.display = 'block';
+                return;
+            }
+
+            // Slice the questions array to the desired count
+            questions = questions.slice(0, desiredCount);
+            console.log(`Starting quiz with ${questions.length} questions.`);
 
             // Reset quiz stats
             currentQuestionIndex = 0;
@@ -8481,8 +8540,11 @@
             questionsAttempted = 0;
             totalTimeTaken = 0;
 
-            // Hide subject selection and show quiz container
-            subjectSelectionContainer.style.display = 'none';
+            // Update quiz title
+            quizSubjectTitle.textContent = selectedSubjectName;
+
+            // Hide question count selection and show quiz container
+            questionCountContainer.style.display = 'none';
             quizContainer.style.display = 'flex';
             quizSummary.style.display = 'none'; // Hide summary at quiz start
             nextButton.style.display = 'block'; // Ensure next button is visible
@@ -8677,10 +8739,13 @@
         });
 
         // Event listeners for subject selection buttons
-        economyButton.addEventListener('click', () => startQuiz("Economy"));
-        politicsButton.addEventListener('click', () => startQuiz("Politics"));
-        historyButton.addEventListener('click', () => startQuiz("History"));
-        geographyButton.addEventListener('click', () => startQuiz("Geography"));
+        economyButton.addEventListener('click', () => prepareQuiz("Economy"));
+        politicsButton.addEventListener('click', () => prepareQuiz("Politics"));
+        historyButton.addEventListener('click', () => prepareQuiz("History"));
+        geographyButton.addEventListener('click', () => prepareQuiz("Geography"));
+
+        // Event listener for the "Start Practice" button
+        startPracticeButton.addEventListener('click', startActualQuiz);
 
         // Initialize the quiz (show subject selection) when the page loads
         window.onload = initQuiz;
