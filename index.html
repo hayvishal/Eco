@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Economy MCQ Quiz</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the Inter font and overall look */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .quiz-container {
+            background-color: #ffffff;
+            border-radius: 1rem; /* Rounded corners */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem; /* Increased padding */
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem; /* Space between elements */
+        }
+        .question-text {
+            font-size: 1.5rem; /* Larger font size */
+            font-weight: 600;
+            color: #1a202c; /* Darker text */
+            margin-bottom: 1.5rem;
+        }
+        .option-button {
+            display: block;
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            margin-bottom: 0.8rem; /* Space between buttons */
+            background-color: #e2e8f0; /* Light gray button */
+            color: #2d3748; /* Darker text */
+            border: 2px solid #cbd5e0; /* Light border */
+            border-radius: 0.75rem; /* Rounded corners */
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.2s ease-in-out;
+            text-align: left; /* Align text to left */
+        }
+        .option-button:hover:not(:disabled) {
+            background-color: #d1d5db; /* Darker on hover */
+            border-color: #a0aec0;
+        }
+        .option-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .option-button.correct {
+            background-color: #a7f3d0; /* Green for correct */
+            border-color: #34d399;
+            color: #065f46;
+        }
+        .option-button.incorrect {
+            background-color: #fecaca; /* Red for incorrect */
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+        .feedback-message {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #4a5568;
+        }
+        .correct-answer-display {
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #059669; /* Green for correct answer text */
+        }
+        .timer-display {
+            font-size: 2rem; /* Larger timer */
+            font-weight: 700;
+            color: #ef4444; /* Red for timer */
+            margin-bottom: 1rem;
+        }
+        .next-button {
+            background-color: #4c51bf; /* Indigo button */
+            color: white;
+            padding: 0.9rem 1.8rem;
+            border-radius: 0.75rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            border: none;
+            margin-top: 1.5rem;
+        }
+        .next-button:hover:not(:disabled) {
+            background-color: #4338ca; /* Darker indigo on hover */
+        }
+        .next-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .quiz-finished-message {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #059669;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">📘 Basic Concepts of Indian Economy (MCQs)</h1>
+
+        <div id="question-display" class="question-text"></div>
+
+        <div id="options-container" class="flex flex-col gap-3">
+            <!-- Options will be dynamically inserted here -->
+        </div>
+
+        <div id="timer-display" class="timer-display">20</div>
+
+        <div id="feedback-area" class="feedback-message"></div>
+        <div id="correct-answer-area" class="correct-answer-display"></div>
+
+        <button id="next-button" class="next-button" disabled>Next Question</button>
+    </div>
+
+    <script>
+        // Array of MCQ questions
+        const questions = [
+            {
+                question: "Which sector is known as the backbone of the Indian economy?",
+                options: ["Industrial Sector", "Services Sector", "Agricultural Sector", "Public Sector"],
+                answer: "Agricultural Sector"
+            },
+            {
+                question: "India is classified as which type of economy?",
+                options: ["Capitalist", "Socialist", "Mixed Economy", "Free Market"],
+                answer: "Mixed Economy"
+            },
+            {
+                question: "Which of the following is a feature of a mixed economy?",
+                options: ["Only public sector", "Only private sector", "Coexistence of public and private sectors", "Dominance of foreign sector"],
+                answer: "Coexistence of public and private sectors"
+            },
+            {
+                question: "GDP stands for:",
+                options: ["Gross Domestic Price", "Gross Domestic Product", "General Domestic Product", "Global Domestic Production"],
+                answer: "Gross Domestic Product"
+            },
+            {
+                question: "Which organization calculates India’s national income?",
+                options: ["RBI", "NITI Aayog", "CSO (now NSO)", "SEBI"],
+                answer: "CSO (now NSO)"
+            },
+            {
+                question: "Which sector contributes the most to India’s GDP currently (as of 2024)?",
+                options: ["Agriculture", "Industry", "Services", "Mining"],
+                answer: "Services"
+            },
+            {
+                question: "Which is not a component of national income?",
+                options: ["Wages", "Rent", "Black Money", "Profits"],
+                answer: "Black Money"
+            },
+            {
+                question: "The concept of ‘poverty line’ in India is based on:",
+                options: ["Wealth", "Employment", "Consumption", "Saving"],
+                answer: "Consumption"
+            },
+            {
+                question: "Per capita income is calculated by:",
+                options: ["GDP / Total Employment", "National Income / Total Population", "GNP / Working Population", "GDP / Working Age Population"],
+                answer: "National Income / Total Population"
+            },
+            {
+                question: "Which sector is called the tertiary sector?",
+                options: ["Agriculture", "Manufacturing", "Mining", "Services"],
+                answer: "Services"
+            },
+            {
+                question: "Which of the following is a limitation of GDP?",
+                options: ["Includes all black money", "Measures only economic activities", "Reflects environmental costs", "Includes unpaid household work"],
+                answer: "Measures only economic activities"
+            },
+            {
+                question: "Which of the following indicates economic growth?",
+                options: ["Increase in unemployment", "Increase in GDP", "Decrease in exports", "Decrease in investments"],
+                answer: "Increase in GDP"
+            },
+            {
+                question: "Which index measures inflation at the wholesale level in India?",
+                options: ["CPI", "WPI", "IIP", "PMI"],
+                answer: "WPI"
+            },
+            {
+                question: "Who prepares the Economic Survey of India?",
+                options: ["RBI", "Ministry of Finance", "Planning Commission", "SEBI"],
+                answer: "Ministry of Finance"
+            },
+            {
+                question: "Which institution manages monetary policy in India?",
+                options: ["Ministry of Finance", "NITI Aayog", "RBI", "World Bank"],
+                answer: "RBI"
+            },
+            {
+                question: "Which is not a function of the Reserve Bank of India?",
+                options: ["Issuer of currency", "Banker to Government", "Granting subsidies", "Controller of credit"],
+                answer: "Granting subsidies"
+            },
+            {
+                question: "Which term describes the increase in general price level?",
+                options: ["Deflation", "Inflation", "Stagflation", "Reflation"],
+                answer: "Inflation"
+            },
+            {
+                question: "The unemployment caused due to change in technology is called:",
+                options: ["Structural", "Seasonal", "Cyclical", "Technological"],
+                answer: "Technological"
+            },
+            {
+                question: "Which of the following is a direct tax?",
+                options: ["GST", "Customs Duty", "Income Tax", "Excise Duty"],
+                answer: "Income Tax"
+            },
+            {
+                question: "Which of these is a source of non-tax revenue for the government?",
+                options: ["Income Tax", "GST", "Dividends from PSUs", "Customs Duty"],
+                answer: "Dividends from PSUs"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let timerInterval;
+        const timePerQuestion = 20; // 20 seconds
+
+        const questionDisplay = document.getElementById('question-display');
+        const optionsContainer = document.getElementById('options-container');
+        const timerDisplay = document.getElementById('timer-display');
+        const feedbackArea = document.getElementById('feedback-area');
+        const correctAnswerArea = document.getElementById('correct-answer-area');
+        const nextButton = document.getElementById('next-button');
+
+        /**
+         * Initializes the quiz by displaying the first question.
+         */
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            displayQuestion();
+        }
+
+        /**
+         * Displays the current question and its options, and starts the countdown timer.
+         */
+        function displayQuestion() {
+            // Clear previous feedback and options
+            optionsContainer.innerHTML = '';
+            feedbackArea.textContent = '';
+            correctAnswerArea.textContent = '';
+            nextButton.disabled = true; // Disable next button until answered
+
+            if (currentQuestionIndex < questions.length) {
+                const questionData = questions[currentQuestionIndex];
+                questionDisplay.textContent = `${currentQuestionIndex + 1}. ${questionData.question}`;
+                timerDisplay.textContent = timePerQuestion; // Reset timer display
+
+                // Create option buttons
+                questionData.options.forEach(option => {
+                    const button = document.createElement('button');
+                    button.textContent = option;
+                    button.classList.add('option-button');
+                    button.addEventListener('click', () => answerQuestion(option, questionData.answer, button));
+                    optionsContainer.appendChild(button);
+                });
+
+                startCountdown();
+            } else {
+                // Quiz finished
+                questionDisplay.textContent = '';
+                optionsContainer.innerHTML = '<p class="quiz-finished-message">Quiz Finished! Well done!</p>';
+                timerDisplay.textContent = '';
+                nextButton.style.display = 'none'; // Hide next button
+            }
+        }
+
+        /**
+         * Starts the 20-second countdown for the current question.
+         */
+        function startCountdown() {
+            let timeLeft = timePerQuestion;
+            timerDisplay.textContent = timeLeft;
+
+            // Clear any existing interval to prevent multiple timers running
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Time's Up!";
+                    // Automatically show answer if time runs out
+                    const currentQuestion = questions[currentQuestionIndex];
+                    showAnswer(currentQuestion.answer, null); // Pass null for selected button
+                    nextButton.disabled = false; // Enable next button
+                }
+            }, 1000); // Update every 1 second
+        }
+
+        /**
+         * Handles the user's answer selection.
+         * @param {string} selectedOption - The option selected by the user.
+         * @param {string} correctAnswer - The correct answer for the current question.
+         * @param {HTMLButtonElement} selectedButton - The button element that was clicked.
+         */
+        function answerQuestion(selectedOption, correctAnswer, selectedButton) {
+            clearInterval(timerInterval); // Stop the timer
+            disableOptions(); // Disable all options once an answer is chosen
+
+            if (selectedOption === correctAnswer) {
+                feedbackArea.textContent = "✅ Correct!";
+                feedbackArea.style.color = '#059669'; // Green color
+                if (selectedButton) {
+                    selectedButton.classList.add('correct');
+                }
+            } else {
+                feedbackArea.textContent = "❌ Incorrect.";
+                feedbackArea.style.color = '#ef4444'; // Red color
+                if (selectedButton) {
+                    selectedButton.classList.add('incorrect');
+                }
+            }
+            showAnswer(correctAnswer, selectedButton);
+            nextButton.disabled = false; // Enable next button
+        }
+
+        /**
+         * Displays the correct answer and highlights the correct option.
+         * @param {string} correctAnswer - The correct answer to display.
+         * @param {HTMLButtonElement | null} selectedButton - The button selected by the user, or null if time ran out.
+         */
+        function showAnswer(correctAnswer, selectedButton) {
+            correctAnswerArea.textContent = `Correct Answer: ${correctAnswer}`;
+            const optionButtons = optionsContainer.querySelectorAll('.option-button');
+            optionButtons.forEach(button => {
+                if (button.textContent === correctAnswer) {
+                    button.classList.add('correct'); // Highlight the correct answer
+                }
+            });
+        }
+
+        /**
+         * Disables all option buttons to prevent further selection.
+         */
+        function disableOptions() {
+            const optionButtons = optionsContainer.querySelectorAll('.option-button');
+            optionButtons.forEach(button => {
+                button.disabled = true;
+            });
+        }
+
+        /**
+         * Moves to the next question or ends the quiz if all questions are answered.
+         */
+        nextButton.addEventListener('click', () => {
+            currentQuestionIndex++;
+            displayQuestion();
+        });
+
+        // Start the quiz when the page loads
+        window.onload = startQuiz;
+    </script>
+</body>
+</html>
