@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indian Economy MCQ Quiz</title>
+    <title>Indian Economy & Politics MCQ Quiz</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -19,7 +19,7 @@
             padding: 20px;
             box-sizing: border-box;
         }
-        .quiz-container {
+        .quiz-container, .subject-selection-container {
             background-color: #ffffff;
             border-radius: 1rem; /* Rounded corners */
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
@@ -37,7 +37,7 @@
             color: #1a202c; /* Darker text */
             margin-bottom: 1.5rem;
         }
-        .option-button {
+        .option-button, .subject-button {
             display: block;
             width: 100%;
             padding: 0.8rem 1.2rem;
@@ -51,7 +51,7 @@
             transition: all 0.2s ease-in-out;
             text-align: left; /* Align text to left */
         }
-        .option-button:hover:not(:disabled) {
+        .option-button:hover:not(:disabled), .subject-button:hover {
             background-color: #d1d5db; /* Darker on hover */
             border-color: #a0aec0;
         }
@@ -130,8 +130,14 @@
     </style>
 </head>
 <body>
-    <div class="quiz-container">
-        <h1 class="text-3xl font-bold text-gray-800 mb-4">📘 Basic Concepts of Indian Economy (MCQs)</h1>
+    <div class="subject-selection-container" id="subject-selection-container">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Choose Your Quiz Subject</h1>
+        <button id="economy-button" class="subject-button">Indian Economy</button>
+        <button id="politics-button" class="subject-button">Indian Politics</button>
+    </div>
+
+    <div class="quiz-container" id="quiz-container" style="display: none;">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">📘 Basic Concepts of <span id="quiz-subject-title"></span> (MCQs)</h1>
 
         <div id="question-display" class="question-text"></div>
 
@@ -157,110 +163,156 @@
     </div>
 
     <script>
-        // Array of MCQ questions
-        const questions = [
+        // Array of MCQ questions, now with a 'subject' property
+        const allQuestions = [
             {
+                subject: "Economy",
                 question: "Which sector is known as the backbone of the Indian economy?",
                 options: ["Industrial Sector", "Services Sector", "Agricultural Sector", "Public Sector"],
                 answer: "Agricultural Sector"
             },
             {
+                subject: "Economy",
                 question: "India is classified as which type of economy?",
                 options: ["Capitalist", "Socialist", "Mixed Economy", "Free Market"],
                 answer: "Mixed Economy"
             },
             {
+                subject: "Economy",
                 question: "Which of the following is a feature of a mixed economy?",
                 options: ["Only public sector", "Only private sector", "Coexistence of public and private sectors", "Dominance of foreign sector"],
                 answer: "Coexistence of public and private sectors"
             },
             {
+                subject: "Economy",
                 question: "GDP stands for:",
                 options: ["Gross Domestic Price", "Gross Domestic Product", "General Domestic Product", "Global Domestic Production"],
                 answer: "Gross Domestic Product"
             },
             {
+                subject: "Economy",
                 question: "Which organization calculates India’s national income?",
                 options: ["RBI", "NITI Aayog", "CSO (now NSO)", "SEBI"],
                 answer: "CSO (now NSO)"
             },
             {
+                subject: "Economy",
                 question: "Which sector contributes the most to India’s GDP currently (as of 2024)?",
                 options: ["Agriculture", "Industry", "Services", "Mining"],
                 answer: "Services"
             },
             {
+                subject: "Economy",
                 question: "Which is not a component of national income?",
                 options: ["Wages", "Rent", "Black Money", "Profits"],
                 answer: "Black Money"
             },
             {
+                subject: "Economy",
                 question: "The concept of ‘poverty line’ in India is based on:",
                 options: ["Wealth", "Employment", "Consumption", "Saving"],
                 answer: "Consumption"
             },
             {
+                subject: "Economy",
                 question: "Per capita income is calculated by:",
                 options: ["GDP / Total Employment", "National Income / Total Population", "GNP / Working Population", "GDP / Working Age Population"],
                 answer: "National Income / Total Population"
             },
             {
+                subject: "Economy",
                 question: "Which sector is called the tertiary sector?",
                 options: ["Agriculture", "Manufacturing", "Mining", "Services"],
                 answer: "Services"
             },
             {
+                subject: "Economy",
                 question: "Which of the following is a limitation of GDP?",
                 options: ["Includes all black money", "Measures only economic activities", "Reflects environmental costs", "Includes unpaid household work"],
                 answer: "Measures only economic activities"
             },
             {
+                subject: "Economy",
                 question: "Which of the following indicates economic growth?",
                 options: ["Increase in unemployment", "Increase in GDP", "Decrease in exports", "Decrease in investments"],
                 answer: "Increase in GDP"
             },
             {
+                subject: "Economy",
                 question: "Which index measures inflation at the wholesale level in India?",
                 options: ["CPI", "WPI", "IIP", "PMI"],
                 answer: "WPI"
             },
             {
+                subject: "Economy",
                 question: "Who prepares the Economic Survey of India?",
                 options: ["RBI", "Ministry of Finance", "Planning Commission", "SEBI"],
                 answer: "Ministry of Finance"
             },
             {
+                subject: "Economy",
                 question: "Which institution manages monetary policy in India?",
                 options: ["Ministry of Finance", "NITI Aayog", "RBI", "World Bank"],
                 answer: "RBI"
             },
             {
+                subject: "Economy",
                 question: "Which is not a function of the Reserve Bank of India?",
                 options: ["Issuer of currency", "Banker to Government", "Granting subsidies", "Controller of credit"],
                 answer: "Granting subsidies"
             },
             {
+                subject: "Economy",
                 question: "Which term describes the increase in general price level?",
                 options: ["Deflation", "Inflation", "Stagflation", "Reflation"],
                 answer: "Inflation"
             },
             {
+                subject: "Economy",
                 question: "The unemployment caused due to change in technology is called:",
                 options: ["Structural", "Seasonal", "Cyclical", "Technological"],
                 answer: "Technological"
             },
             {
+                subject: "Economy",
                 question: "Which of the following is a direct tax?",
                 options: ["GST", "Customs Duty", "Income Tax", "Excise Duty"],
                 answer: "Income Tax"
             },
             {
+                subject: "Economy",
                 question: "Which of these is a source of non-tax revenue for the government?",
                 options: ["Income Tax", "GST", "Dividends from PSUs", "Customs Duty"],
                 answer: "Dividends from PSUs"
+            },
+            // New questions for Indian Politics
+            {
+                subject: "Politics",
+                question: "Who is known as the ‘Father of the Indian Constitution’?",
+                options: ["Mahatma Gandhi", "Dr. B.R. Ambedkar", "Jawaharlal Nehru", "Rajendra Prasad"],
+                answer: "Dr. B.R. Ambedkar"
+            },
+            {
+                subject: "Politics",
+                question: "The Indian Constitution was adopted on:",
+                options: ["26 January 1950", "26 November 1949", "15 August 1947", "1 January 1950"],
+                answer: "26 November 1949"
+            },
+            {
+                subject: "Politics",
+                question: "The idea of the Constitution of India was first mooted by:",
+                options: ["The British Parliament", "Indian National Congress", "M.N. Roy", "B.R. Ambedkar"],
+                answer: "M.N. Roy"
+            },
+            {
+                subject: "Politics",
+                question: "The Constituent Assembly was formed in:",
+                options: ["1945", "1946", "1947", "1950"],
+                answer: "1946"
             }
         ];
 
+        let questions = []; // This will hold the filtered questions
         let currentQuestionIndex = 0;
         let timerInterval;
         const timePerQuestion = 20; // 20 seconds
@@ -271,6 +323,12 @@
         let incorrectAnswersCount = 0;
         let questionsAttempted = 0;
         let totalTimeTaken = 0; // in seconds
+
+        const subjectSelectionContainer = document.getElementById('subject-selection-container');
+        const quizContainer = document.getElementById('quiz-container');
+        const economyButton = document.getElementById('economy-button');
+        const politicsButton = document.getElementById('politics-button');
+        const quizSubjectTitle = document.getElementById('quiz-subject-title');
 
         const questionDisplay = document.getElementById('question-display');
         const optionsContainer = document.getElementById('options-container');
@@ -286,16 +344,37 @@
         const averageTimeSpan = document.getElementById('average-time');
 
         /**
-         * Initializes the quiz by displaying the first question.
+         * Initializes the quiz by displaying the subject selection.
          */
-        function startQuiz() {
+        function initQuiz() {
+            subjectSelectionContainer.style.display = 'flex'; // Show subject selection
+            quizContainer.style.display = 'none'; // Hide quiz
+        }
+
+        /**
+         * Starts the quiz with questions filtered by the selected subject.
+         * @param {string} subject - The selected subject ("Economy" or "Politics").
+         */
+        function startQuiz(subject) {
+            // Filter questions based on the selected subject
+            questions = allQuestions.filter(q => q.subject === subject);
+
+            // Update quiz title
+            quizSubjectTitle.textContent = subject === "Economy" ? "Indian Economy" : "Indian Politics";
+
+            // Reset quiz stats
             currentQuestionIndex = 0;
             correctAnswersCount = 0;
             incorrectAnswersCount = 0;
             questionsAttempted = 0;
             totalTimeTaken = 0;
+
+            // Hide subject selection and show quiz container
+            subjectSelectionContainer.style.display = 'none';
+            quizContainer.style.display = 'flex';
             quizSummary.style.display = 'none'; // Hide summary at start
             nextButton.style.display = 'block'; // Show next button
+
             displayQuestion();
         }
 
@@ -454,8 +533,12 @@
             displayQuestion();
         });
 
-        // Start the quiz when the page loads
-        window.onload = startQuiz;
+        // Event listeners for subject selection buttons
+        economyButton.addEventListener('click', () => startQuiz("Economy"));
+        politicsButton.addEventListener('click', () => startQuiz("Politics"));
+
+        // Initialize the quiz (show subject selection) when the page loads
+        window.onload = initQuiz;
     </script>
 </body>
 </html>
