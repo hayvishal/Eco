@@ -112,6 +112,21 @@
             color: #059669;
             margin-top: 2rem;
         }
+        .quiz-summary {
+            text-align: left;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        .quiz-summary p {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+        }
+        .quiz-summary p span {
+            font-weight: 600;
+            color: #1a202c;
+        }
     </style>
 </head>
 <body>
@@ -130,6 +145,15 @@
         <div id="correct-answer-area" class="correct-answer-display"></div>
 
         <button id="next-button" class="next-button" disabled>Next Question</button>
+
+        <div id="quiz-summary" class="quiz-summary" style="display: none;">
+            <h2 class="text-2xl font-bold text-gray-800 mb-3">Quiz Summary</h2>
+            <p>Total Questions Attempted: <span id="attempted-count">0</span></p>
+            <p>Correct Answers: <span id="correct-count">0</span></p>
+            <p>Incorrect Answers: <span id="incorrect-count">0</span></p>
+            <p>Total Time Taken: <span id="total-time">0s</span></p>
+            <p>Average Time per Question: <span id="average-time">0s</span></p>
+        </div>
     </div>
 
     <script>
@@ -240,6 +264,13 @@
         let currentQuestionIndex = 0;
         let timerInterval;
         const timePerQuestion = 20; // 20 seconds
+        let questionStartTime; // To track time taken for each question
+
+        // Quiz statistics
+        let correctAnswersCount = 0;
+        let incorrectAnswersCount = 0;
+        let questionsAttempted = 0;
+        let totalTimeTaken = 0; // in seconds
 
         const questionDisplay = document.getElementById('question-display');
         const optionsContainer = document.getElementById('options-container');
@@ -247,12 +278,24 @@
         const feedbackArea = document.getElementById('feedback-area');
         const correctAnswerArea = document.getElementById('correct-answer-area');
         const nextButton = document.getElementById('next-button');
+        const quizSummary = document.getElementById('quiz-summary');
+        const attemptedCountSpan = document.getElementById('attempted-count');
+        const correctCountSpan = document.getElementById('correct-count');
+        const incorrectCountSpan = document.getElementById('incorrect-count');
+        const totalTimeSpan = document.getElementById('total-time');
+        const averageTimeSpan = document.getElementById('average-time');
 
         /**
          * Initializes the quiz by displaying the first question.
          */
         function startQuiz() {
             currentQuestionIndex = 0;
+            correctAnswersCount = 0;
+            incorrectAnswersCount = 0;
+            questionsAttempted = 0;
+            totalTimeTaken = 0;
+            quizSummary.style.display = 'none'; // Hide summary at start
+            nextButton.style.display = 'block'; // Show next button
             displayQuestion();
         }
 
@@ -270,6 +313,7 @@
                 const questionData = questions[currentQuestionIndex];
                 questionDisplay.textContent = `${currentQuestionIndex + 1}. ${questionData.question}`;
                 timerDisplay.textContent = timePerQuestion; // Reset timer display
+                questionStartTime = new Date().getTime(); // Record start time for the question
 
                 // Create option buttons
                 questionData.options.forEach(option => {
@@ -283,10 +327,7 @@
                 startCountdown();
             } else {
                 // Quiz finished
-                questionDisplay.textContent = '';
-                optionsContainer.innerHTML = '<p class="quiz-finished-message">Quiz Finished! Well done!</p>';
-                timerDisplay.textContent = '';
-                nextButton.style.display = 'none'; // Hide next button
+                endQuiz();
             }
         }
 
@@ -309,8 +350,13 @@
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
                     timerDisplay.textContent = "Time's Up!";
-                    // Automatically show answer if time runs out
+                    // Automatically mark as incorrect if time runs out
+                    questionsAttempted++;
+                    incorrectAnswersCount++;
                     const currentQuestion = questions[currentQuestionIndex];
+                    const timeElapsed = Math.floor((new Date().getTime() - questionStartTime) / 1000);
+                    totalTimeTaken += timeElapsed; // Add full time if time's up
+
                     showAnswer(currentQuestion.answer, null); // Pass null for selected button
                     nextButton.disabled = false; // Enable next button
                 }
@@ -327,18 +373,24 @@
             clearInterval(timerInterval); // Stop the timer
             disableOptions(); // Disable all options once an answer is chosen
 
+            questionsAttempted++;
+            const timeElapsed = Math.floor((new Date().getTime() - questionStartTime) / 1000);
+            totalTimeTaken += timeElapsed;
+
             if (selectedOption === correctAnswer) {
                 feedbackArea.textContent = "✅ Correct!";
                 feedbackArea.style.color = '#059669'; // Green color
                 if (selectedButton) {
                     selectedButton.classList.add('correct');
                 }
+                correctAnswersCount++;
             } else {
                 feedbackArea.textContent = "❌ Incorrect.";
                 feedbackArea.style.color = '#ef4444'; // Red color
                 if (selectedButton) {
                     selectedButton.classList.add('incorrect');
                 }
+                incorrectAnswersCount++;
             }
             showAnswer(correctAnswer, selectedButton);
             nextButton.disabled = false; // Enable next button
@@ -354,7 +406,10 @@
             const optionButtons = optionsContainer.querySelectorAll('.option-button');
             optionButtons.forEach(button => {
                 if (button.textContent === correctAnswer) {
-                    button.classList.add('correct'); // Highlight the correct answer
+                    // Only add 'correct' class if it wasn't already marked 'incorrect' by the user
+                    if (!button.classList.contains('incorrect')) {
+                        button.classList.add('correct');
+                    }
                 }
             });
         }
@@ -367,6 +422,28 @@
             optionButtons.forEach(button => {
                 button.disabled = true;
             });
+        }
+
+        /**
+         * Ends the quiz and displays the summary statistics.
+         */
+        function endQuiz() {
+            questionDisplay.textContent = '';
+            optionsContainer.innerHTML = '<p class="quiz-finished-message">Quiz Finished! Well done!</p>';
+            timerDisplay.textContent = '';
+            feedbackArea.textContent = '';
+            correctAnswerArea.textContent = '';
+            nextButton.style.display = 'none'; // Hide next button
+
+            // Display summary
+            attemptedCountSpan.textContent = questionsAttempted;
+            correctCountSpan.textContent = correctAnswersCount;
+            incorrectCountSpan.textContent = incorrectAnswersCount;
+            totalTimeSpan.textContent = `${totalTimeTaken}s`;
+
+            const averageTime = questionsAttempted > 0 ? (totalTimeTaken / questionsAttempted).toFixed(2) : 0;
+            averageTimeSpan.textContent = `${averageTime}s`;
+            quizSummary.style.display = 'block'; // Show the summary section
         }
 
         /**
