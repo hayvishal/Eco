@@ -963,6 +963,54 @@
             font-size: 1.8rem;
             color: #818cf8; /* Indigo for icons */
         }
+
+        /* Styles for Gemini Explanation */
+        .gemini-explanation-area {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: rgba(255, 255, 255, 0.08); /* Slightly lighter glassmorphism */
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: left;
+            line-height: 1.5;
+            white-space: pre-wrap; /* Preserve whitespace and line breaks */
+            word-wrap: break-word; /* Break long words */
+        }
+
+        /* Styles for automatic Gemini explanation on wrong answer */
+        .auto-gemini-explanation-area {
+            margin-top: 1rem;
+            padding: 1.5rem; /* Increased padding for better readability */
+            background-color: rgba(255, 255, 255, 0.08);
+            border-radius: 0.75rem; /* Slightly more rounded */
+            border: 1px solid rgba(255, 255, 255, 0.15); /* Slightly stronger border */
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: left;
+            line-height: 1.6; /* Increased line height */
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Added subtle shadow */
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #818cf8; /* Indigo spinner */
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto; /* Center the spinner */
+            display: block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -972,7 +1020,7 @@
         Your browser does not support the video tag.
     </video>
 
-    <!-- Global Header.     <button class="logout-button-class glass-button-base glass-button-danger">Logout</button> -->
+    <!-- Global Header -->
     <header class="main-header" id="main-header" style="display: none;">
         <div class="logo">
             <img src="image.png" alt="Logo">
@@ -981,7 +1029,6 @@
         <div class="user-profile-section">
             <span id="header-user-display-name" class="user-display-name"></span>
             <img id="header-profile-photo" src="https://placehold.co/40x40/cccccc/333333?text=👤" alt="Profile" class="profile-photo">
-          
         </div>
     </header>
 
@@ -992,7 +1039,7 @@
             <span class="word-practice">Practice</span>
             <span class="word-smart">Smart,</span>
             <span class="word-crack">Crack</span>
-            <span class="word-ssc">SSC</span>
+            <span class="word-ssc">Exam</span>
         </div>
     </div>
 
@@ -1132,7 +1179,7 @@
         <h1 class="text-3xl font-bold mb-6">Hello, <span id="welcome-user-name">User</span> 👋 Ready to Practice?</h1>
         
         <h2 class="text-2xl font-bold mb-4">📌 Quick Access: Choose a Subject to Practice</h2>
-        <p class="text-lg mb-4">Tap any subject card below to begin practicing questions. Each category includes topic-wise MCQs, detailed solutions, and timed quizzes.</p>
+        <p class="text-lg mb-4"></p>
 
         <h3 class="text-xl font-bold mt-6 mb-3 text-left">🔹 Core Sections</h3>
         <div class="quick-access-grid">
@@ -1314,6 +1361,8 @@
 
         <div id="feedback-area" class="feedback-message"></div>
         <div id="correct-answer-area" class="correct-answer-area"></div>
+        <!-- New area for automatic Gemini explanation -->
+        <div id="auto-gemini-explanation-area" class="auto-gemini-explanation-area" style="display: none;"></div>
 
         <div class="quiz-navigation-buttons">
             <button id="back-to-question-count-from-quiz" class="glass-button-base glass-button-primary">Back to Question Count</button>
@@ -1591,7 +1640,6 @@
         const signupCountryCodeInput = document.getElementById('signup-country-code-input'); // New
         const signupPhoneInput = document.getElementById('signup-phone-input'); // New
         const signupEmailInput = document.getElementById('signup-email-input'); 
-        const signupMobileInput = document.getElementById('signup-mobile-input'); // This will be removed or repurposed
         const signupPasswordInput = document.getElementById('signup-password-input'); 
         const signupConfirmPasswordInput = document.getElementById('signup-confirm-password-input'); 
         const signupAgeInput = document.getElementById('signup-age-input'); 
@@ -1619,27 +1667,6 @@
         const headerUserDisplayName = document.getElementById('header-user-display-name');
         const headerProfilePhoto = document.getElementById('header-profile-photo');
         
-        // Removed: homeProfileIcon and homeProfilePhoto as they are now consolidated into the global header
-        // Removed: homeUserDisplayName as it's now in the global header
-
-        // Removed all individual userIdDisplay elements as they are now consolidated into the global header
-        // const userIdDisplay = document.getElementById('user-id-display');
-        // const userIdDisplay2 = document.getElementById('user-id-display-2');
-        // const userIdDisplay3 = document.getElementById('user-id-display-3');
-        // const userIdDisplay4 = document.getElementById('user-id-display-4'); 
-        // const userIdDisplayProfile = document.getElementById('user-id-display-profile'); 
-        // const userIdDisplayResultSpan = document.getElementById('user-id-display-result-span'); 
-        // const userIdDisplaySolution = document.getElementById('user-id-display-solution'); 
-        // const userIdDisplaySettings = document.getElementById('user-id-display-settings'); 
-        // const userIdDisplayExtraFeatures = document.getElementById('user-id-display-extra-features'); 
-        // const userIdDisplayGa = document.getElementById('user-id-display-ga'); 
-        // const userIdDisplayReasoning = document.getElementById('user-id-display-reasoning'); 
-        // const userIdDisplayQuant = document.getElementById('user-id-display-quant'); 
-        // const userIdDisplayEnglish = document.getElementById('english-language-subjects-container'); 
-        // const userIdDisplayComputer = document.getElementById('user-id-display-computer'); 
-        // const userIdDisplayGeneralStudies = document.getElementById('user-id-display-general-studies'); 
-        // const userIdDisplayCurrentAffairs = document.getElementById('user-id-display-current-affairs'); 
-        // const userIdDisplayMockTestZone = document.getElementById('user-id-display-mock-test-zone'); 
         let logoutButtons; 
 
         const subjectSelectionContainer = document.getElementById('subject-selection-container');
@@ -1744,11 +1771,13 @@
         const timerDisplay = document.getElementById('timer-display');
         const feedbackArea = document.getElementById('feedback-area');
         const correctAnswerArea = document.getElementById('correct-answer-area');
+        // New element for automatic Gemini explanation
+        const autoGeminiExplanationArea = document.getElementById('auto-gemini-explanation-area');
+
         const nextButton = document.getElementById('next-button');
         const showResultButton = document.getElementById('show-result-button');
         const backToQuestionCountFromQuizButton = document.getElementById('back-to-question-count-from-quiz'); // New
-        let restartQuizButton; 
-
+        
         const currentStreakDisplay = document.getElementById('current-streak-display'); 
         const pastAttemptsList = document.getElementById('past-attempts-list'); 
 
@@ -1913,7 +1942,7 @@
          * @param {firebase.User} user - The authenticated Firebase user object, or null if logged out.
          */
         async function updateUI(user) {
-            console.log("updateUI called with user:", user ? user.uid : "null");
+            console.log("UI: updateUI called with user:", user ? user.uid : "null");
             if (user) {
                 userId = user.uid;
                 // Determine user's display name for UI
@@ -1927,16 +1956,16 @@
                 }
 
                 // Update global header elements
-                headerUserDisplayName.textContent = userDisplayName;
+                headerUserDisplayName.textContent = userDisplayName.split(' ')[0]; // Show first name
                 headerProfilePhoto.src = user.photoURL || "https://placehold.co/40x40/cccccc/333333?text=👤";
                 mainHeader.style.display = 'flex'; // Show the header when logged in
 
                 welcomeUserName.textContent = userDisplayName.split(' ')[0]; // Show first name or full if no space
 
                 // Hide splash screen and auth container, show home screen
-                splashScreen.classList.add('hidden'); // Add hidden class for fade out
-                // Use a timeout to fully hide and remove from layout after transition
+                console.log("UI: Setting main content display timeout.");
                 setTimeout(() => {
+                    console.log("UI: Main content display timeout finished. Hiding splash, showing home.");
                     splashScreen.style.display = 'none';
                     authContainer.style.display = 'none'; 
                     homeScreenContainer.style.display = 'flex'; // Show home screen
@@ -1970,13 +1999,13 @@
                         if (snapshot.exists()) {
                             userData = snapshot.val();
                             currentStreakDisplay.textContent = userData.currentStreak || 0;
-                            console.log("Fetched user streak:", userData.currentStreak);
+                            console.log("UI: Fetched user streak:", userData.currentStreak);
                         } else {
                             // If user data doesn't exist, initialize with defaults
                             userData.currentStreak = 0;
                             userData.lastQuizDate = null;
                             currentStreakDisplay.textContent = 0;
-                            console.log("Initialized new user data in Realtime DB with default streak.");
+                            console.log("UI: Initialized new user data in Realtime DB with default streak.");
                         }
 
                         // Update user profile data in Realtime DB (display name, email, photoURL)
@@ -1995,11 +2024,11 @@
                         
                         if (Object.keys(profileUpdates).length > 0) {
                             await update(userRef, profileUpdates);
-                            console.log("User profile data updated in Realtime DB:", profileUpdates);
+                            console.log("UI: User profile data updated in Realtime DB:", profileUpdates);
                         }
 
                     } catch (error) {
-                        console.error("Error fetching/setting user streak or profile from Realtime DB:", error);
+                        console.error("UI: Error fetching/setting user streak or profile from Realtime DB:", error);
                         currentStreakDisplay.textContent = "Error";
                     }
                 }
@@ -2007,7 +2036,7 @@
             } else {
                 userId = null;
                 currentUserEmail = null;
-                console.log("User logged out, showing login screen.");
+                console.log("UI: User logged out, showing login screen.");
                 mainHeader.style.display = 'none'; // Hide the header when logged out
                 splashScreen.classList.add('hidden'); // Ensure splash screen fades out
                 setTimeout(() => {
@@ -2038,7 +2067,6 @@
                     signupLastNameInput.value = ''; // Clear new fields
                     signupPhoneInput.value = ''; // Clear new fields
                     signupEmailInput.value = '';
-                    signupMobileInput.value = '';
                     signupPasswordInput.value = '';
                     signupConfirmPasswordInput.value = '';
                     signupAgeInput.value = '';
@@ -2073,12 +2101,12 @@
          * Handles anonymous login.
          */
         async function loginAnonymously() {
-            console.log("Attempting anonymous login...");
+            console.log("AUTH: Attempting anonymous login...");
             try {
                 await signInAnonymously(auth);
-                console.log("Signed in anonymously successfully.");
+                console.log("AUTH: Signed in anonymously successfully.");
             } catch (error) {
-                console.error("Error signing in anonymously:", error);
+                console.error("AUTH: Error signing in anonymously:", error);
                 showAuthError(`Anonymous login failed: ${error.message}`);
             }
         }
@@ -2087,13 +2115,13 @@
          * Handles Google login.
          */
         async function signInWithGoogle() {
-            console.log("Attempting Google login...");
+            console.log("AUTH: Attempting Google login...");
             try {
                 const provider = new GoogleAuthProvider();
                 await signInWithPopup(auth, provider);
-                console.log("Signed in with Google successfully.");
+                console.log("AUTH: Signed in with Google successfully.");
             } catch (error) {
-                console.error("Error signing in with Google:", error);
+                console.error("AUTH: Error signing in with Google:", error);
                 if (error.code === 'auth/popup-closed-by-user') {
                     showAuthError("Google login popup closed by user.");
                 } else if (error.code === 'auth/cancelled-popup-request') {
@@ -2111,7 +2139,7 @@
          * Handles Apple login (placeholder).
          */
         async function signInWithApple() {
-            console.log("Apple login functionality coming soon!");
+            console.log("AUTH: Apple login functionality coming soon!");
             showAuthError("Apple login is not yet implemented.", authErrorMessage);
         }
 
@@ -2130,7 +2158,7 @@
             const gender = signupGenderInput.value.trim();
             const aboutYou = signupAboutYouInput.value.trim();
 
-            console.log(`Attempting email signup for: ${email}`);
+            console.log(`AUTH: Attempting email signup for: ${email}`);
             if (!firstName || !lastName || !email || !password) {
                 showAuthError("Please enter First Name, Last Name, Email, and Password to register.", authErrorMessageSignup);
                 return;
@@ -2147,7 +2175,7 @@
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
-                console.log("Signed up with email/password successfully. User:", user.uid);
+                console.log("AUTH: Signed up with email/password successfully. User:", user.uid);
 
                 const fullName = `${firstName} ${lastName}`;
                 // Update Firebase Auth profile with display name
@@ -2168,10 +2196,10 @@
                     currentStreak: 0,
                     lastQuizDate: null
                 });
-                console.log("Additional user profile data saved to Realtime Database.");
+                console.log("AUTH: Additional user profile data saved to Realtime Database.");
 
             } catch (error) {
-                console.error("Error signing up with email/password:", error);
+                console.error("AUTH: Error signing up with email/password:", error);
                 showAuthError(`Registration failed: ${error.message}`, authErrorMessageSignup);
             }
         }
@@ -2182,16 +2210,16 @@
         async function signInWithEmailPassword() {
             const email = loginEmailInput.value.trim();
             const password = loginPasswordInput.value;
-            console.log(`Attempting email login for: ${email}`);
+            console.log(`AUTH: Attempting email login for: ${email}`);
             if (!email || !password) {
                 showAuthError("Please enter both email and password.");
                 return;
             }
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                console.log("Signed in with email/password successfully.");
+                console.log("AUTH: Signed in with email/password successfully.");
             } catch (error) {
-                console.error("Error signing in with email/password:", error);
+                console.error("AUTH: Error signing in with email/password:", error);
                 showAuthError(`Login failed: ${error.message}`);
             }
         }
@@ -2201,7 +2229,7 @@
          */
         async function handleForgotPassword() {
             const email = loginEmailInput.value.trim(); 
-            console.log(`Attempting to send password reset email to: ${email}`);
+            console.log(`AUTH: Attempting to send password reset email to: ${email}`);
             if (!email) {
                 showAuthError("Please enter your email address to reset your password.");
                 return;
@@ -2211,9 +2239,9 @@
                 authErrorMessage.textContent = "Password reset email sent! Please check your inbox (and spam folder).";
                 authErrorMessage.style.color = '#059669'; 
                 authErrorMessage.style.display = 'block';
-                console.log("Password reset email sent successfully.");
+                console.log("AUTH: Password reset email sent successfully.");
             } catch (error) {
-                console.error("Error sending password reset email:", error);
+                console.error("AUTH: Error sending password reset email:", error);
                 showAuthError(`Failed to send password reset email: ${error.message}`);
             }
         }
@@ -2222,12 +2250,12 @@
          * Handles user logout.
          */
         async function logoutUser() {
-            console.log("Attempting to log out user...");
+            console.log("AUTH: Attempting to log out user...");
             try {
                 await signOut(auth);
-                console.log("User signed out successfully.");
+                console.log("AUTH: User signed out successfully.");
             } catch (error) {
-                    console.error("Error signing out:", error);
+                    console.error("AUTH: Error signing out:", error);
                     // Do not show an error message if the user is already signed out (e.g., due to token expiry)
                     // This prevents an error message from appearing if the user session has already ended naturally.
                     if (error.code !== 'auth/no-current-user') {
@@ -2267,18 +2295,17 @@
          * After a delay, it transitions to the appropriate UI based on auth state.
          */
         async function initQuiz() { 
-            console.log("initQuiz called.");
+            console.log("INIT: initQuiz called."); // Added log
             hideAllContainers(); // Hide all containers
             splashScreen.style.display = 'flex'; // Show splash screen initially
             splashScreen.classList.remove('hidden'); // Ensure it's not hidden from previous runs
 
-            // Fetch questions from DB in the background while splash screen is active
+            console.log("INIT: Fetching all questions..."); // Added log
             await fetchAllQuestionsFromDB();
 
-            // After a short delay, hide splash screen and proceed to main UI
+            console.log("INIT: Setting splash screen timeout..."); // Added log
             setTimeout(() => {
-                console.log("Splash screen timer finished. Transitioning to main UI.");
-                // Force UI update based on current auth state
+                console.log("INIT: Splash screen timeout finished. Calling updateUI."); // Added log
                 updateUI(auth.currentUser);
             }, 3000); // Changed from 1000 to 3000 for 3 seconds
         }
@@ -2290,7 +2317,7 @@
          * @param {string} originScreenId - The ID of the screen that triggered this function (e.g., 'ga-subjects-container').
          */
         function prepareQuiz(subject, originScreenId) {
-            console.log(`Preparing quiz for subject: ${subject} from ${originScreenId}`);
+            console.log(`QUIZ_PREP: Preparing quiz for subject: ${subject} from ${originScreenId}`);
             selectedSubjectName = subject; 
             lastQuizSetupScreen = originScreenId; // Store the origin screen ID
             
@@ -2301,15 +2328,15 @@
                 Object.values(allQuestionsFromDB).forEach(qArray => {
                     subjectQuestions = subjectQuestions.concat(qArray);
                 });
-                console.log(`Full Length Mocks: Combined ${subjectQuestions.length} questions from all subjects.`);
+                console.log(`QUIZ_PREP: Full Length Mocks: Combined ${subjectQuestions.length} questions from all subjects.`);
             } else if (allQuestionsFromDB[subject]) {
                 subjectQuestions = [...allQuestionsFromDB[subject]];
             } else {
-                console.warn(`No questions available for subject: ${subject}. This might be a missing subject in your database.`);
+                console.warn(`QUIZ_PREP: No questions available for subject: ${subject}. This might be a missing subject in your database.`);
             }
 
             if (!subjectQuestions || subjectQuestions.length === 0) {
-                console.warn(`No questions available for subject: ${subject}`);
+                console.warn(`QUIZ_PREP: No questions available for subject: ${subject}`);
                 questionCountError.textContent = `No questions found for ${subject}. This section is coming soon!`;
                 questionCountError.style.display = 'block';
                 startPracticeButton.disabled = true; 
@@ -2335,7 +2362,7 @@
             numQuestionsInput.max = questions.length; 
             questionCountError.style.display = 'none'; 
             startPracticeButton.disabled = false; 
-            console.log(`Total questions available for ${subject}: ${questions.length}`);
+            console.log(`QUIZ_PREP: Total questions available for ${subject}: ${questions.length}`);
         }
 
         /**
@@ -2354,7 +2381,7 @@
             // Slice the questions array to the desired count
             questions = questions.slice(0, desiredCount);
             quizQuestionsAttempted = [...questions]; 
-            console.log(`Starting quiz with ${questions.length} questions.`);
+            console.log(`QUIZ_START: Starting quiz with ${questions.length} questions.`);
 
             // Reset quiz stats
             currentQuestionIndex = 0;
@@ -2376,11 +2403,13 @@
          * Displays the current question and its options, and starts the countdown timer.
          */
         function displayQuestion() {
-            console.log(`Displaying question ${currentQuestionIndex + 1}/${questions.length}`);
+            console.log(`QUIZ: Displaying question ${currentQuestionIndex + 1}/${questions.length}`);
             // Clear previous feedback and options
             optionsContainer.innerHTML = '';
             feedbackArea.textContent = '';
             correctAnswerArea.textContent = '';
+            autoGeminiExplanationArea.style.display = 'none'; // Hide auto Gemini explanation
+            autoGeminiExplanationArea.innerHTML = ''; // Clear its content
             nextButton.disabled = true; 
 
             if (currentQuestionIndex < questions.length) {
@@ -2404,7 +2433,7 @@
                 startCountdown();
             } else {
                 // Quiz finished (all questions attempted naturally)
-                console.log("All questions answered, ending quiz naturally.");
+                console.log("QUIZ: All questions answered, ending quiz naturally.");
                 endQuiz();
             }
         }
@@ -2415,12 +2444,12 @@
         function startCountdown() {
             let timeLeft = timePerQuestion;
             timerDisplay.textContent = timeLeft;
-            console.log(`Timer started for question ${currentQuestionIndex + 1}, time left: ${timeLeft}`);
+            console.log(`TIMER: Timer started for question ${currentQuestionIndex + 1}, time left: ${timeLeft}`);
 
             // Clear any existing interval to prevent multiple timers running
             if (timerInterval) {
                 clearInterval(timerInterval);
-                console.log("Previous timer cleared.");
+                console.log("TIMER: Previous timer cleared.");
             }
 
             timerInterval = setInterval(() => {
@@ -2430,14 +2459,14 @@
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
                     timerDisplay.textContent = "Time's Up!";
-                    console.log("Time's Up for current question.");
+                    console.log("TIMER: Time's Up for current question.");
 
                     // If the user hasn't selected an answer when time runs out,
                     // mark it as incorrect and attempted.
                     if (nextButton.disabled) {
                         questionsAttempted++;
                         incorrectAnswersCount++;
-                        console.log("Time ran out, no answer selected. Marked as incorrect.");
+                        console.log("QUIZ: Time ran out, no answer selected. Marked as incorrect.");
                     }
                     const currentQuestion = questions[currentQuestionIndex];
                     const timeElapsed = Math.floor((new Date().getTime() - questionStartTime) / 1000);
@@ -2446,7 +2475,7 @@
                     showAnswer(currentQuestion.answer, null); 
                     disableOptions(); 
                     nextButton.disabled = false; 
-                    console.log("Next button enabled (time out).");
+                    console.log("QUIZ: Next button enabled (time out).");
                 }
             }, 1000); 
         }
@@ -2457,15 +2486,15 @@
          * @param {string} correctAnswer - The correct answer for the current question.
          * @param {HTMLButtonElement} selectedButton - The button element that was clicked.
          */
-        function answerQuestion(selectedOption, correctAnswer, selectedButton) {
-            console.log(`Answer selected: ${selectedOption}`);
+        async function answerQuestion(selectedOption, correctAnswer, selectedButton) { // Made async
+            console.log(`QUIZ: Answer selected: ${selectedOption}`);
             clearInterval(timerInterval); 
             disableOptions(); 
 
             questionsAttempted++;
             const timeElapsed = Math.floor((new Date().getTime() - questionStartTime) / 1000);
             totalTimeTaken += timeElapsed;
-            console.log(`Time taken for question: ${timeElapsed}s`);
+            console.log(`QUIZ: Time taken for question: ${timeElapsed}s`);
 
 
             if (selectedOption === correctAnswer) {
@@ -2475,7 +2504,7 @@
                     selectedButton.classList.add('correct');
                 }
                 correctAnswersCount++;
-                console.log("Answer: Correct!");
+                console.log("QUIZ: Answer: Correct!");
             } else {
                 feedbackArea.textContent = "❌ Incorrect.";
                 feedbackArea.style.color = '#ef4444'; 
@@ -2483,11 +2512,31 @@
                     selectedButton.classList.add('incorrect');
                 }
                 incorrectAnswersCount++;
-                console.log("Answer: Incorrect!");
+                console.log("QUIZ: Answer: Incorrect!");
+
+                // Automatically get Gemini explanation for incorrect answers
+                autoGeminiExplanationArea.style.display = 'block';
+                autoGeminiExplanationArea.innerHTML = '<div class="spinner"></div><p class="text-center text-gray-400">Generating explanation with Gemini...</p>';
+                console.log("GEMINI: Requesting explanation for incorrect answer...");
+
+                try {
+                    const currentQuestion = questions[currentQuestionIndex];
+                    const geminiExp = await getGeminiExplanation(
+                        currentQuestion.question,
+                        currentQuestion.answer,
+                        currentQuestion.explanation || ''
+                    );
+                    autoGeminiExplanationArea.textContent = geminiExp;
+                    console.log("GEMINI: Explanation received and displayed.");
+                } catch (error) {
+                    autoGeminiExplanationArea.textContent = `Error getting explanation: ${error.message}`;
+                    autoGeminiExplanationArea.style.color = '#ef4444';
+                    console.error("GEMINI: Error getting explanation:", error);
+                }
             }
             showAnswer(correctAnswer, selectedButton);
             nextButton.disabled = false; 
-            console.log("Next button enabled (answer selected).");
+            console.log("QUIZ: Next button enabled (answer selected).");
         }
 
         /**
@@ -2523,7 +2572,7 @@
          * Also attempts to save the quiz results to Realtime Database and update streak.
          */
         async function endQuiz() {
-            console.log("Ending quiz and showing summary.");
+            console.log("QUIZ_END: Ending quiz and showing summary.");
             clearInterval(timerInterval); 
             hideAllContainers(); // Hide all containers
             resultSummaryContainer.style.display = 'flex';
@@ -2554,7 +2603,7 @@
                         timeTaken: totalTimeTaken,
                         timestamp: serverTimestamp() 
                     });
-                    console.log("Quiz results saved to Realtime Database successfully!");
+                    console.log("DB: Quiz results saved to Realtime Database successfully!");
 
                     // 2. Update daily streak
                     const snapshot = await get(userRef);
@@ -2578,17 +2627,17 @@
                         yesterday.setDate(today.getDate() - 1);
 
                         if (lastQuizDay.getTime() === today.getTime()) {
-                            console.log("Already played today, streak continues.");
+                            console.log("DB: Already played today, streak continues.");
                         } else if (lastQuizDay.getTime() === yesterday.getTime()) {
                             currentStreak++;
-                            console.log("Played yesterday, streak incremented to:", currentStreak);
+                            console.log("DB: Played yesterday, streak incremented to:", currentStreak);
                         } else {
                             currentStreak = 1;
-                            console.log("Streak broken, reset to 1.");
+                            console.log("DB: Streak broken, reset to 1.");
                         }
                     } else {
                         currentStreak = 1;
-                        console.log("First quiz, streak started at 1.");
+                        console.log("DB: First quiz, streak started at 1.");
                     }
 
                     // Use update() to only modify the streak and lastQuizDate fields
@@ -2596,13 +2645,52 @@
                         currentStreak: currentStreak,
                         lastQuizDate: serverTimestamp() 
                     }); 
-                    console.log("Daily streak updated successfully in Realtime Database!");
+                    console.log("DB: Daily streak updated successfully in Realtime Database!");
 
                 } catch (error) {
-                    console.error("Error saving quiz results or updating streak to Realtime Database:", error);
+                    console.error("DB: Error saving quiz results or updating streak to Realtime Database:", error);
                 }
             } else {
-                console.log("No authenticated user found, skipping saving quiz results and streak update to Realtime Database.");
+                console.log("DB: No authenticated user found, skipping saving quiz results and streak update to Realtime Database.");
+            }
+        }
+
+        /**
+         * Fetches an explanation from the Gemini API.
+         * @param {string} questionText - The quiz question.
+         * @param {string} correctAnswer - The correct answer to the question.
+         * @param {string} existingExplanation - Any existing explanation for context.
+         * @returns {Promise<string>} A promise that resolves with the Gemini explanation or an error message.
+         */
+        async function getGeminiExplanation(questionText, correctAnswer, existingExplanation) {
+            const prompt = `Provide a detailed explanation for the following multiple-choice question:\n\nQuestion: "${questionText}"\nCorrect Answer: "${correctAnswer}"\n\nExisting Explanation (if any): "${existingExplanation}"\n\nPlease elaborate on why the correct answer is correct and briefly explain why other options might be incorrect. Limit your explanation to approximately 100 words. Focus on clarity and educational value.`;
+
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+            const payload = { contents: chatHistory };
+            const apiKey = "AIzaSyC_fN4BF66NPCP2gqrOFW2wyABV_uwK9Xc"; // User provided API key
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                    console.error("GEMINI: API response structure unexpected:", result);
+                    return "Could not get a detailed explanation from Gemini. Please try again.";
+                }
+            } catch (error) {
+                console.error("GEMINI: Error calling Gemini API:", error);
+                return `Error fetching explanation: ${error.message}. Please check your network connection or try again later.`;
             }
         }
 
@@ -2610,7 +2698,7 @@
          * Displays the solutions and explanations for the questions in the quiz.
          */
         function displaySolutions() {
-            console.log("Displaying solutions.");
+            console.log("SOLUTIONS: Displaying solutions.");
             hideAllContainers(); // Hide all containers
             solutionExplanationContainer.style.display = 'flex';
             solutionsList.innerHTML = ''; 
@@ -2653,6 +2741,50 @@
                     solutionItem.appendChild(noLearnMore);
                 }
 
+                // Add Gemini Explanation Button and Area
+                const geminiButton = document.createElement('button');
+                geminiButton.textContent = 'Get More Explanation (Gemini)';
+                geminiButton.classList.add('glass-button-base', 'glass-button-primary', 'mt-4');
+                geminiButton.style.width = 'auto'; // Adjust width for this button
+                geminiButton.style.padding = '0.6rem 1rem'; // Adjust padding
+                geminiButton.style.fontSize = '0.9rem'; // Adjust font size
+                solutionItem.appendChild(geminiButton);
+
+                const geminiExplanationArea = document.createElement('div');
+                geminiExplanationArea.classList.add('gemini-explanation-area', 'mt-3');
+                geminiExplanationArea.style.display = 'none'; // Hidden by default
+                solutionItem.appendChild(geminiExplanationArea);
+
+                geminiButton.addEventListener('click', async () => {
+                    geminiButton.disabled = true;
+                    geminiButton.textContent = ''; // Clear text
+                    const spinner = document.createElement('div');
+                    spinner.classList.add('spinner');
+                    geminiButton.appendChild(spinner); // Add spinner
+
+                    geminiExplanationArea.style.display = 'block'; // Show area
+                    geminiExplanationArea.innerHTML = '<p class="text-center text-gray-400">Generating explanation with Gemini...</p>';
+                    console.log("SOLUTIONS: Requesting Gemini explanation for solution...");
+
+                    try {
+                        const geminiExp = await getGeminiExplanation(
+                            qData.question,
+                            qData.answer,
+                            qData.explanation || ''
+                        );
+                        geminiExplanationArea.textContent = geminiExp;
+                        console.log("SOLUTIONS: Gemini explanation received and displayed.");
+                    } catch (error) {
+                        geminiExplanationArea.textContent = `Error: ${error.message}`;
+                        geminiExplanationArea.style.color = '#ef4444';
+                        console.error("SOLUTIONS: Error getting Gemini explanation:", error);
+                    } finally {
+                        geminiButton.disabled = false;
+                        geminiButton.textContent = 'Get More Explanation (Gemini)'; // Restore text
+                        spinner.remove(); // Remove spinner
+                    }
+                });
+
                 solutionsList.appendChild(solutionItem);
             });
         }
@@ -2661,9 +2793,9 @@
          * Fetches and displays the user's past quiz attempts and current streak from Realtime Database.
          */
         async function displayUserData() {
-            console.log("displayUserData called.");
+            console.log("USER_DATA: displayUserData called.");
             if (!auth.currentUser || !auth.currentUser.uid) {
-                console.log("No user logged in to display data.");
+                console.log("USER_DATA: No user logged in to display data.");
                 showAuthError("Please log in to view your activity.");
                 return;
             }
@@ -2683,8 +2815,10 @@
                 if (userSnapshot.exists()) {
                     const userData = userSnapshot.val();
                     currentStreakDisplay.textContent = userData.currentStreak || 0;
+                    console.log("USER_DATA: Fetched streak:", userData.currentStreak);
                 } else {
                     currentStreakDisplay.textContent = 0;
+                    console.log("USER_DATA: No user data found, streak is 0.");
                 }
 
                 // Fetch past quiz attempts, limited to the last 20 for performance
@@ -2693,6 +2827,7 @@
 
                 if (!attemptsSnapshot.exists() || Object.keys(attemptsSnapshot.val()).length === 0) {
                     pastAttemptsList.innerHTML = '<p class="text-gray-600">No past quiz attempts found.</p>';
+                    console.log("USER_DATA: No past quiz attempts found.");
                 } else {
                     const attemptsData = attemptsSnapshot.val();
                     const attemptsArray = Object.keys(attemptsData).map(key => ({
@@ -2733,9 +2868,10 @@
                     });
                     tableHtml += `</tbody></table>`;
                     pastAttemptsList.innerHTML = tableHtml;
+                    console.log("USER_DATA: Past quiz attempts displayed.");
                 }
             } catch (error) {
-                console.error("Error fetching user data from Realtime Database:", error);
+                console.error("USER_DATA: Error fetching user data from Realtime Database:", error);
                 pastAttemptsList.innerHTML = '<p class="text-red-500">Error loading data. Please try again.</p>';
             }
         }
@@ -2744,9 +2880,9 @@
          * Fetches and displays the user's profile data, populating editable fields and progress stats.
          */
         async function displayUserProfile() {
-            console.log("displayUserProfile called.");
+            console.log("PROFILE: displayUserProfile called.");
             if (!auth.currentUser || !auth.currentUser.uid) {
-                console.log("No user logged in to display profile.");
+                console.log("PROFILE: No user logged in to display profile.");
                 showAuthError("Please log in to view your profile.");
                 return;
             }
@@ -2754,8 +2890,6 @@
             hideAllContainers(); // Hide all containers
             userProfileContainer.style.display = 'flex';
             profileMessage.style.display = 'none'; 
-
-            // Removed: userIdDisplayProfile.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
 
             const currentUserId = auth.currentUser.uid;
             const userRef = ref(db, `users/${currentUserId}`);
@@ -2766,6 +2900,9 @@
                 let userData = {};
                 if (snapshot.exists()) {
                     userData = snapshot.val();
+                    console.log("PROFILE: User data fetched from DB:", userData);
+                } else {
+                    console.log("PROFILE: No user data found in DB, using Auth data.");
                 }
 
                 // Populate editable input fields
@@ -2799,6 +2936,9 @@
                         subjectScores[subject].totalCorrect += (attempt.score || 0);
                         subjectScores[subject].totalQuestions += (attempt.totalQuestions || 0);
                     });
+                    console.log("PROFILE: Quiz attempts data processed.");
+                } else {
+                    console.log("PROFILE: No quiz attempts found for this user.");
                 }
 
                 profileTestsAttempted.textContent = totalAttempts;
@@ -2829,10 +2969,10 @@
                     listItem.textContent = 'No weak areas identified yet! Keep practicing!';
                     profileWeakAreas.appendChild(listItem);
                 }
-
+                console.log("PROFILE: Profile stats and weak areas updated.");
 
             } catch (error) {
-                console.error("Error fetching user profile data or quiz attempts:", error);
+                console.error("PROFILE: Error fetching user profile data or quiz attempts:", error);
                 profileMessage.textContent = 'Error loading profile data. Please try again.';
                 profileMessage.style.color = '#ef4444';
                 profileMessage.style.display = 'block';
@@ -2844,7 +2984,7 @@
                 editGenderInput.value = ''; 
                 editAboutYouInput.value = ''; 
                 profileUserId.textContent = currentUserId;
-                profilePhoto.src = auth.currentUser.photoURL || "https://placehold.co/120x120/cccccc/333333?text=👤";
+                profilePhoto.src = auth.currentUser.photoURL || "https://placehold.co/120x120/cccccc/333333?text=�";
                 profileTestsAttempted.textContent = 'N/A';
                 profileAverageScore.textContent = 'N/A';
                 profileWeakAreas.innerHTML = '<li>Error loading weak areas.</li>';
@@ -2855,7 +2995,7 @@
          * Saves the user's profile data from the editable fields to Realtime Database.
          */
         async function saveUserProfile() {
-            console.log("Attempting to save user profile...");
+            console.log("PROFILE: Attempting to save user profile...");
             if (!auth.currentUser || !auth.currentUser.uid) {
                 profileMessage.textContent = "Please log in to save your profile.";
                 profileMessage.style.color = '#ef4444';
@@ -2881,7 +3021,7 @@
                     currentDbData = snapshot.val();
                 }
             } catch (error) {
-                console.error("Error fetching current user data for comparison:", error);
+                console.error("PROFILE: Error fetching current user data for comparison:", error);
                 // Continue with updates based on UI values if DB fetch fails for comparison
             }
 
@@ -2926,10 +3066,10 @@
                 profileMessage.textContent = "Profile saved successfully!";
                 profileMessage.style.color = '#059669';
                 profileMessage.style.display = 'block';
-                console.log("User profile saved to DB and Auth (if display name changed).");
+                console.log("PROFILE: User profile saved to DB and Auth (if display name changed).");
 
             } catch (error) {
-                console.error("Error saving user profile:", error);
+                console.error("PROFILE: Error saving user profile:", error);
                 profileMessage.textContent = `Failed to save profile: ${error.message}`;
                 profileMessage.style.color = '#ef4444';
                 profileMessage.style.display = 'block';
@@ -2940,20 +3080,18 @@
          * Displays the settings page.
          */
         function displaySettings() {
-            console.log("displaySettings called.");
+            console.log("SETTINGS: displaySettings called.");
             hideAllContainers(); // Hide all containers
             settingsContainer.style.display = 'flex';
-            // Removed: userIdDisplaySettings.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
         }
 
         /**
          * Displays the extra features page.
          */
         function displayExtraFeatures() {
-            console.log("displayExtraFeatures called.");
+            console.log("EXTRA_FEATURES: displayExtraFeatures called.");
             hideAllContainers(); // Hide all containers
             extraFeaturesContainer.style.display = 'flex';
-            // Removed: userIdDisplayExtraFeatures.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
         }
 
 
@@ -2961,7 +3099,7 @@
          * Moves to the next question or ends the quiz if all questions are answered.
          */
         nextButton.addEventListener('click', () => {
-            console.log("Next button clicked. Moving to next question.");
+            console.log("NAV: Next button clicked. Moving to next question.");
             currentQuestionIndex++;
             displayQuestion();
         });
@@ -3007,49 +3145,93 @@
 
         // Event listeners for Result Summary Page buttons
         retryTestButton.addEventListener('click', () => {
-            console.log("Retry Test button clicked. Navigating to home screen.");
+            console.log("NAV: Retry Test button clicked. Navigating to home screen.");
             initQuiz(); // Go back to the home screen
         });
         viewSolutionsButton.addEventListener('click', () => {
             displaySolutions(); // Call the new function to show solutions
         });
-        shareScoreButton.addEventListener('click', () => {
-            // Placeholder for sharing score
+        shareScoreButton.addEventListener('click', async () => { // Made async
+            console.log("SHARE: Share Score button clicked.");
             const score = resultScorePercentage.textContent;
             const subject = resultSubject.textContent;
             const message = `I scored ${score} in the ${subject} quiz on SSC Prep App! Can you beat me? #SSCPrep #Quiz`;
-            // For web, you might use Web Share API or copy to clipboard
+            
             if (navigator.share) {
-                navigator.share({
-                    title: 'My Quiz Score',
-                    text: message,
-                }).then(() => console.log('Share successful'))
-                .catch((error) => console.error('Error sharing', error));
+                console.log("SHARE: Using Web Share API.");
+                try {
+                    await navigator.share({
+                        title: 'My Quiz Score',
+                        text: message,
+                    });
+                    console.log('SHARE: Share successful');
+                } catch (error) {
+                    console.error('SHARE: Error sharing via Web Share API:', error);
+                    // Fallback to clipboard if Web Share API fails or is cancelled
+                    if (error.name !== 'AbortError') { // Ignore user cancellation
+                        console.log("SHARE: Web Share API failed, attempting clipboard copy.");
+                        try {
+                            await navigator.clipboard.writeText(message);
+                            console.log(`SHARE: Score copied to clipboard successfully! Share this:\n"${message}"`);
+                        } catch (clipboardError) {
+                            console.error('SHARE: Failed to copy text to clipboard:', clipboardError);
+                            console.log("SHARE: Automatic copy failed. Please manually copy the message from console:");
+                            console.log(message);
+                        }
+                    }
+                }
+            } else if (navigator.clipboard && navigator.clipboard.writeText) {
+                console.log("SHARE: Web Share API not supported, using navigator.clipboard.writeText().");
+                try {
+                    await navigator.clipboard.writeText(message);
+                    console.log(`SHARE: Score copied to clipboard successfully! Share this:\n"${message}"`);
+                } catch (clipboardError) {
+                    console.error('SHARE: Failed to copy text to clipboard:', clipboardError);
+                    console.log("SHARE: Automatic copy failed. Please manually copy the message from console:");
+                    console.log(message);
+                }
             } else {
-                // Fallback for browsers that don't support Web Share API
-                document.execCommand('copy');
-                console.log(`Score copied to clipboard! Share this:\n"${message}"`); // Replaced alert
+                // Final fallback for older browsers or highly restricted environments
+                console.log("SHARE: Neither Web Share API nor navigator.clipboard.writeText() supported. Falling back to temporary textarea copy.");
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = message;
+                tempTextArea.style.position = 'absolute';
+                tempTextArea.style.left = '-9999px';
+                tempTextArea.style.top = '0';
+                document.body.appendChild(tempTextArea);
+                
+                tempTextArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    console.log(`SHARE: Score copied to clipboard using execCommand! Share this:\n"${message}"`);
+                } catch (err) {
+                    console.error('SHARE: Failed to copy text using execCommand:', err);
+                    console.log("SHARE: Failed to automatically copy to clipboard. Please manually copy the message:");
+                    console.log(message);
+                } finally {
+                    document.body.removeChild(tempTextArea);
+                }
             }
         });
 
         // New event listener for "Back to Results" button on Solution/Explanation page
         backToResultsButton.addEventListener('click', () => {
-            console.log("Back to Results button clicked.");
+            console.log("NAV: Back to Results button clicked.");
             hideAllContainers();
             resultSummaryContainer.style.display = 'flex'; // Show the result summary again
         });
 
         // Placeholder for settings page actions (can be expanded later)
-        changePasswordButton.addEventListener('click', () => console.log('Change Password functionality coming soon!')); // Replaced alert
-        notificationsToggle.addEventListener('change', (event) => console.log('Notifications toggled:', event.target.checked));
-        languageSelect.addEventListener('change', (event) => console.log('Language changed to:', event.target.value));
-        // Removed darkModeToggle event listener as the app is now permanently glassmorphism dark
-        helpFeedbackButton.addEventListener('click', () => console.log('Help and Feedback functionality coming soon!')); // Replaced alert
+        changePasswordButton.addEventListener('click', () => console.log('SETTINGS: Change Password functionality coming soon!'));
+        notificationsToggle.addEventListener('change', (event) => console.log('SETTINGS: Notifications toggled:', event.target.checked));
+        languageSelect.addEventListener('change', (event) => console.log('SETTINGS: Language changed to:', event.target.value));
+        helpFeedbackButton.addEventListener('click', () => console.log('SETTINGS: Help and Feedback functionality coming soon!'));
 
 
         // Attach event listeners after the DOM is fully loaded
         document.addEventListener('DOMContentLoaded', () => {
-            console.log("DOM Content Loaded. Attaching primary event listeners.");
+            console.log("APP_START: DOM Content Loaded. Attaching primary event listeners.");
 
             // Initialize Firebase app, auth, and db here
             app = initializeApp(firebaseConfig);
@@ -3058,22 +3240,22 @@
 
             // Firebase Auth State Listener - moved here to ensure 'auth' is defined
             onAuthStateChanged(auth, async (user) => {
-                console.log("onAuthStateChanged fired. Current user:", user ? user.uid : "null");
+                console.log("AUTH_STATE: onAuthStateChanged fired. Current user:", user ? user.uid : "null"); // Added log
                 // If there's an initial token and no user is logged in yet, try to sign in with it
                 if (typeof __initial_auth_token !== 'undefined' && user === null) {
                     try {
-                        console.log("Attempting signInWithCustomToken...");
+                        console.log("AUTH_STATE: Attempting signInWithCustomToken..."); // Added log
                         await signInWithCustomToken(auth, __initial_auth_token);
-                        console.log("Signed in with custom token successfully.");
+                        console.log("AUTH_STATE: Signed in with custom token successfully."); // Added log
                     } catch (error) {
-                        console.error("Error signing in with custom token:", error);
+                        console.error("AUTH_STATE: Error signing in with custom token:", error); // Added log
                         // Fallback to anonymous if custom token fails
-                        console.log("Falling back to anonymous sign-in...");
+                        console.log("AUTH_STATE: Falling back to anonymous sign-in..."); // Added log
                         await signInAnonymously(auth);
                     }
                 } else {
                     // User is already logged in or just logged in via custom token/anonymous
-                    console.log("User state updated, calling updateUI.");
+                    console.log("AUTH_STATE: User state updated, calling updateUI."); // Added log
                     updateUI(user);
                 }
             });
@@ -3083,7 +3265,7 @@
 
             // Get references to elements that are guaranteed to be in the DOM now
             logoutButtons = document.querySelectorAll('.logout-button-class');
-            console.log("Found logout buttons:", logoutButtons.length);
+            console.log("APP_START: Found logout buttons:", logoutButtons.length);
 
             // Attach event listeners for login/logout buttons
             anonymousLoginButton.addEventListener('click', loginAnonymously);
@@ -3103,42 +3285,34 @@
             cardGeneralAwareness.addEventListener('click', () => {
                 hideAllContainers();
                 gaSubjectsContainer.style.display = 'flex'; // Show GA subjects container
-                // Removed: userIdDisplayGa.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User'; // Update user display
             });
             cardReasoning.addEventListener('click', () => {
                 hideAllContainers();
                 reasoningSubjectsContainer.style.display = 'flex';
-                // Removed: userIdDisplayReasoning.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
             });
             cardQuantitativeAptitude.addEventListener('click', () => {
                 hideAllContainers();
                 quantitativeAptitudeSubjectsContainer.style.display = 'flex';
-                // Removed: userIdDisplayQuant.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
             });
             cardEnglishLanguage.addEventListener('click', () => {
                 hideAllContainers();
                 englishLanguageSubjectsContainer.style.display = 'flex';
-                // Removed: userIdDisplayEnglish.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
             });
             cardComputerKnowledge.addEventListener('click', () => {
                 hideAllContainers();
                 computerKnowledgeSubjectsContainer.style.display = 'flex';
-                // Removed: userIdDisplayComputer.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
             });
             cardGeneralStudies.addEventListener('click', () => {
                 hideAllContainers();
                 generalStudiesSubjectsContainer.style.display = 'flex';
-                // Removed: userIdDisplayGeneralStudies.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
             });
             cardCurrentAffairs.addEventListener('click', () => {
                 hideAllContainers();
                 currentAffairsSubjectsContainer.style.display = 'flex';
-                // Removed: userIdDisplayCurrentAffairs.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
             });
             cardMockTestZone.addEventListener('click', () => {
                 hideAllContainers();
                 mockTestZoneSubjectsContainer.style.display = 'flex';
-                // Removed: userIdDisplayMockTestZone.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
             });
             extraFeaturesButton.addEventListener('click', displayExtraFeatures);
 
@@ -3209,12 +3383,12 @@
 
             logoutButtons.forEach((button, index) => {
                 button.addEventListener('click', logoutUser);
-                console.log(`Logout button ${index + 1} listener attached.`);
+                console.log(`APP_START: Logout button ${index + 1} listener attached.`);
             });
 
             // New back button event listeners
             backToSubjectSelectionFromQuestionCountButton.addEventListener('click', () => {
-                console.log(`Back from question count to: ${lastQuizSetupScreen}`);
+                console.log(`NAV: Back from question count to: ${lastQuizSetupScreen}`);
                 hideAllContainers();
                 // Show the screen that led to question count
                 if (lastQuizSetupScreen && document.getElementById(lastQuizSetupScreen)) {
@@ -3226,7 +3400,7 @@
             });
 
             backToQuestionCountFromQuizButton.addEventListener('click', () => {
-                console.log("Back from quiz to question count.");
+                console.log("NAV: Back from quiz to question count.");
                 clearInterval(timerInterval); // Stop timer if active
                 hideAllContainers();
                 questionCountContainer.style.display = 'flex';
@@ -3236,7 +3410,7 @@
             });
 
             backToQuestionCountFromResultButton.addEventListener('click', () => {
-                console.log("Back from result to question count.");
+                console.log("NAV: Back from result to question count.");
                 hideAllContainers();
                 questionCountContainer.style.display = 'flex';
                 startPracticeButton.disabled = false;
@@ -3246,3 +3420,4 @@
     </script>
 </body>
 </html>
+�
