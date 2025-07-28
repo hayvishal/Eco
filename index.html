@@ -20,6 +20,7 @@
             position: relative;
             overflow-x: hidden; /* Prevent horizontal scrolling */
             overflow-y: auto; /* Allow vertical scrolling */
+            background-color: #1a202c; /* Ensure body has a dark background for contrast */
         }
 
         /* Background Video Styles */
@@ -36,24 +37,8 @@
             filter: brightness(50%); /* Darken the video to improve text readability */
         }
 
-        .quiz-container, .subject-selection-container, .question-count-container, .user-data-container, .user-profile-container, .splash-screen, .home-screen-container, .result-summary-container, .solution-explanation-container, .settings-container, .extra-features-container, .ga-subjects-container, .reasoning-subjects-container, .quantitative-aptitude-subjects-container, .english-language-subjects-container, .computer-knowledge-subjects-container, .general-studies-subjects-container, .current-affairs-subjects-container, .mock-test-zone-subjects-container { /* Added all new subject containers */
-            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
-            border-radius: 1rem; /* Rounded corners */
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Stronger shadow for contrast */
-            padding: 2.5rem; /* Increased padding */
-            max-width: 600px;
-            width: 100%;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem; /* Space between elements */
-            position: relative; /* Ensure content is above the video */
-            z-index: 1; /* Place above the video */
-            margin-bottom: 20px; /* Add some margin at the bottom for scrolling */
-        }
-
-        /* Glassmorphism Auth Container */
-        .auth-container {
+        /* Glassmorphism for all main content containers (excluding splash-screen) */
+        .quiz-container, .subject-selection-container, .question-count-container, .user-data-container, .user-profile-container, .home-screen-container, .result-summary-container, .solution-explanation-container, .settings-container, .extra-features-container, .ga-subjects-container, .reasoning-subjects-container, .quantitative-aptitude-subjects-container, .english-language-subjects-container, .computer-knowledge-subjects-container, .general-studies-subjects-container, .current-affairs-subjects-container, .mock-test-zone-subjects-container, .auth-container {
             background: rgba(0, 0, 0, 0.3); /* Darker semi-transparent background */
             border-radius: 1rem;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* Soft shadow */
@@ -74,16 +59,15 @@
             overflow: hidden; /* Hide overflow for gradient effect */
         }
 
-        /* Gradient lighting effect for auth-container */
-        .auth-container::before {
+        /* Gradient lighting effect for auth-container (and now all main containers, excluding splash-screen) */
+        .auth-container::before, .quiz-container::before, .subject-selection-container::before, .question-count-container::before, .user-data-container::before, .user-profile-container::before, .home-screen-container::before, .result-summary-container::before, .solution-explanation-container::before, .settings-container::before, .extra-features-container::before, .ga-subjects-container::before, .reasoning-subjects-container::before, .quantitative-aptitude-subjects-container::before, .english-language-subjects-container::before, .computer-knowledge-subjects-container::before, .general-studies-subjects-container::before, .current-affairs-subjects-container::before, .mock-test-zone-subjects-container::before {
             content: '';
             position: absolute;
-            /* Make it much larger to ensure the subtle edge effect is always visible */
-            top: -150%; /* Adjust to keep the center of the gradient far outside */
-            left: -150%; /* Adjust to keep the center of the gradient far outside */
-            width: 400%; /* Make it significantly larger */
-            height: 400%; /* Make it significantly larger */
-            background: radial-gradient(circle at 50% 50%, rgba(100, 200, 255, 0.1), transparent 80%); /* Make transparent part larger */
+            top: -150%;
+            left: -150%;
+            width: 400%;
+            height: 400%;
+            background: radial-gradient(circle at 50% 50%, rgba(100, 200, 255, 0.1), transparent 80%);
             animation: rotateGradient 15s linear infinite;
             z-index: -1;
             opacity: 0.3;
@@ -94,20 +78,33 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Splash Screen Styles - now with glassmorphism */
         .splash-screen {
-            background-color: rgba(76, 81, 191, 0.9); /* Slightly transparent indigo for splash */
-            color: white;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* Full viewport height */
-            width: 100vw; /* Full viewport width */
-            position: fixed; /* Cover the entire screen */
+            /* Full screen overlay properties */
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
             top: 0;
             left: 0;
-            z-index: 1000; /* Ensure it's on top */
+            z-index: 1000;
+            
+            /* Centering content */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* Ensure content stacks vertically */
             gap: 2rem;
-            opacity: 1; /* Start visible */
-            transition: opacity 0.5s ease-out; /* Smooth fade out */
+
+            /* Glassmorphism-like background */
+            background: rgba(0, 0, 0, 0.5); /* Slightly more opaque for better content visibility */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            /* No border-radius or box-shadow for full screen overlay */
+            
+            /* Text color and transition */
+            color: white;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
         }
         .splash-screen.hidden {
             opacity: 0;
@@ -158,11 +155,11 @@
         .home-screen-container {
             position: relative; /* Added for absolute positioning of profile icon */
         }
-        .home-screen-container h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #1a202c;
-            margin-bottom: 1.5rem;
+        .home-screen-container h1,
+        .home-screen-container h2,
+        .home-screen-container h3,
+        .home-screen-container p {
+            color: white; /* Ensure all text in home screen is white */
         }
         .quick-access-grid {
             display: grid;
@@ -171,14 +168,14 @@
             margin-bottom: 2rem;
         }
         .quick-access-card {
-            background-color: #edf2f7;
+            background-color: rgba(255, 255, 255, 0.1); /* Glassmorphism background */
             padding: 1.5rem;
             border-radius: 0.75rem;
             font-weight: 600;
-            color: #2d3748;
+            color: white; /* Changed for glassmorphism */
             cursor: pointer;
             transition: all 0.2s ease-in-out;
-            border: 2px solid #cbd5e0;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Glassmorphism border */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -187,14 +184,15 @@
             font-size: 1.1rem;
         }
         .quick-access-card:hover {
-            background-color: #d1d5db;
-            border-color: #a0aec0;
+            background-color: rgba(255, 255, 255, 0.2); /* Darker on hover */
+            border-color: rgba(255, 255, 255, 0.4);
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Stronger shadow on hover */
         }
         .quick-access-card .icon {
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
+            color: #818cf8; /* Indigo for icons */
         }
         .home-screen-buttons {
             display: flex;
@@ -212,57 +210,57 @@
         .question-text {
             font-size: 1.5rem; /* Larger font size */
             font-weight: 600;
-            color: #1a202c; /* Darker text */
+            color: white; /* Changed for glassmorphism */
             margin-bottom: 1.5rem;
         }
-        .option-button, .subject-button, .start-practice-button, .view-activity-button, .back-button, .view-profile-button, .settings-button, .extra-feature-button { /* Removed auth-button, toggle-auth-button from here */
+        .option-button, .subject-button, .start-practice-button, .view-activity-button, .back-button, .view-profile-button, .settings-button, .extra-feature-button {
             display: block;
             width: 100%;
             padding: 0.8rem 1.2rem;
             margin-bottom: 0.8rem; /* Space between buttons */
-            background-color: #e2e8f0; /* Light gray button */
-            color: #2d3748; /* Darker text */
-            border: 2px solid #cbd5e0; /* Light border */
+            background-color: rgba(255, 255, 255, 0.1); /* Glassmorphism background */
+            color: white; /* Changed for glassmorphism */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Glassmorphism border */
             border-radius: 0.75rem; /* Rounded corners */
             cursor: pointer;
             font-size: 1.1rem;
             transition: all 0.2s ease-in-out;
-            text-align: left; /* Align text to left */
+            text-align: center; /* ALIGNED TO CENTER */
         }
-        .option-button:hover:not(:disabled), .subject-button:hover, .start-practice-button:hover:not(:disabled), .view-activity-button:hover, .back-button:hover, .view-profile-button:hover, .settings-button:hover, .extra-feature-button:hover { /* Removed auth-button, toggle-auth-button from here */
-            background-color: #d1d5db; /* Darker on hover */
-            border-color: #a0aec0;
+        .option-button:hover:not(:disabled), .subject-button:hover, .start-practice-button:hover:not(:disabled), .view-activity-button:hover, .back-button:hover, .view-profile-button:hover, .settings-button:hover, .extra-feature-button:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* Darker on hover */
+            border-color: rgba(255, 255, 255, 0.4);
         }
-        .option-button:disabled, .start-practice-button:disabled { /* Removed auth-button from here */
+        .option-button:disabled, .start-practice-button:disabled {
             cursor: not-allowed;
             opacity: 0.7;
         }
         .option-button.correct {
-            background-color: #a7f3d0; /* Green for correct */
+            background-color: rgba(167, 243, 208, 0.3); /* Green for correct with transparency */
             border-color: #34d399;
-            color: #065f46;
+            color: white; /* Keep text white */
         }
         .option-button.incorrect {
-            background-color: #fecaca; /* Red for incorrect */
+            background-color: rgba(254, 202, 202, 0.3); /* Red for incorrect with transparency */
             border-color: #ef4444;
-            color: #991b1b;
+            color: white; /* Keep text white */
         }
         .feedback-message {
             margin-top: 1rem;
             font-size: 1.2rem;
             font-weight: 500;
-            color: #4a5568;
+            color: rgba(255, 255, 255, 0.8); /* Changed for glassmorphism */
         }
         .correct-answer-display {
             margin-top: 0.5rem;
             font-size: 1.1rem;
             font-weight: 600;
-            color: #059669; /* Green for correct answer text */
+            color: #68d391; /* Green for correct answer text */
         }
         .timer-display {
             font-size: 2rem; /* Larger timer */
             font-weight: 700;
-            color: #ef4444; /* Red for timer */
+            color: #f87171; /* Red for timer */
             margin-bottom: 1rem;
         }
         .quiz-navigation-buttons {
@@ -293,32 +291,42 @@
         .quiz-finished-message {
             font-size: 1.8rem;
             font-weight: 700;
-            color: #059669;
+            color: #68d391; /* Green for success */
             margin-top: 2rem;
         }
         .quiz-summary {
             text-align: left;
             margin-top: 2rem;
             padding-top: 1.5rem;
-            border-top: 1px solid #e2e8f0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1); /* Lighter border */
         }
         .quiz-summary p {
             font-size: 1.1rem;
             margin-bottom: 0.5rem;
-            color: #2d3748;
+            color: rgba(255, 255, 255, 0.8); /* Changed for glassmorphism */
         }
         .quiz-summary p span {
             font-weight: 600;
-            color: #1a202c;
+            color: white; /* Changed for glassmorphism */
         }
-        .question-count-input, .profile-input, .settings-input { /* Removed auth-input from here */
+        .question-count-input, .profile-input, .settings-input {
             width: 100%;
             padding: 0.8rem;
-            border: 2px solid #cbd5e0;
+            background-color: rgba(255, 255, 255, 0.1); /* Glassmorphism input */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Glassmorphism border */
             border-radius: 0.75rem;
             font-size: 1.1rem;
+            color: white; /* Changed for glassmorphism */
             text-align: center;
             margin-bottom: 1rem;
+        }
+        .question-count-input::placeholder, .profile-input::placeholder, .settings-input::placeholder {
+            color: rgba(255, 255, 255, 0.7); /* Lighter placeholder */
+        }
+        .question-count-input:focus, .profile-input:focus, .settings-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
         }
         .error-message {
             color: #ef4444;
@@ -332,12 +340,12 @@
             align-items: center;
             width: 100%;
             padding: 0.5rem 0;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Lighter border */
             margin-bottom: 1rem;
         }
         .user-info-container p {
             font-size: 0.9rem;
-            color: #4a5568;
+            color: rgba(255, 255, 255, 0.7); /* Changed for glassmorphism */
         }
         .user-info-container button {
             background-color: #ef4444;
@@ -360,23 +368,23 @@
             text-align: left;
             margin-bottom: 0.5rem;
             font-weight: 500;
-            color: white; /* Changed for dark theme */
+            color: white; /* Already white */
         }
 
-        /* Glassmorphism Auth Inputs */
+        /* Auth Inputs (already glassmorphism, but ensuring consistency) */
         .auth-input {
             width: 100%;
             padding: 0.8rem;
-            background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
-            border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle light border */
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 0.75rem;
             font-size: 1.1rem;
-            color: white; /* White text */
+            color: white;
             text-align: left;
             transition: all 0.2s ease-in-out;
         }
         .auth-input::placeholder {
-            color: rgba(255, 255, 255, 0.7); /* Lighter placeholder */
+            color: rgba(255, 255, 255, 0.7);
         }
         .auth-input:focus {
             outline: none;
@@ -413,7 +421,7 @@
             margin-bottom: 0; /* Override default margin */
         }
 
-        /* Redesigned Auth Buttons */
+        /* Redesigned Auth Buttons (already glassmorphism) */
         .auth-button {
             display: block;
             width: 100%;
@@ -517,26 +525,27 @@
             margin-top: 1.5rem;
         }
         .user-data-table th, .user-data-table td {
-            border: 1px solid #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Glassmorphism border */
             padding: 0.8rem;
             text-align: left;
             font-size: 0.95rem;
+            color: white; /* Changed for glassmorphism */
         }
         .user-data-table th {
-            background-color: #f7fafc;
+            background-color: rgba(255, 255, 255, 0.1); /* Glassmorphism background */
             font-weight: 600;
-            color: #2d3748;
+            color: white; /* Changed for glassmorphism */
         }
         .user-data-table tbody tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: rgba(255, 255, 255, 0.05); /* Slightly different shade */
         }
         .user-data-table tbody tr:hover {
-            background-color: #edf2f7;
+            background-color: rgba(255, 255, 255, 0.15); /* Darker on hover */
         }
         .streak-display {
             font-size: 1.8rem;
             font-weight: 700;
-            color: #4c51bf;
+            color: #818cf8; /* Indigo for streak */
             margin-bottom: 1rem;
         }
         .profile-info {
@@ -558,11 +567,11 @@
         .profile-info p {
             font-size: 1.1rem;
             margin-bottom: 0.5rem;
-            color: #2d3748;
+            color: rgba(255, 255, 255, 0.8); /* Changed for glassmorphism */
         }
         .profile-info p span {
             font-weight: 600;
-            color: #1a202c;
+            color: white; /* Changed for glassmorphism */
         }
         .profile-field-group { /* New style for input groups in profile */
             width: 100%;
@@ -573,22 +582,23 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 500;
-            color: #4a5568;
+            color: rgba(255, 255, 255, 0.8); /* Changed for glassmorphism */
         }
         .profile-message { /* New style for profile messages */
             font-size: 1rem;
             margin-top: 1rem;
             font-weight: 500;
+            color: rgba(255, 255, 255, 0.8); /* Changed for glassmorphism */
         }
         .profile-intro-text { /* New style for the intro text */
             text-align: left;
             margin-bottom: 1.5rem;
-            color: white; /* Changed for dark theme */
+            color: white; /* Already white */
         }
         .profile-intro-text h2 {
             font-size: 1.8rem;
             font-weight: 700;
-            color: white; /* Changed for dark theme */
+            color: white; /* Already white */
             margin-bottom: 0.8rem;
         }
         .profile-intro-text p {
@@ -600,31 +610,25 @@
             list-style: disc;
             margin-left: 20px;
             margin-top: 10px;
+            color: rgba(255, 255, 255, 0.8); /* Changed for glassmorphism */
         }
         .profile-intro-text li {
             margin-bottom: 5px;
+            color: rgba(255, 255, 255, 0.8); /* Changed for glassmorphism */
         }
         
         /* Result Summary Page Styles */
-        .result-summary-container h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #1a202c;
-            margin-bottom: 1.5rem;
-        }
+        .result-summary-container h1,
         .result-summary-container p {
-            font-size: 1.2rem;
-            margin-bottom: 0.8rem;
-            color: #2d3748;
+            color: white; /* Ensure all text in result summary is white */
         }
         .result-summary-container p span {
-            font-weight: 600;
-            color: #1a202c;
+            color: white; /* Ensure all text in result summary is white */
         }
         .result-summary-container .score-percentage {
             font-size: 3rem;
             font-weight: 800;
-            color: #4c51bf;
+            color: #818cf8; /* Indigo for score */
             margin: 1.5rem 0;
         }
         .result-summary-buttons {
@@ -651,36 +655,37 @@
         .solution-explanation-container h1 {
             font-size: 2.5rem;
             font-weight: 700;
-            color: #1a202c;
+            color: white; /* Changed for glassmorphism */
             margin-bottom: 1.5rem;
         }
         .solution-item {
-            background-color: #edf2f7;
+            background-color: rgba(255, 255, 255, 0.1); /* Glassmorphism background */
             padding: 1.5rem;
             border-radius: 0.75rem;
             margin-bottom: 1rem;
             text-align: left;
-            border: 2px solid #cbd5e0;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Glassmorphism border */
+            color: white; /* Changed for glassmorphism */
         }
         .solution-item .solution-q-text {
             font-weight: 600;
-            color: #1a202c;
+            color: white; /* Changed for glassmorphism */
         }
         .solution-item .solution-a-text {
             font-weight: 600;
-            color: #059669;
+            color: #68d391; /* Green for correct answer */
         }
         .solution-item .solution-exp-text {
-            color: #4a5568;
+            color: rgba(255, 255, 255, 0.8); /* Changed for glassmorphism */
         }
         .solution-item .solution-learn-more {
-            color: #4c51bf;
+            color: #818cf8; /* Indigo for learn more */
             text-decoration: underline;
             margin-top: 0.5rem;
             display: inline-block;
         }
         .solution-item .solution-learn-more:hover {
-            color: #4338ca;
+            color: #6366f1; /* Darker indigo on hover */
         }
         .solutions-list-container {
             max-height: 400px; /* Limit height for scrollability */
@@ -698,12 +703,12 @@
             margin-bottom: 2rem;
         }
         .profile-stat-card {
-            background-color: #edf2f7;
+            background-color: rgba(255, 255, 255, 0.1); /* Glassmorphism background */
             padding: 1rem;
             border-radius: 0.75rem;
             font-weight: 600;
-            color: #2d3748;
-            border: 2px solid #cbd5e0;
+            color: white; /* Changed for glassmorphism */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Glassmorphism border */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -714,13 +719,13 @@
         .profile-stat-card .stat-value {
             font-size: 2rem;
             font-weight: 700;
-            color: #4c51bf;
+            color: #818cf8; /* Indigo for stat value */
         }
         .weak-areas-list {
             list-style: disc;
             margin-left: 20px;
             text-align: left;
-            color: #ef4444;
+            color: #f87171; /* Red for weak areas */
             font-weight: 500;
         }
         .weak-areas-section {
@@ -730,7 +735,7 @@
         .weak-areas-section h2 {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #1a202c;
+            color: white; /* Changed for glassmorphism */
             margin-bottom: 0.8rem;
         }
         .profile-buttons-group {
@@ -740,23 +745,32 @@
             margin-top: 2rem;
         }
         /* Settings Page Specific Styles */
+        .settings-container h1,
+        .settings-option label {
+            color: white; /* Ensure all text in settings is white */
+        }
         .settings-option {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0.8rem 0;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Lighter border */
         }
         .settings-option:last-child {
             border-bottom: none;
         }
         .settings-option label {
             font-size: 1.1rem;
-            color: #2d3748;
+            color: rgba(255, 255, 255, 0.8); /* Changed for glassmorphism */
             font-weight: 500;
         }
         .settings-option select, .settings-option input[type="checkbox"] {
             margin-left: 1rem;
+            background-color: rgba(255, 255, 255, 0.1); /* Glassmorphism background */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Glassmorphism border */
+            color: white; /* Changed for glassmorphism */
+            border-radius: 0.5rem; /* Rounded corners for select */
+            padding: 0.4rem;
         }
         .settings-option input[type="checkbox"] {
             width: 20px;
@@ -777,22 +791,25 @@
             background-color: #4338ca;
         }
         /* Extra Features Page Specific Styles */
+        .extra-features-container h1 {
+            color: white; /* Ensure heading is white */
+        }
         .feature-item {
             display: flex;
             align-items: center;
             gap: 1rem;
             padding: 0.8rem;
-            background-color: #edf2f7;
+            background-color: rgba(255, 255, 255, 0.1); /* Glassmorphism background */
             border-radius: 0.75rem;
-            border: 2px solid #cbd5e0;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Glassmorphism border */
             font-size: 1.1rem;
-            color: #2d3748;
+            color: white; /* Changed for glassmorphism */
             font-weight: 500;
             text-align: left;
         }
         .feature-item .icon {
             font-size: 1.8rem;
-            color: #4c51bf;
+            color: #818cf8; /* Indigo for icons */
         }
     </style>
 </head>
@@ -951,10 +968,10 @@
         </div>
         <h1>Hello, <span id="welcome-user-name">User</span> 👋 Ready to Practice?</h1>
         
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">📌 Quick Access: Choose a Subject to Practice</h2>
-        <p class="text-lg text-gray-700 mb-4">Tap any subject card below to begin practicing questions. Each category includes topic-wise MCQs, detailed solutions, and timed quizzes.</p>
+        <h2 class="text-2xl font-bold mb-4">📌 Quick Access: Choose a Subject to Practice</h2>
+        <p class="text-lg mb-4">Tap any subject card below to begin practicing questions. Each category includes topic-wise MCQs, detailed solutions, and timed quizzes.</p>
 
-        <h3 class="text-xl font-bold text-gray-700 mt-6 mb-3 text-left">🔹 Core Sections</h3>
+        <h3 class="text-xl font-bold mt-6 mb-3 text-left">🔹 Core Sections</h3>
         <div class="quick-access-grid">
             <div class="quick-access-card" id="card-general-awareness">
                 <span class="icon">📘</span>
@@ -978,7 +995,7 @@
             </div>
         </div>
 
-        <h3 class="text-xl font-bold text-gray-700 mt-6 mb-3 text-left">🔸 Optional / Add-on Sections</h3>
+        <h3 class="text-xl font-bold mt-6 mb-3 text-left">🔸 Optional / Add-on Sections</h3>
         <div class="quick-access-grid">
             <div class="quick-access-card" id="card-computer-knowledge">
                 <span class="icon">🖥️</span>
@@ -1013,7 +1030,7 @@
             <p>Logged in as: <span id="user-id-display"></span></p>
             <button class="logout-button-class">Logout</button>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Choose Your Quiz Subject</h1>
+        <h1 class="text-3xl font-bold mb-6">Choose Your Quiz Subject</h1>
         <button id="economy-button" class="subject-button">Indian Economy</button>
         <button id="politics-button" class="subject-button">Indian Politics</button>
         <button id="history-button" class="subject-button">Indian History</button>
@@ -1028,7 +1045,7 @@
             <p>Logged in as: <span id="user-id-display-ga"></span></p>
             <button class="logout-button-class">Logout</button>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">General Awareness: Select Topic</h1>
+        <h1 class="text-3xl font-bold mb-6">General Awareness: Select Topic</h1>
         <button id="ga-static-gk-button" class="subject-button">Static GK</button>
         <button id="ga-current-affairs-button" class="subject-button">Current Affairs</button>
         <button id="ga-polity-button" class="subject-button">Polity</button>
@@ -1045,7 +1062,7 @@
             <p>Logged in as: <span id="user-id-display-reasoning"></span></p>
             <button class="logout-button-class">Logout</button>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Reasoning: Select Topic</h1>
+        <h1 class="text-3xl font-bold mb-6">Reasoning: Select Topic</h1>
         <button id="reasoning-analogy-button" class="subject-button">Analogy</button>
         <button id="reasoning-series-button" class="subject-button">Series</button>
         <button id="reasoning-puzzles-button" class="subject-button">Puzzles</button>
@@ -1060,7 +1077,7 @@
             <p>Logged in as: <span id="user-id-display-quant"></span></p>
             <button class="logout-button-class">Logout</button>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Quantitative Aptitude: Select Topic</h1>
+        <h1 class="text-3xl font-bold mb-6">Quantitative Aptitude: Select Topic</h1>
         <button id="quant-arithmetic-button" class="subject-button">Arithmetic</button>
         <button id="quant-algebra-button" class="subject-button">Algebra</button>
         <button id="quant-geometry-button" class="subject-button">Geometry</button>
@@ -1076,7 +1093,7 @@
             <p>Logged in as: <span id="user-id-display-english"></span></p>
             <button class="logout-button-class">Logout</button>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">English Language: Select Topic</h1>
+        <h1 class="text-3xl font-bold mb-6">English Language: Select Topic</h1>
         <button id="english-vocabulary-button" class="subject-button">Vocabulary</button>
         <button id="english-grammar-button" class="subject-button">Grammar</button>
         <button id="english-reading-comprehension-button" class="subject-button">Reading Comprehension</button>
@@ -1091,7 +1108,7 @@
             <p>Logged in as: <span id="user-id-display-computer"></span></p>
             <button class="logout-button-class">Logout</button>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Computer Knowledge: Select Topic</h1>
+        <h1 class="text-3xl font-bold mb-6">Computer Knowledge: Select Topic</h1>
         <button id="computer-basics-button" class="subject-button">Basics of Computer</button>
         <button id="computer-internet-button" class="subject-button">Internet</button>
         <button id="computer-ms-office-button" class="subject-button">MS Office</button>
@@ -1105,7 +1122,7 @@
             <p>Logged in as: <span id="user-id-display-general-studies"></span></p>
             <button class="logout-button-class">Logout</button>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">General Studies: Select Topic</h1>
+        <h1 class="text-3xl font-bold mb-6">General Studies: Select Topic</h1>
         <button id="gs-engineering-button" class="subject-button">Engineering Subjects</button>
         <button id="gs-advanced-economy-button" class="subject-button">Advanced Economics</button>
         <button id="gs-advanced-polity-button" class="subject-button">Advanced Polity</button>
@@ -1118,7 +1135,7 @@
             <p>Logged in as: <span id="user-id-display-current-affairs"></span></p>
             <button class="logout-button-class">Logout</button>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Current Affairs: Select Topic</h1>
+        <h1 class="text-3xl font-bold mb-6">Current Affairs: Select Topic</h1>
         <button id="ca-daily-quizzes-button" class="subject-button">Daily Quizzes</button>
         <button id="ca-budget-button" class="subject-button">Budget</button>
         <button id="ca-govt-schemes-button" class="subject-button">Government Schemes</button>
@@ -1132,7 +1149,7 @@
             <p>Logged in as: <span id="user-id-display-mock-test-zone"></span></p>
             <button class="logout-button-class">Logout</button>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Mock Test Zone: Select Test Type</h1>
+        <h1 class="text-3xl font-bold mb-6">Mock Test Zone: Select Test Type</h1>
         <button id="mtz-full-length-mocks-button" class="subject-button">Full Length Mocks</button>
         <button id="mtz-sectional-tests-button" class="subject-button">Sectional Tests</button>
         <button id="mtz-tier-wise-tests-button" class="subject-button">Tier-wise Tests</button>
@@ -1145,9 +1162,9 @@
             <p>Logged in as: <span id="user-id-display-2"></span></p>
             <button class="logout-button-class">Logout</button>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-4">Practice <span id="selected-subject-title"></span></h1>
-        <p class="text-lg text-gray-700 mb-4">Total questions available: <span id="total-available-questions" class="font-bold"></span></p>
-        <label for="num-questions" class="block text-gray-700 text-lg font-medium mb-2">How many questions do you want to practice?</label>
+        <h1 class="text-3xl font-bold mb-4">Practice <span id="selected-subject-title"></span></h1>
+        <p class="text-lg mb-4">Total questions available: <span id="total-available-questions" class="font-bold"></span></p>
+        <label for="num-questions" class="block text-lg font-medium mb-2">How many questions do you want to practice?</label>
         <input type="number" id="num-questions" class="question-count-input" min="1" value="5">
         <p id="question-count-error" class="error-message" style="display: none;"></p>
         <button id="start-practice-button" class="next-button">Start Practice</button>
@@ -1160,14 +1177,14 @@
             <p>Logged in as: <span id="user-id-display-3"></span></p>
             <button class="logout-button-class">Logout</button>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-4">
+        <h1 class="text-3xl font-bold mb-4">
             <span id="quiz-subject-title"></span>
         </h1>
 
         <div class="flex justify-center items-center gap-2 mb-4">
-            <span class="text-2xl font-bold text-gray-700">⏱ Timer:</span>
+            <span class="text-2xl font-bold">⏱ Timer:</span>
             <span id="timer-display" class="timer-display">20</span>
-            <span class="text-lg text-gray-600">seconds/question</span>
+            <span class="text-lg">seconds/question</span>
         </div>
 
         <div id="question-display" class="question-text"></div>
@@ -1192,7 +1209,7 @@
             <p>Logged in as: <span id="user-id-display-result-span"></span></p>
             <button class="logout-button-class">Logout</button>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Quiz Results</h1>
+        <h1 class="text-3xl font-bold mb-6">Quiz Results</h1>
         <p>Subject: <span id="result-subject"></span></p>
         <p>Total Questions: <span id="result-total-questions"></span></p>
         <p>Correct Answers: <span id="result-correct-count" class="text-green-600"></span></p>
@@ -1214,7 +1231,7 @@
             <p>Logged in as: <span id="user-id-display-solution"></span></p>
             <button class="logout-button-class">Logout</button>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Solutions & Explanations</h1>
+        <h1 class="text-3xl font-bold mb-6">Solutions & Explanations</h1>
         <div id="solutions-list" class="solutions-list-container">
             <!-- Solutions will be dynamically inserted here -->
         </div>
@@ -1228,9 +1245,9 @@
             <p>Logged in as: <span id="user-id-display-4"></span></p>
             <button class="logout-button-class">Logout</button>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Your Activity & Results</h1>
+        <h1 class="text-3xl font-bold mb-6">Your Activity & Results</h1>
         <p class="streak-display">Current Daily Streak: <span id="current-streak-display">0</span> 🔥</p>
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">Past Quiz Attempts</h2>
+        <h2 class="text-2xl font-bold mb-4">Past Quiz Attempts</h2>
         <div id="past-attempts-list">
             <p class="text-gray-600">Loading your past quiz attempts...</p>
         </div>
@@ -1243,7 +1260,7 @@
             <p>Logged in as: <span id="user-id-display-profile"></span></p>
             <button class="logout-button-class">Logout</button>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">My Profile</h1>
+        <h1 class="text-3xl font-bold mb-6">My Profile</h1>
         <div class="profile-info">
             <img id="profile-photo" src="https://placehold.co/120x120/cccccc/333333?text=No+Photo" alt="Profile Photo">
             
@@ -1287,7 +1304,7 @@
             <p id="profile-message" class="profile-message" style="display: none;"></p>
         </div>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">Progress Stats</h2>
+        <h2 class="text-2xl font-bold mb-4">Progress Stats</h2>
         <div class="profile-stats-grid">
             <div class="profile-stat-card">
                 <span class="stat-value" id="profile-tests-attempted">0</span>
@@ -1299,7 +1316,7 @@
             </div>
         </div>
         <div class="weak-areas-section">
-            <h2 class="text-xl font-bold text-gray-800 mb-2">Weak Areas:</h2>
+            <h2 class="text-xl font-bold mb-2">Weak Areas:</h2>
             <ul id="profile-weak-areas" class="weak-areas-list">
                 <li>No weak areas identified yet! Keep practicing!</li>
             </ul>
@@ -1320,7 +1337,7 @@
             <p>Logged in as: <span id="user-id-display-settings"></span></p>
             <button class="logout-button-class">Logout</button>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Settings</h1>
+        <h1 class="text-3xl font-bold mb-6">Settings</h1>
 
         <div class="settings-option">
             <label for="change-password-button">Change Password</label>
@@ -1359,7 +1376,7 @@
             <p>Logged in as: <span id="user-id-display-extra-features"></span></p>
             <button class="logout-button-class">Logout</button>
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Extra Features (Future Scope)</h1>
+        <h1 class="text-3xl font-bold mb-6">Extra Features (Future Scope)</h1>
 
         <div class="feature-item">
             <span class="icon">🔔</span>
@@ -1609,7 +1626,7 @@
         const caMonthlyPdfsButton = document.getElementById('ca-monthly-pdfs-button');
         const backToHomeFromCurrentAffairsSubjectsButton = document.getElementById('back-to-home-from-current-affairs-subjects');
 
-        // New Mock Test Zone Sub-subject buttons
+        // Mock Test Zone Sub-subject buttons
         const mtzFullLengthMocksButton = document.getElementById('mtz-full-length-mocks-button');
         const mtzSectionalTestsButton = document.getElementById('mtz-sectional-tests-button');
         const mtzTierWiseTestsButton = document.getElementById('mtz-tier-wise-tests-button');
@@ -1676,7 +1693,6 @@
         const changePasswordButton = document.getElementById('change-password-button');
         const notificationsToggle = document.getElementById('notifications-toggle');
         const languageSelect = document.getElementById('language-select');
-        const darkModeToggle = document.getElementById('dark-mode-toggle');
         const helpFeedbackButton = document.getElementById('help-feedback-button');
         const backToProfileFromSettingsButton = document.getElementById('back-to-profile-from-settings');
 
@@ -2179,7 +2195,7 @@
                 console.log("Splash screen timer finished. Transitioning to main UI.");
                 // Force UI update based on current auth state
                 updateUI(auth.currentUser);
-            }, 1000); // Changed from 2000 to 1000 for 1 second splash screen
+            }, 3000); // Changed from 1000 to 3000 for 3 seconds
         }
 
 
@@ -2942,124 +2958,7 @@
         changePasswordButton.addEventListener('click', () => console.log('Change Password functionality coming soon!')); // Replaced alert
         notificationsToggle.addEventListener('change', (event) => console.log('Notifications toggled:', event.target.checked));
         languageSelect.addEventListener('change', (event) => console.log('Language changed to:', event.target.value));
-        darkModeToggle.addEventListener('change', (event) => {
-            if (event.target.checked) {
-                document.body.style.backgroundColor = '#1a202c'; // Dark background
-                document.querySelectorAll('.quiz-container, .subject-selection-container, .question-count-container, .user-data-container, .user-profile-container, .result-summary-container, .solution-explanation-container, .settings-container, .extra-features-container, .ga-subjects-container, .reasoning-subjects-container, .quantitative-aptitude-subjects-container, .english-language-subjects-container, .computer-knowledge-subjects-container, .general-studies-subjects-container, .current-affairs-subjects-container, .mock-test-zone-subjects-container').forEach(el => {
-                    el.style.backgroundColor = 'rgba(45, 55, 72, 0.9)'; // Darker card background with transparency
-                    el.style.color = '#e2e8f0'; // Light text
-                });
-                document.querySelectorAll('.question-text, h1, h2, p, label').forEach(el => {
-                    el.style.color = '#e2e8f0'; // Light text for other elements
-                });
-                document.querySelectorAll('.option-button, .subject-button, .start-practice-button, .view-activity-button, .back-button, .view-profile-button, .settings-button, .extra-feature-button').forEach(el => {
-                    el.style.backgroundColor = '#4a5568'; // Darker button background
-                    el.style.color = '#e2e8f0'; // Light button text
-                    el.style.borderColor = '#6b7280'; // Darker border
-                });
-                document.querySelectorAll('.auth-input, .profile-input, .settings-input').forEach(el => {
-                    el.style.backgroundColor = '#2d3748';
-                    el.style.color = '#e2e8f0';
-                    el.style.borderColor = '#6b7280';
-                });
-                document.querySelectorAll('.user-info-container p, .user-info-container span').forEach(el => {
-                    el.style.color = '#a0aec0'; // Lighter grey for user info
-                });
-                document.querySelectorAll('.quick-access-card').forEach(el => {
-                    el.style.backgroundColor = '#4a5568';
-                    el.style.color = '#e2e8f0';
-                    el.style.borderColor = '#6b7280';
-                });
-                document.querySelectorAll('.profile-stat-card').forEach(el => {
-                    el.style.backgroundColor = '#4a5568';
-                    el.style.color = '#e2e8f0';
-                    el.style.borderColor = '#6b7280';
-                });
-                document.querySelectorAll('.user-data-table th').forEach(el => {
-                    el.style.backgroundColor = '#4a5568';
-                    el.style.color = '#e2e8f0';
-                });
-                document.querySelectorAll('.user-data-table tbody tr').forEach(el => {
-                    el.style.backgroundColor = '#2d3748';
-                    el.style.color = '#e2e8f0';
-                });
-                document.querySelectorAll('.user-data-table tbody tr:nth-child(even)').forEach(el => {
-                    el.style.backgroundColor = '#4a5568';
-                });
-                document.querySelectorAll('.user-data-table tbody tr:hover').forEach(el => {
-                    el.style.backgroundColor = '#6b7280';
-                });
-                document.querySelectorAll('.profile-intro-text').forEach(el => {
-                    el.style.color = '#a0aec0';
-                });
-                document.querySelectorAll('.profile-intro-text h2').forEach(el => {
-                    el.style.color = '#e2e8f0';
-                });
-                document.querySelectorAll('.profile-intro-text p').forEach(el => {
-                    el.style.color = '#a0aec0';
-                });
-                document.querySelectorAll('.profile-intro-text ul').forEach(el => {
-                    el.style.color = '#a0aec0';
-                });
-                document.querySelectorAll('.profile-intro-text li').forEach(el => {
-                    el.style.color = '#a0aec0';
-                });
-                document.querySelectorAll('.feedback-message').forEach(el => {
-                    el.style.color = '#a0aec0';
-                });
-                document.querySelectorAll('.correct-answer-display').forEach(el => {
-                    el.style.color = '#68d391'; 
-                });
-                document.querySelectorAll('.timer-display').forEach(el => {
-                    el.style.color = '#f87171'; 
-                });
-                document.querySelectorAll('.quiz-finished-message').forEach(el => {
-                    el.style.color = '#68d391';
-                });
-                document.querySelectorAll('.quiz-summary p').forEach(el => {
-                    el.style.color = '#a0aec0';
-                });
-                document.querySelectorAll('.quiz-summary p span').forEach(el => {
-                    el.style.color = '#e2e8f0';
-                });
-                document.querySelectorAll('.score-percentage').forEach(el => {
-                    el.style.color = '#818cf8'; 
-                });
-                document.querySelectorAll('.solution-item').forEach(el => {
-                    el.style.backgroundColor = 'rgba(45, 55, 72, 0.9)';
-                    el.style.borderColor = '#4a5568';
-                });
-                document.querySelectorAll('.solution-item .solution-q-text').forEach(el => {
-                    el.style.color = '#e2e8f0';
-                });
-                document.querySelectorAll('.solution-item .solution-a-text').forEach(el => {
-                    el.style.color = '#68d391';
-                });
-                document.querySelectorAll('.solution-item .solution-exp-text').forEach(el => {
-                    el.style.color = '#a0aec0';
-                });
-                document.querySelectorAll('.solution-item .solution-learn-more').forEach(el => {
-                    el.style.color = '#818cf8';
-                });
-                document.querySelectorAll('.solution-item .noLearnMore').forEach(el => {
-                    el.style.color = '';
-                });
-                document.querySelectorAll('.profile-message').forEach(el => {
-                    el.style.color = '';
-                });
-                document.querySelectorAll('.weak-areas-list').forEach(el => {
-                    el.style.color = '';
-                });
-                document.querySelectorAll('.feature-item').forEach(el => {
-                    el.style.backgroundColor = '';
-                    el.style.borderColor = '';
-                    el.style.color = '';
-                });
-                document.querySelectorAll('.feature-item .icon').forEach(el => {
-                    el.style.color = '';
-                });
-            }
-        });
+        // Removed darkModeToggle event listener as the app is now permanently glassmorphism dark
         helpFeedbackButton.addEventListener('click', () => console.log('Help and Feedback functionality coming soon!')); // Replaced alert
 
 
