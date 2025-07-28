@@ -798,7 +798,7 @@
 </head>
 <body>
     <!-- Background Video -->
-    <video autoplay muted loop id="background-video">
+    <video autoplay muted loop playsinline id="background-video">
         <source src="bg.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
@@ -1520,7 +1520,7 @@
         const userIdDisplayGa = document.getElementById('user-id-display-ga'); // For GA sub-subjects container
         const userIdDisplayReasoning = document.getElementById('user-id-display-reasoning'); // New
         const userIdDisplayQuant = document.getElementById('user-id-display-quant'); // New
-        const userIdDisplayEnglish = document.getElementById('user-id-display-english'); // New
+        const userIdDisplayEnglish = document.getElementById('english-language-subjects-container'); // New
         const userIdDisplayComputer = document.getElementById('user-id-display-computer'); // New
         const userIdDisplayGeneralStudies = document.getElementById('user-id-display-general-studies'); // New
         const userIdDisplayCurrentAffairs = document.getElementById('user-id-display-current-affairs'); // New
@@ -2743,7 +2743,7 @@
                 editGenderInput.value = ''; 
                 editAboutYouInput.value = ''; 
                 profileUserId.textContent = currentUserId;
-                profilePhoto.src = auth.currentUser.photoURL || "https://placehold.co/120x120/cccccc/333333?text=�";
+                profilePhoto.src = auth.currentUser.photoURL || "https://placehold.co/120x120/cccccc/333333?text=👤";
                 profileTestsAttempted.textContent = 'N/A';
                 profileAverageScore.textContent = 'N/A';
                 profileWeakAreas.innerHTML = '<li>Error loading weak areas.</li>';
@@ -3262,4 +3262,3 @@
     </script>
 </body>
 </html>
-�
