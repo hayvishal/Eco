@@ -11,11 +11,12 @@
         body {
             font-family: 'Inter', sans-serif;
             display: flex;
-            justify-content: center;
+            flex-direction: column; /* Changed to column to stack header and content */
+            justify-content: flex-start; /* Align items to the start of the cross axis */
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 20px; /* Overall padding for the viewport */
+            padding-top: 80px; /* Space for the fixed header (approximate height) */
             box-sizing: border-box;
             position: relative;
             overflow-x: hidden; /* Prevent horizontal scrolling */
@@ -36,6 +37,105 @@
             z-index: -1; /* Place behind all content */
             filter: brightness(50%); /* Darken the video to improve text readability */
         }
+
+        /* Global Header Styles */
+        .main-header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.05); /* Lighter transparent background */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            color: white; /* Default text color for header */
+            min-height: 60px; /* Ensure a minimum height */
+        }
+
+        .main-header .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .main-header .logo img {
+            height: 40px; /* Adjust logo size */
+            width: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .main-header .user-profile-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .main-header .user-profile-section .user-display-name {
+            font-size: 1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+            white-space: nowrap; /* Prevent name from wrapping */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px; /* Limit width for long names */
+        }
+
+        .main-header .user-profile-section .profile-photo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #818cf8; /* Indigo border for profile pic */
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .main-header .user-profile-section .profile-photo:hover {
+            transform: scale(1.05);
+        }
+
+        /* Responsive adjustments for header */
+        @media (max-width: 768px) {
+            .main-header {
+                padding: 10px 20px;
+            }
+            .main-header .logo {
+                font-size: 20px;
+                gap: 5px;
+            }
+            .main-header .logo img {
+                height: 30px;
+                width: 30px;
+            }
+            .main-header .user-profile-section {
+                gap: 10px;
+            }
+            .main-header .user-profile-section .user-display-name {
+                font-size: 0.9rem;
+                max-width: 100px;
+            }
+            .main-header .user-profile-section .profile-photo {
+                width: 35px;
+                height: 35px;
+            }
+            .main-header .logout-button-class {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.8rem;
+            }
+        }
+
 
         /* Glassmorphism for all main content containers (excluding splash-screen) */
         .quiz-container, .subject-selection-container, .question-count-container, .user-data-container, .user-profile-container, .home-screen-container, .result-summary-container, .solution-explanation-container, .settings-container, .extra-features-container, .ga-subjects-container, .reasoning-subjects-container, .quantitative-aptitude-subjects-container, .english-language-subjects-container, .computer-knowledge-subjects-container, .general-studies-subjects-container, .current-affairs-subjects-container, .mock-test-zone-subjects-container, .auth-container {
@@ -218,7 +318,7 @@
 
         /* Home Screen Styles */
         .home-screen-container {
-            position: relative; /* Added for absolute positioning of profile icon */
+            /* Removed absolute positioning for profile icon, now handled by global header */
         }
         .home-screen-container h1,
         .home-screen-container h2,
@@ -266,7 +366,7 @@
             flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
             justify-content: center; /* Center buttons when wrapped */
         }
-        .home-screen-buttons .next-button {
+        .home-screen-buttons .glass-button-primary {
             flex: 1;
             min-width: 180px; /* Ensure buttons don't get too small */
         }
@@ -278,28 +378,100 @@
             color: white; /* Changed for glassmorphism */
             margin-bottom: 1.5rem;
         }
-        .option-button, .subject-button, .start-practice-button, .view-activity-button, .back-button, .view-profile-button, .settings-button, .extra-feature-button {
-            display: block;
-            width: 100%;
+
+        /* Base Glassmorphism Button Style */
+        .glass-button-base {
             padding: 0.8rem 1.2rem;
-            margin-bottom: 0.8rem; /* Space between buttons */
-            background-color: rgba(255, 255, 255, 0.1); /* Glassmorphism background */
-            color: white; /* Changed for glassmorphism */
-            border: 1px solid rgba(255, 255, 255, 0.2); /* Glassmorphism border */
-            border-radius: 0.75rem; /* Rounded corners */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.75rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             cursor: pointer;
             font-size: 1.1rem;
-            transition: all 0.2s ease-in-out;
-            text-align: center; /* ALIGNED TO CENTER */
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            display: block; /* Default to block for full width */
+            width: 100%; /* Default to full width */
+            margin-bottom: 0.8rem; /* Space between buttons */
+            display: flex; /* For centering content, especially with icons */
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem; /* For spacing between icon and text */
         }
-        .option-button:hover:not(:disabled), .subject-button:hover, .start-practice-button:hover:not(:disabled), .view-activity-button:hover, .back-button:hover, .view-profile-button:hover, .settings-button:hover, .extra-feature-button:hover {
-            background-color: rgba(255, 255, 255, 0.2); /* Darker on hover */
-            border-color: rgba(255, 255, 255, 0.4);
+        .glass-button-base:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
-        .option-button:disabled, .start-practice-button:disabled {
+        .glass-button-base:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .glass-button-base:disabled {
+            opacity: 0.6;
             cursor: not-allowed;
-            opacity: 0.7;
+            transform: none;
+            box-shadow: none;
         }
+
+        /* Specific Button Styles */
+        .glass-button-default {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        .glass-button-default:hover:not(:disabled) {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4); /* Keep subtle border change on hover */
+        }
+
+        .glass-button-primary {
+            background-color: #4c51bf; /* Indigo */
+            color: white;
+            border: none; /* Override base border for solid look */
+        }
+        .glass-button-primary:hover:not(:disabled) {
+            background-color: #4338ca; /* Darker indigo */
+        }
+
+        .glass-button-orange {
+            background-color: #ed8936; /* Orange */
+            color: white;
+            border: none;
+        }
+        .glass-button-orange:hover:not(:disabled) {
+            background-color: #dd6b20; /* Darker orange */
+        }
+
+        .glass-button-green {
+            background-color: #38a169; /* Green */
+            color: white;
+            border: none;
+        }
+        .glass-button-green:hover:not(:disabled) {
+            background-color: #2f855a; /* Darker green */
+        }
+
+        .glass-button-danger {
+            background-color: #ef4444; /* Red */
+            color: white;
+            border: none;
+        }
+        .glass-button-danger:hover:not(:disabled) {
+            background-color: #dc2626; /* Darker red */
+        }
+
+        .glass-button-light {
+            background-color: white;
+            color: #1a202c; /* Dark text */
+            font-weight: bold;
+            border: none;
+        }
+        .glass-button-light:hover:not(:disabled) {
+            background-color: #f0f0f0; /* Slightly darker white */
+        }
+
+        /* Special styles for correct/incorrect options in quiz */
         .option-button.correct {
             background-color: rgba(167, 243, 208, 0.3); /* Green for correct with transparency */
             border-color: #34d399;
@@ -310,6 +482,36 @@
             border-color: #ef4444;
             color: white; /* Keep text white */
         }
+
+        /* Auth Toggle Buttons (Sign up / Sign in) - specific styling, not using general glass-button-base */
+        .auth-toggle-buttons {
+            display: flex;
+            gap: 0.5rem; /* Reduced gap */
+            background-color: rgba(255, 255, 255, 0.05); /* Very subtle transparent background */
+            border-radius: 0.75rem;
+            padding: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .auth-toggle-buttons .toggle-auth-button {
+            flex: 1;
+            padding: 0.7rem 1.2rem;
+            border-radius: 0.6rem; /* Slightly smaller radius than container */
+            background-color: transparent;
+            color: rgba(255, 255, 255, 0.7); /* Lighter white for inactive */
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            border: none;
+        }
+        .auth-toggle-buttons .toggle-auth-button.active {
+            background-color: rgba(255, 255, 255, 0.15); /* More opaque white when active */
+            color: white; /* Solid white for active */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .auth-toggle-buttons .toggle-auth-button:hover:not(.active) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
         .feedback-message {
             margin-top: 1rem;
             font-size: 1.2rem;
@@ -334,24 +536,9 @@
             margin-top: 1.5rem;
             justify-content: center; /* Center the buttons */
         }
-        .next-button, .show-result-button {
+        .quiz-navigation-buttons .glass-button-primary {
             flex: 1; /* Make buttons take equal width */
-            background-color: #4c51bf; /* Indigo button */
-            color: white;
-            padding: 0.9rem 1.8rem;
-            border-radius: 0.75rem;
-            font-size: 1.2rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s ease-in-out;
-            border: none;
-        }
-        .next-button:hover:not(:disabled), .show-result-button:hover:not(:disabled) {
-            background-color: #4338ca; /* Darker indigo on hover */
-        }
-        .next-button:disabled, .show-result-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+            margin-bottom: 0; /* Override default margin for flex container */
         }
         .quiz-finished-message {
             font-size: 1.8rem;
@@ -399,32 +586,7 @@
             margin-top: -0.5rem;
             margin-bottom: 1rem;
         }
-        .user-info-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Lighter border */
-            margin-bottom: 1rem;
-        }
-        .user-info-container p {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7); /* Changed for glassmorphism */
-        }
-        .user-info-container button {
-            background-color: #ef4444;
-            color: white;
-            padding: 0.4rem 0.8rem;
-            border-radius: 0.5rem;
-            font-size: 0.9rem;
-            cursor: pointer;
-            border: none;
-            transition: background-color 0.2s ease-in-out;
-        }
-        .user-info-container button:hover {
-            background-color: #dc2626;
-        }
+        /* Removed .user-info-container styles as it's being replaced by global header */
         .auth-input-group {
             margin-bottom: 1rem;
         }
@@ -480,93 +642,21 @@
             gap: 0.5rem;
             margin-top: 0.5rem;
         }
-        .auth-button-group .auth-button {
+        .auth-button-group .glass-button-base {
             flex: 1;
-            text-align: center;
             margin-bottom: 0; /* Override default margin */
         }
 
         /* Redesigned Auth Buttons (already glassmorphism) */
-        .auth-button {
-            display: block;
-            width: 100%;
-            padding: 0.8rem 1.2rem;
-            margin-bottom: 0.8rem;
-            border-radius: 0.75rem;
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: all 0.2s ease-in-out;
-            text-align: center;
-            border: none; /* Remove default border */
-        }
-        .auth-button:hover:not(:disabled) {
-            opacity: 0.9;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-        .auth-button:disabled {
-            cursor: not-allowed;
-            opacity: 0.5;
-        }
+        /* .auth-button class is now replaced by glass-button-base and specific color classes */
 
         /* Specific button styles */
-        #email-signup-button { /* "Create an account" button */
-            background-color: white;
-            color: #1a202c; /* Dark text on white button */
-            font-weight: bold;
-        }
-        #email-login-button {
-            background-color: #4c51bf; /* Indigo */
-            color: white;
-        }
-        #forgot-password-button {
-            background-color: #ed8936; /* Orange */
-            color: white;
-        }
-        #google-login-button, #apple-login-button, #anonymous-login-button {
-            background-color: rgba(255, 255, 255, 0.1); /* Transparent white */
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        #google-login-button:hover, #apple-login-button:hover, #anonymous-login-button:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
+        /* These styles will now be applied via the new glass-button-X classes */
+
         #auth-main-title, #auth-intro-text {
             color: white; /* Ensure these are white */
         }
 
-        /* Auth Toggle Buttons (Sign up / Sign in) */
-        .auth-toggle-buttons {
-            display: flex;
-            gap: 0.5rem; /* Reduced gap */
-            background-color: rgba(255, 255, 255, 0.05); /* Very subtle transparent background */
-            border-radius: 0.75rem;
-            padding: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-        .auth-toggle-buttons .toggle-auth-button {
-            flex: 1;
-            padding: 0.7rem 1.2rem;
-            border-radius: 0.6rem; /* Slightly smaller radius than container */
-            background-color: transparent;
-            color: rgba(255, 255, 255, 0.7); /* Lighter white for inactive */
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            border: none;
-        }
-        .auth-toggle-buttons .toggle-auth-button.active {
-            background-color: rgba(255, 255, 255, 0.15); /* More opaque white when active */
-            color: white; /* Solid white for active */
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-        .auth-toggle-buttons .toggle-auth-button:hover:not(.active) {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
 
         /* Terms of Service Note */
         .terms-note {
@@ -702,19 +792,22 @@
             gap: 1rem;
             margin-top: 2rem;
         }
-        .result-summary-buttons .next-button {
-            background-color: #4c51bf;
+        .result-summary-buttons .glass-button-primary {
+            /* Specific overrides for result buttons */
+            margin-bottom: 0; /* Remove extra margin from base */
+        }
+        /* These specific color classes are now applied directly to buttons */
+        /* .result-summary-buttons .next-button.retry {
+            background-color: #38a169;
             color: white;
         }
-        .result-summary-buttons .next-button.retry {
-            background-color: #38a169; /* Green for retry */
-        }
         .result-summary-buttons .next-button.share {
-            background-color: #ed8936; /* Orange for share */
-        }
-        .result-summary-buttons .next-button:hover {
+            background-color: #ed8936;
+            color: white;
+        } */
+        /* .result-summary-buttons .next-button:hover {
             opacity: 0.9;
-        }
+        } */
 
         /* Solution/Explanation Page Styles */
         .solution-explanation-container h1 {
@@ -809,6 +902,9 @@
             gap: 1rem;
             margin-top: 2rem;
         }
+        .profile-buttons-group .glass-button-base {
+            margin-bottom: 0; /* Override default margin for flex container */
+        }
         /* Settings Page Specific Styles */
         .settings-container h1,
         .settings-option label {
@@ -842,18 +938,9 @@
             height: 20px;
             cursor: pointer;
         }
-        .settings-option .settings-button {
-            background-color: #4c51bf;
-            color: white;
-            padding: 0.6rem 1rem;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            cursor: pointer;
-            border: none;
-            transition: background-color 0.2s ease-in-out;
-        }
-        .settings-option .settings-button:hover {
-            background-color: #4338ca;
+        .settings-option .glass-button-primary {
+            /* Specific override for settings button */
+            margin-bottom: 0; /* Remove extra margin from base */
         }
         /* Extra Features Page Specific Styles */
         .extra-features-container h1 {
@@ -885,6 +972,19 @@
         Your browser does not support the video tag.
     </video>
 
+    <!-- Global Header.     <button class="logout-button-class glass-button-base glass-button-danger">Logout</button> -->
+    <header class="main-header" id="main-header" style="display: none;">
+        <div class="logo">
+            <img src="image.png" alt="Logo">
+            HiVal
+        </div>
+        <div class="user-profile-section">
+            <span id="header-user-display-name" class="user-display-name"></span>
+            <img id="header-profile-photo" src="https://placehold.co/40x40/cccccc/333333?text=👤" alt="Profile" class="profile-photo">
+          
+        </div>
+    </header>
+
     <!-- Splash Screen -->
     <div class="splash-screen" id="splash-screen">
         <img src="image.png" alt="SSC KNOCKOUT Logo">
@@ -892,7 +992,7 @@
             <span class="word-practice">Practice</span>
             <span class="word-smart">Smart,</span>
             <span class="word-crack">Crack</span>
-            <span class="word-ssc">Exam</span>
+            <span class="word-ssc">SSC</span>
         </div>
     </div>
 
@@ -918,20 +1018,20 @@
             </div>
             <p id="auth-error-message" class="error-message" style="display: none;"></p>
 
-            <button id="email-login-button" class="auth-button bg-blue-500 hover:bg-blue-600 text-white">Sign In with Email</button>
-            <button id="forgot-password-button" class="auth-button bg-yellow-600 hover:bg-yellow-700 text-white mt-4">Forgot Password?</button>
+            <button id="email-login-button" class="glass-button-base glass-button-primary">Sign In with Email</button>
+            <button id="forgot-password-button" class="glass-button-base glass-button-orange mt-4">Forgot Password?</button>
             
             <div class="my-6 text-gray-500">OR</div>
 
-            <button id="google-login-button" class="auth-button">
+            <button id="google-login-button" class="glass-button-base glass-button-default">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" class="w-5 h-5 inline-block mr-2">
                 Sign In with Google
             </button>
-            <button id="anonymous-login-button" class="auth-button">
+            <button id="anonymous-login-button" class="glass-button-base glass-button-default">
                 <span class="text-xl mr-2">👤</span>
                 Sign In Anonymously
             </button>
-            <button id="apple-login-button" class="auth-button">
+            <button id="apple-login-button" class="glass-button-base glass-button-default">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/apple.svg" alt="Apple logo" class="w-5 h-5 inline-block mr-2">
                 Sign In with Apple
             </button>
@@ -1007,15 +1107,15 @@
 
             <p id="auth-error-message-signup" class="error-message" style="display: none;"></p>
 
-            <button id="email-signup-button" class="auth-button">Create an account</button>
+            <button id="email-signup-button" class="glass-button-base glass-button-light">Create an account</button>
             
             <div class="my-6 text-gray-500">OR</div>
 
-            <button id="google-signup-button" class="auth-button">
+            <button id="google-signup-button" class="glass-button-base glass-button-default">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" class="w-5 h-5 inline-block mr-2">
                 Sign Up with Google
             </button>
-            <button id="apple-signup-button" class="auth-button">
+            <button id="apple-signup-button" class="glass-button-base glass-button-default">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/apple.svg" alt="Apple logo" class="w-5 h-5 inline-block mr-2">
                 Sign Up with Apple
             </button>
@@ -1028,15 +1128,8 @@
 
     <!-- Home Screen -->
     <div class="home-screen-container" id="home-screen-container" style="display: none;">
-        <!-- New Profile Icon in corner -->
-        <div id="home-profile-icon" class="absolute top-4 right-4 w-12 h-12 rounded-full overflow-hidden cursor-pointer border-2 border-indigo-500 shadow-md">
-            <img id="home-profile-photo" src="https://placehold.co/48x48/cccccc/333333?text=👤" alt="Profile" class="w-full h-full object-cover">
-        </div>
-
-        <div class="user-info-container">
-            <p>Logged in as: <span id="home-user-display-name"></span></p>
-        </div>
-        <h1>Hello, <span id="welcome-user-name">User</span> 👋 Ready to Practice?</h1>
+        <!-- Profile Icon removed from here, now in global header -->
+        <h1 class="text-3xl font-bold mb-6">Hello, <span id="welcome-user-name">User</span> 👋 Ready to Practice?</h1>
         
         <h2 class="text-2xl font-bold mb-4">📌 Quick Access: Choose a Subject to Practice</h2>
         <p class="text-lg mb-4">Tap any subject card below to begin practicing questions. Each category includes topic-wise MCQs, detailed solutions, and timed quizzes.</p>
@@ -1090,163 +1183,119 @@
         </div>
 
         <div class="home-screen-buttons">
-            <button id="extra-features-button" class="next-button bg-green-600 hover:bg-green-700">Extra Features</button>
+            <button id="extra-features-button" class="glass-button-base glass-button-primary">Extra Features</button>
         </div>
     </div>
 
     <!-- Subject Selection Container (for individual GA subjects) -->
     <div class="subject-selection-container" id="subject-selection-container" style="display: none;">
-        <div class="user-info-container">
-            <p>Logged in as: <span id="user-id-display"></span></p>
-            <button class="logout-button-class">Logout</button>
-        </div>
         <h1 class="text-3xl font-bold mb-6">Choose Your Quiz Subject</h1>
-        <button id="economy-button" class="subject-button">Indian Economy</button>
-        <button id="politics-button" class="subject-button">Indian Politics</button>
-        <button id="history-button" class="subject-button">Indian History</button>
-        <button id="geography-button" class="subject-button">Geography</button>
-        <button id="view-activity-button" class="view-activity-button bg-indigo-600 hover:bg-indigo-700 text-white mt-4">View My Activity</button>
-        <button id="view-profile-button" class="view-profile-button bg-purple-600 hover:bg-purple-700 text-white mt-2">View My Profile</button>
+        <button id="economy-button" class="glass-button-base glass-button-default">Indian Economy</button>
+        <button id="politics-button" class="glass-button-base glass-button-default">Indian Politics</button>
+        <button id="history-button" class="glass-button-base glass-button-default">Indian History</button>
+        <button id="geography-button" class="glass-button-base glass-button-default">Geography</button>
+        <button id="view-activity-button" class="glass-button-base glass-button-primary mt-4">View My Activity</button>
+        <button id="view-profile-button" class="glass-button-base glass-button-primary mt-2">View My Profile</button>
     </div>
 
     <!-- General Awareness Sub-subjects Container -->
     <div class="ga-subjects-container" id="ga-subjects-container" style="display: none;">
-        <div class="user-info-container">
-            <p>Logged in as: <span id="user-id-display-ga"></span></p>
-            <button class="logout-button-class">Logout</button>
-        </div>
         <h1 class="text-3xl font-bold mb-6">General Awareness: Select Topic</h1>
-        <button id="ga-static-gk-button" class="subject-button">Static GK</button>
-        <button id="ga-current-affairs-button" class="subject-button">Current Affairs</button>
-        <button id="ga-polity-button" class="subject-button">Polity</button>
-        <button id="ga-history-button" class="subject-button">History</button>
-        <button id="ga-geography-button" class="subject-button">Geography</button>
-        <button id="ga-science-button" class="subject-button">Science</button>
-        <button id="ga-economy-button" class="subject-button">Economy</button>
-        <button id="back-to-home-from-ga-subjects" class="back-button bg-blue-500 hover:bg-blue-600 text-white mt-6">Back to Home</button>
+        <button id="ga-static-gk-button" class="glass-button-base glass-button-default">Static GK</button>
+        <button id="ga-current-affairs-button" class="glass-button-base glass-button-default">Current Affairs</button>
+        <button id="ga-polity-button" class="glass-button-base glass-button-default">Polity</button>
+        <button id="ga-history-button" class="glass-button-base glass-button-default">History</button>
+        <button id="ga-geography-button" class="glass-button-base glass-button-default">Geography</button>
+        <button id="ga-science-button" class="glass-button-base glass-button-default">Science</button>
+        <button id="ga-economy-button" class="glass-button-base glass-button-default">Economy</button>
+        <button id="back-to-home-from-ga-subjects" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
     </div>
 
     <!-- Reasoning Sub-subjects Container -->
     <div class="reasoning-subjects-container" id="reasoning-subjects-container" style="display: none;">
-        <div class="user-info-container">
-            <p>Logged in as: <span id="user-id-display-reasoning"></span></p>
-            <button class="logout-button-class">Logout</button>
-        </div>
         <h1 class="text-3xl font-bold mb-6">Reasoning: Select Topic</h1>
-        <button id="reasoning-analogy-button" class="subject-button">Analogy</button>
-        <button id="reasoning-series-button" class="subject-button">Series</button>
-        <button id="reasoning-puzzles-button" class="subject-button">Puzzles</button>
-        <button id="reasoning-coding-decoding-button" class="subject-button">Coding-Decoding</button>
-        <button id="reasoning-blood-relations-button" class="subject-button">Blood Relations</button>
-        <button id="back-to-home-from-reasoning-subjects" class="back-button bg-blue-500 hover:bg-blue-600 text-white mt-6">Back to Home</button>
+        <button id="reasoning-analogy-button" class="glass-button-base glass-button-default">Analogy</button>
+        <button id="reasoning-series-button" class="glass-button-base glass-button-default">Series</button>
+        <button id="reasoning-puzzles-button" class="glass-button-base glass-button-default">Puzzles</button>
+        <button id="reasoning-coding-decoding-button" class="glass-button-base glass-button-default">Coding-Decoding</button>
+        <button id="reasoning-blood-relations-button" class="glass-button-base glass-button-default">Blood Relations</button>
+        <button id="back-to-home-from-reasoning-subjects" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
     </div>
 
     <!-- Quantitative Aptitude Sub-subjects Container -->
     <div class="quantitative-aptitude-subjects-container" id="quantitative-aptitude-subjects-container" style="display: none;">
-        <div class="user-info-container">
-            <p>Logged in as: <span id="user-id-display-quant"></span></p>
-            <button class="logout-button-class">Logout</button>
-        </div>
         <h1 class="text-3xl font-bold mb-6">Quantitative Aptitude: Select Topic</h1>
-        <button id="quant-arithmetic-button" class="subject-button">Arithmetic</button>
-        <button id="quant-algebra-button" class="subject-button">Algebra</button>
-        <button id="quant-geometry-button" class="subject-button">Geometry</button>
-        <button id="quant-mensuration-button" class="subject-button">Mensuration</button>
-        <button id="quant-trigonometry-button" class="subject-button">Trigonometry</button>
-        <button id="quant-di-button" class="subject-button">Data Interpretation</button>
-        <button id="back-to-home-from-quant-subjects" class="back-button bg-blue-500 hover:bg-blue-600 text-white mt-6">Back to Home</button>
+        <button id="quant-arithmetic-button" class="glass-button-base glass-button-default">Arithmetic</button>
+        <button id="quant-algebra-button" class="glass-button-base glass-button-default">Algebra</button>
+        <button id="quant-geometry-button" class="glass-button-base glass-button-default">Geometry</button>
+        <button id="quant-mensuration-button" class="glass-button-base glass-button-default">Mensuration</button>
+        <button id="quant-trigonometry-button" class="glass-button-base glass-button-default">Trigonometry</button>
+        <button id="quant-di-button" class="glass-button-base glass-button-default">Data Interpretation</button>
+        <button id="back-to-home-from-quant-subjects" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
     </div>
 
     <!-- English Language Sub-subjects Container -->
     <div class="english-language-subjects-container" id="english-language-subjects-container" style="display: none;">
-        <div class="user-info-container">
-            <p>Logged in as: <span id="user-id-display-english"></span></p>
-            <button class="logout-button-class">Logout</button>
-        </div>
         <h1 class="text-3xl font-bold mb-6">English Language: Select Topic</h1>
-        <button id="english-vocabulary-button" class="subject-button">Vocabulary</button>
-        <button id="english-grammar-button" class="subject-button">Grammar</button>
-        <button id="english-reading-comprehension-button" class="subject-button">Reading Comprehension</button>
-        <button id="english-cloze-test-button" class="subject-button">Cloze Test</button>
-        <button id="english-spot-error-button" class="subject-button">Spot the Error</button>
-        <button id="back-to-home-from-english-subjects" class="back-button bg-blue-500 hover:bg-blue-600 text-white mt-6">Back to Home</button>
+        <button id="english-vocabulary-button" class="glass-button-base glass-button-default">Vocabulary</button>
+        <button id="english-grammar-button" class="glass-button-base glass-button-default">Grammar</button>
+        <button id="english-reading-comprehension-button" class="glass-button-base glass-button-default">Reading Comprehension</button>
+        <button id="english-cloze-test-button" class="glass-button-base glass-button-default">Cloze Test</button>
+        <button id="english-spot-error-button" class="glass-button-base glass-button-default">Spot the Error</button>
+        <button id="back-to-home-from-english-subjects" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
     </div>
 
     <!-- Computer Knowledge Sub-subjects Container -->
     <div class="computer-knowledge-subjects-container" id="computer-knowledge-subjects-container" style="display: none;">
-        <div class="user-info-container">
-            <p>Logged in as: <span id="user-id-display-computer"></span></p>
-            <button class="logout-button-class">Logout</button>
-        </div>
         <h1 class="text-3xl font-bold mb-6">Computer Knowledge: Select Topic</h1>
-        <button id="computer-basics-button" class="subject-button">Basics of Computer</button>
-        <button id="computer-internet-button" class="subject-button">Internet</button>
-        <button id="computer-ms-office-button" class="subject-button">MS Office</button>
-        <button id="computer-abbreviations-button" class="subject-button">Abbreviations</button>
-        <button id="back-to-home-from-computer-subjects" class="back-button bg-blue-500 hover:bg-blue-600 text-white mt-6">Back to Home</button>
+        <button id="computer-basics-button" class="glass-button-base glass-button-default">Basics of Computer</button>
+        <button id="computer-internet-button" class="glass-button-base glass-button-default">Internet</button>
+        <button id="computer-ms-office-button" class="glass-button-base glass-button-default">MS Office</button>
+        <button id="computer-abbreviations-button" class="glass-button-base glass-button-default">Abbreviations</button>
+        <button id="back-to-home-from-computer-subjects" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
     </div>
 
     <!-- General Studies Sub-subjects Container -->
     <div class="general-studies-subjects-container" id="general-studies-subjects-container" style="display: none;">
-        <div class="user-info-container">
-            <p>Logged in as: <span id="user-id-display-general-studies"></span></p>
-            <button class="logout-button-class">Logout</button>
-        </div>
         <h1 class="text-3xl font-bold mb-6">General Studies: Select Topic</h1>
-        <button id="gs-engineering-button" class="subject-button">Engineering Subjects</button>
-        <button id="gs-advanced-economy-button" class="subject-button">Advanced Economics</button>
-        <button id="gs-advanced-polity-button" class="subject-button">Advanced Polity</button>
-        <button id="back-to-home-from-general-studies-subjects" class="back-button bg-blue-500 hover:bg-blue-600 text-white mt-6">Back to Home</button>
+        <button id="gs-engineering-button" class="glass-button-base glass-button-default">Engineering Subjects</button>
+        <button id="gs-advanced-economy-button" class="glass-button-base glass-button-default">Advanced Economics</button>
+        <button id="gs-advanced-polity-button" class="glass-button-base glass-button-default">Advanced Polity</button>
+        <button id="back-to-home-from-general-studies-subjects" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
     </div>
 
     <!-- Current Affairs Sub-subjects Container -->
     <div class="current-affairs-subjects-container" id="current-affairs-subjects-container" style="display: none;">
-        <div class="user-info-container">
-            <p>Logged in as: <span id="user-id-display-current-affairs"></span></p>
-            <button class="logout-button-class">Logout</button>
-        </div>
         <h1 class="text-3xl font-bold mb-6">Current Affairs: Select Topic</h1>
-        <button id="ca-daily-quizzes-button" class="subject-button">Daily Quizzes</button>
-        <button id="ca-budget-button" class="subject-button">Budget</button>
-        <button id="ca-govt-schemes-button" class="subject-button">Government Schemes</button>
-        <button id="ca-monthly-pdfs-button" class="subject-button">Monthly PDFs</button>
-        <button id="back-to-home-from-current-affairs-subjects" class="back-button bg-blue-500 hover:bg-blue-600 text-white mt-6">Back to Home</button>
+        <button id="ca-daily-quizzes-button" class="glass-button-base glass-button-default">Daily Quizzes</button>
+        <button id="ca-budget-button" class="glass-button-base glass-button-default">Budget</button>
+        <button id="ca-govt-schemes-button" class="glass-button-base glass-button-default">Government Schemes</button>
+        <button id="ca-monthly-pdfs-button" class="glass-button-base glass-button-default">Monthly PDFs</button>
+        <button id="back-to-home-from-current-affairs-subjects" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
     </div>
 
     <!-- Mock Test Zone Sub-subjects Container -->
     <div class="mock-test-zone-subjects-container" id="mock-test-zone-subjects-container" style="display: none;">
-        <div class="user-info-container">
-            <p>Logged in as: <span id="user-id-display-mock-test-zone"></span></p>
-            <button class="logout-button-class">Logout</button>
-        </div>
         <h1 class="text-3xl font-bold mb-6">Mock Test Zone: Select Test Type</h1>
-        <button id="mtz-full-length-mocks-button" class="subject-button">Full Length Mocks</button>
-        <button id="mtz-sectional-tests-button" class="subject-button">Sectional Tests</button>
-        <button id="mtz-tier-wise-tests-button" class="subject-button">Tier-wise Tests</button>
-        <button id="back-to-home-from-mock-test-zone-subjects" class="back-button bg-blue-500 hover:bg-blue-600 text-white mt-6">Back to Home</button>
+        <button id="mtz-full-length-mocks-button" class="glass-button-base glass-button-default">Full Length Mocks</button>
+        <button id="mtz-sectional-tests-button" class="glass-button-base glass-button-default">Sectional Tests</button>
+        <button id="mtz-tier-wise-tests-button" class="glass-button-base glass-button-default">Tier-wise Tests</button>
+        <button id="back-to-home-from-mock-test-zone-subjects" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
     </div>
 
     <!-- Question Count Selection Container -->
     <div class="question-count-container" id="question-count-container" style="display: none;">
-        <div class="user-info-container">
-            <p>Logged in as: <span id="user-id-display-2"></span></p>
-            <button class="logout-button-class">Logout</button>
-        </div>
         <h1 class="text-3xl font-bold mb-4">Practice <span id="selected-subject-title"></span></h1>
         <p class="text-lg mb-4">Total questions available: <span id="total-available-questions" class="font-bold"></span></p>
         <label for="num-questions" class="block text-lg font-medium mb-2">How many questions do you want to practice?</label>
         <input type="number" id="num-questions" class="question-count-input" min="1" value="5">
         <p id="question-count-error" class="error-message" style="display: none;"></p>
-        <button id="start-practice-button" class="next-button">Start Practice</button>
-        <button id="back-to-subject-selection-from-question-count" class="back-button bg-blue-500 hover:bg-blue-600 text-white mt-6">Back to Subject Selection</button>
+        <button id="start-practice-button" class="glass-button-base glass-button-primary">Start Practice</button>
+        <button id="back-to-subject-selection-from-question-count" class="glass-button-base glass-button-primary mt-6">Back to Subject Selection</button>
     </div>
 
     <!-- Quiz Container (Practice/Test Module Page) -->
     <div class="quiz-container" id="quiz-container" style="display: none;">
-        <div class="user-info-container">
-            <p>Logged in as: <span id="user-id-display-3"></span></p>
-            <button class="logout-button-class">Logout</button>
-        </div>
         <h1 class="text-3xl font-bold mb-4">
             <span id="quiz-subject-title"></span>
         </h1>
@@ -1267,18 +1316,14 @@
         <div id="correct-answer-area" class="correct-answer-area"></div>
 
         <div class="quiz-navigation-buttons">
-            <button id="back-to-question-count-from-quiz" class="back-button bg-blue-500 hover:bg-blue-600 text-white">Back to Question Count</button>
-            <button id="next-button" class="next-button" disabled>Next Question</button>
-            <button id="show-result-button" class="show-result-button">Show Result</button>
+            <button id="back-to-question-count-from-quiz" class="glass-button-base glass-button-primary">Back to Question Count</button>
+            <button id="next-button" class="glass-button-base glass-button-primary" disabled>Next Question</button>
+            <button id="show-result-button" class="glass-button-base glass-button-primary">Show Result</button>
         </div>
     </div>
 
     <!-- Result Summary Page -->
     <div class="result-summary-container" id="result-summary-container" style="display: none;">
-        <div class="user-info-container">
-            <p>Logged in as: <span id="user-id-display-result-span"></span></p>
-            <button class="logout-button-class">Logout</button>
-        </div>
         <h1 class="text-3xl font-bold mb-6">Quiz Results</h1>
         <p>Subject: <span id="result-subject"></span></p>
         <p>Total Questions: <span id="result-total-questions"></span></p>
@@ -1288,48 +1333,36 @@
         <p class="score-percentage" id="result-score-percentage">0%</p>
 
         <div class="result-summary-buttons">
-            <button id="view-solutions-button" class="next-button">View Solutions</button>
-            <button id="retry-test-button" class="next-button retry">Retry Test</button>
-            <button id="share-score-button" class="next-button share">Share Score</button>
-            <button id="back-to-question-count-from-result" class="next-button bg-blue-500 hover:bg-blue-600 text-white">Back to Question Count</button>
+            <button id="view-solutions-button" class="glass-button-base glass-button-primary">View Solutions</button>
+            <button id="retry-test-button" class="glass-button-base glass-button-green">Retry Test</button>
+            <button id="share-score-button" class="glass-button-base glass-button-orange">Share Score</button>
+            <button id="back-to-question-count-from-result" class="glass-button-base glass-button-primary">Back to Question Count</button>
         </div>
     </div>
 
     <!-- Solution/Explanation Page -->
     <div class="solution-explanation-container" id="solution-explanation-container" style="display: none;">
-        <div class="user-info-container">
-            <p>Logged in as: <span id="user-id-display-solution"></span></p>
-            <button class="logout-button-class">Logout</button>
-        </div>
         <h1 class="text-3xl font-bold mb-6">Solutions & Explanations</h1>
         <div id="solutions-list" class="solutions-list-container">
             <!-- Solutions will be dynamically inserted here -->
         </div>
-        <button id="back-to-results-button" class="next-button bg-blue-500 hover:bg-blue-600 text-white mt-2">Back to Results</button>
+        <button id="back-to-results-button" class="glass-button-base glass-button-primary mt-2">Back to Results</button>
     </div>
 
 
     <!-- User Data Container (Activity & Results) -->
     <div class="user-data-container" id="user-data-container" style="display: none;">
-        <div class="user-info-container">
-            <p>Logged in as: <span id="user-id-display-4"></span></p>
-            <button class="logout-button-class">Logout</button>
-        </div>
         <h1 class="text-3xl font-bold mb-6">Your Activity & Results</h1>
         <p class="streak-display">Current Daily Streak: <span id="current-streak-display">0</span> 🔥</p>
         <h2 class="text-2xl font-bold mb-4">Past Quiz Attempts</h2>
         <div id="past-attempts-list">
             <p class="text-gray-600">Loading your past quiz attempts...</p>
         </div>
-        <button id="back-to-quiz-selection" class="back-button bg-blue-500 hover:bg-blue-600 text-white mt-6">Back to Quiz Selection</button>
+        <button id="back-to-quiz-selection" class="glass-button-base glass-button-primary mt-6">Back to Quiz Selection</button>
     </div>
 
     <!-- User Profile Container -->
     <div class="user-profile-container" id="user-profile-container" style="display: none;">
-        <div class="user-info-container">
-            <p>Logged in as: <span id="user-id-display-profile"></span></p>
-            <button class="logout-button-class">Logout</button>
-        </div>
         <h1 class="text-3xl font-bold mb-6">My Profile</h1>
         <div class="profile-info">
             <img id="profile-photo" src="https://placehold.co/120x120/cccccc/333333?text=No+Photo" alt="Profile Photo">
@@ -1394,24 +1427,20 @@
 
 
         <div class="profile-buttons-group">
-            <button id="save-profile-button" class="next-button bg-green-500 hover:bg-green-600">Save Profile</button>
-            <button id="go-to-settings-button" class="next-button bg-gray-500 hover:bg-gray-600">Settings</button>
-            <button id="back-to-subject-selection-from-profile" class="back-button bg-blue-500 hover:bg-blue-600 text-white">Back to Quiz Selection</button>
-            <button class="logout-button-class next-button bg-red-500 hover:bg-red-600">Logout</button>
+            <button id="save-profile-button" class="glass-button-base glass-button-green">Save Profile</button>
+            <button id="go-to-settings-button" class="glass-button-base glass-button-default">Settings</button>
+            <button id="back-to-subject-selection-from-profile" class="glass-button-base glass-button-primary">Back to Quiz Selection</button>
+            <button class="logout-button-class glass-button-base glass-button-danger">Logout</button>
         </div>
     </div>
 
     <!-- Settings Page -->
     <div class="settings-container" id="settings-container" style="display: none;">
-        <div class="user-info-container">
-            <p>Logged in as: <span id="user-id-display-settings"></span></p>
-            <button class="logout-button-class">Logout</button>
-        </div>
         <h1 class="text-3xl font-bold mb-6">Settings</h1>
 
         <div class="settings-option">
             <label for="change-password-button">Change Password</label>
-            <button id="change-password-button" class="settings-button">Change</button>
+            <button id="change-password-button" class="glass-button-base glass-button-primary">Change</button>
         </div>
 
         <div class="settings-option">
@@ -1434,18 +1463,14 @@
 
         <div class="settings-option">
             <label for="help-feedback-button">Help / Feedback</label>
-            <button id="help-feedback-button" class="settings-button">Go</button>
+            <button id="help-feedback-button" class="glass-button-base glass-button-primary">Go</button>
         </div>
 
-        <button id="back-to-profile-from-settings" class="back-button bg-blue-500 hover:bg-blue-600 text-white mt-6">Back to Profile</button>
+        <button id="back-to-profile-from-settings" class="glass-button-base glass-button-primary mt-6">Back to Profile</button>
     </div>
 
     <!-- Extra Features Page -->
     <div class="extra-features-container" id="extra-features-container" style="display: none;">
-        <div class="user-info-container">
-            <p>Logged in as: <span id="user-id-display-extra-features"></span></p>
-            <button class="logout-button-class">Logout</button>
-        </div>
         <h1 class="text-3xl font-bold mb-6">Extra Features (Future Scope)</h1>
 
         <div class="feature-item">
@@ -1469,7 +1494,7 @@
             Offline Mode
         </div>
 
-        <button id="back-to-home-from-extra-features" class="back-button bg-blue-500 hover:bg-blue-600 text-white mt-6">Back to Home</button>
+        <button id="back-to-home-from-extra-features" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
     </div>
 
     <script type="module">
@@ -1589,29 +1614,32 @@
         const cardMockTestZone = document.getElementById('card-mock-test-zone'); // New
         const extraFeaturesButton = document.getElementById('extra-features-button'); 
 
-        // New elements for home screen profile icon
-        const homeProfileIcon = document.getElementById('home-profile-icon');
-        const homeProfilePhoto = document.getElementById('home-profile-photo');
-        const homeUserDisplayName = document.getElementById('home-user-display-name'); 
+        // New elements for global header
+        const mainHeader = document.getElementById('main-header');
+        const headerUserDisplayName = document.getElementById('header-user-display-name');
+        const headerProfilePhoto = document.getElementById('header-profile-photo');
+        
+        // Removed: homeProfileIcon and homeProfilePhoto as they are now consolidated into the global header
+        // Removed: homeUserDisplayName as it's now in the global header
 
-
-        const userIdDisplay = document.getElementById('user-id-display');
-        const userIdDisplay2 = document.getElementById('user-id-display-2');
-        const userIdDisplay3 = document.getElementById('user-id-display-3');
-        const userIdDisplay4 = document.getElementById('user-id-display-4'); 
-        const userIdDisplayProfile = document.getElementById('user-id-display-profile'); 
-        const userIdDisplayResultSpan = document.getElementById('user-id-display-result-span'); // Corrected usage
-        const userIdDisplaySolution = document.getElementById('user-id-display-solution'); 
-        const userIdDisplaySettings = document.getElementById('user-id-display-settings'); 
-        const userIdDisplayExtraFeatures = document.getElementById('user-id-display-extra-features'); 
-        const userIdDisplayGa = document.getElementById('user-id-display-ga'); // For GA sub-subjects container
-        const userIdDisplayReasoning = document.getElementById('user-id-display-reasoning'); // New
-        const userIdDisplayQuant = document.getElementById('user-id-display-quant'); // New
-        const userIdDisplayEnglish = document.getElementById('english-language-subjects-container'); // New
-        const userIdDisplayComputer = document.getElementById('user-id-display-computer'); // New
-        const userIdDisplayGeneralStudies = document.getElementById('user-id-display-general-studies'); // New
-        const userIdDisplayCurrentAffairs = document.getElementById('user-id-display-current-affairs'); // New
-        const userIdDisplayMockTestZone = document.getElementById('user-id-display-mock-test-zone'); // New
+        // Removed all individual userIdDisplay elements as they are now consolidated into the global header
+        // const userIdDisplay = document.getElementById('user-id-display');
+        // const userIdDisplay2 = document.getElementById('user-id-display-2');
+        // const userIdDisplay3 = document.getElementById('user-id-display-3');
+        // const userIdDisplay4 = document.getElementById('user-id-display-4'); 
+        // const userIdDisplayProfile = document.getElementById('user-id-display-profile'); 
+        // const userIdDisplayResultSpan = document.getElementById('user-id-display-result-span'); 
+        // const userIdDisplaySolution = document.getElementById('user-id-display-solution'); 
+        // const userIdDisplaySettings = document.getElementById('user-id-display-settings'); 
+        // const userIdDisplayExtraFeatures = document.getElementById('user-id-display-extra-features'); 
+        // const userIdDisplayGa = document.getElementById('user-id-display-ga'); 
+        // const userIdDisplayReasoning = document.getElementById('user-id-display-reasoning'); 
+        // const userIdDisplayQuant = document.getElementById('user-id-display-quant'); 
+        // const userIdDisplayEnglish = document.getElementById('english-language-subjects-container'); 
+        // const userIdDisplayComputer = document.getElementById('user-id-display-computer'); 
+        // const userIdDisplayGeneralStudies = document.getElementById('user-id-display-general-studies'); 
+        // const userIdDisplayCurrentAffairs = document.getElementById('user-id-display-current-affairs'); 
+        // const userIdDisplayMockTestZone = document.getElementById('user-id-display-mock-test-zone'); 
         let logoutButtons; 
 
         const subjectSelectionContainer = document.getElementById('subject-selection-container');
@@ -1898,30 +1926,12 @@
                     userDisplayName = 'Anonymous User';
                 }
 
-                // Update all user display elements
-                userIdDisplay.textContent = userDisplayName;
-                userIdDisplay2.textContent = userDisplayName;
-                userIdDisplay3.textContent = userDisplayName;
-                userIdDisplay4.textContent = userDisplayName; 
-                userIdDisplayProfile.textContent = userDisplayName; 
-                userIdDisplayResultSpan.textContent = userDisplayName; // Corrected usage
-                userIdDisplaySolution.textContent = userDisplayName; 
-                userIdDisplaySettings.textContent = userDisplayName; 
-                userIdDisplayExtraFeatures.textContent = userDisplayName; 
-                userIdDisplayGa.textContent = userDisplayName; // For GA sub-subjects container
-                userIdDisplayReasoning.textContent = userDisplayName; // New
-                userIdDisplayQuant.textContent = userDisplayName; // New
-                userIdDisplayEnglish.textContent = userDisplayName; // New
-                userIdDisplayComputer.textContent = userDisplayName; // New
-                userIdDisplayGeneralStudies.textContent = userDisplayName; // New
-                userIdDisplayCurrentAffairs.textContent = userDisplayName; // New
-                userIdDisplayMockTestZone.textContent = userDisplayName; // New
-                homeUserDisplayName.textContent = userDisplayName; // Update for home screen user info
+                // Update global header elements
+                headerUserDisplayName.textContent = userDisplayName;
+                headerProfilePhoto.src = user.photoURL || "https://placehold.co/40x40/cccccc/333333?text=👤";
+                mainHeader.style.display = 'flex'; // Show the header when logged in
+
                 welcomeUserName.textContent = userDisplayName.split(' ')[0]; // Show first name or full if no space
-
-                // Update home screen profile photo
-                homeProfilePhoto.src = user.photoURL || "https://placehold.co/48x48/cccccc/333333?text=👤";
-
 
                 // Hide splash screen and auth container, show home screen
                 splashScreen.classList.add('hidden'); // Add hidden class for fade out
@@ -1998,6 +2008,7 @@
                 userId = null;
                 currentUserEmail = null;
                 console.log("User logged out, showing login screen.");
+                mainHeader.style.display = 'none'; // Hide the header when logged out
                 splashScreen.classList.add('hidden'); // Ensure splash screen fades out
                 setTimeout(() => {
                     splashScreen.style.display = 'none';
@@ -2216,9 +2227,13 @@
                 await signOut(auth);
                 console.log("User signed out successfully.");
             } catch (error) {
-                console.error("Error signing out:", error);
-                showAuthError(`Logout failed: ${error.message}`);
-            }
+                    console.error("Error signing out:", error);
+                    // Do not show an error message if the user is already signed out (e.g., due to token expiry)
+                    // This prevents an error message from appearing if the user session has already ended naturally.
+                    if (error.code !== 'auth/no-current-user') {
+                        showAuthError(`Logout failed: ${error.message}`);
+                    }
+                }
         }
 
         /**
@@ -2381,7 +2396,7 @@
                 shuffledOptions.forEach(option => {
                     const button = document.createElement('button');
                     button.textContent = option;
-                    button.classList.add('option-button');
+                    button.classList.add('glass-button-base', 'glass-button-default'); /* Apply new button styles */
                     button.addEventListener('click', () => answerQuestion(option, questionData.answer, button));
                     optionsContainer.appendChild(button);
                 });
@@ -2482,7 +2497,7 @@
          */
         function showAnswer(correctAnswer, selectedButton) {
             correctAnswerArea.textContent = `Correct Answer: ${correctAnswer}`;
-            const optionButtons = optionsContainer.querySelectorAll('.option-button');
+            const optionButtons = optionsContainer.querySelectorAll('.glass-button-base'); /* Use new class */
             optionButtons.forEach(button => {
                 if (button.textContent === correctAnswer) {
                     // Only add 'correct' class if it wasn't already marked 'incorrect' by the user
@@ -2497,7 +2512,7 @@
          * Disables all option buttons to prevent further selection.
          */
         function disableOptions() {
-            const optionButtons = optionsContainer.querySelectorAll('.option-button');
+            const optionButtons = optionsContainer.querySelectorAll('.glass-button-base'); /* Use new class */
             optionButtons.forEach(button => {
                 button.disabled = true;
             });
@@ -2740,7 +2755,7 @@
             userProfileContainer.style.display = 'flex';
             profileMessage.style.display = 'none'; 
 
-            userIdDisplayProfile.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
+            // Removed: userIdDisplayProfile.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
 
             const currentUserId = auth.currentUser.uid;
             const userRef = ref(db, `users/${currentUserId}`);
@@ -2928,7 +2943,7 @@
             console.log("displaySettings called.");
             hideAllContainers(); // Hide all containers
             settingsContainer.style.display = 'flex';
-            userIdDisplaySettings.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
+            // Removed: userIdDisplaySettings.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
         }
 
         /**
@@ -2938,7 +2953,7 @@
             console.log("displayExtraFeatures called.");
             hideAllContainers(); // Hide all containers
             extraFeaturesContainer.style.display = 'flex';
-            userIdDisplayExtraFeatures.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
+            // Removed: userIdDisplayExtraFeatures.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
         }
 
 
@@ -3088,42 +3103,42 @@
             cardGeneralAwareness.addEventListener('click', () => {
                 hideAllContainers();
                 gaSubjectsContainer.style.display = 'flex'; // Show GA subjects container
-                userIdDisplayGa.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User'; // Update user display
+                // Removed: userIdDisplayGa.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User'; // Update user display
             });
             cardReasoning.addEventListener('click', () => {
                 hideAllContainers();
                 reasoningSubjectsContainer.style.display = 'flex';
-                userIdDisplayReasoning.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
+                // Removed: userIdDisplayReasoning.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
             });
             cardQuantitativeAptitude.addEventListener('click', () => {
                 hideAllContainers();
                 quantitativeAptitudeSubjectsContainer.style.display = 'flex';
-                userIdDisplayQuant.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
+                // Removed: userIdDisplayQuant.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
             });
             cardEnglishLanguage.addEventListener('click', () => {
                 hideAllContainers();
                 englishLanguageSubjectsContainer.style.display = 'flex';
-                userIdDisplayEnglish.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
+                // Removed: userIdDisplayEnglish.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
             });
             cardComputerKnowledge.addEventListener('click', () => {
                 hideAllContainers();
                 computerKnowledgeSubjectsContainer.style.display = 'flex';
-                userIdDisplayComputer.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
+                // Removed: userIdDisplayComputer.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
             });
             cardGeneralStudies.addEventListener('click', () => {
                 hideAllContainers();
                 generalStudiesSubjectsContainer.style.display = 'flex';
-                userIdDisplayGeneralStudies.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
+                // Removed: userIdDisplayGeneralStudies.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
             });
             cardCurrentAffairs.addEventListener('click', () => {
                 hideAllContainers();
                 currentAffairsSubjectsContainer.style.display = 'flex';
-                userIdDisplayCurrentAffairs.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
+                // Removed: userIdDisplayCurrentAffairs.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
             });
             cardMockTestZone.addEventListener('click', () => {
                 hideAllContainers();
                 mockTestZoneSubjectsContainer.style.display = 'flex';
-                userIdDisplayMockTestZone.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
+                // Removed: userIdDisplayMockTestZone.textContent = auth.currentUser.email || auth.currentUser.displayName || 'Anonymous User';
             });
             extraFeaturesButton.addEventListener('click', displayExtraFeatures);
 
@@ -3189,8 +3204,8 @@
             backToHomeFromMockTestZoneSubjectsButton.addEventListener('click', initQuiz);
 
 
-            // Event listener for the new home screen profile icon
-            homeProfileIcon.addEventListener('click', displayUserProfile);
+            // Event listener for the new home screen profile icon (now in global header)
+            headerProfilePhoto.addEventListener('click', displayUserProfile);
 
             logoutButtons.forEach((button, index) => {
                 button.addEventListener('click', logoutUser);
