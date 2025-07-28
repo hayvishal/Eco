@@ -123,12 +123,77 @@
             font-weight: 700;
             margin-top: 1rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            opacity: 0; /* Start hidden for animation */
-            transform: translateY(20px); /* Start below for slide-up */
-            animation: fadeInUp 0.8s ease-out 0.3s forwards; /* Apply fade-in-up animation with delay */
+            /* Removed previous animation from here */
+            display: flex; /* To arrange words horizontally */
+            gap: 0.5rem; /* Space between words */
+            flex-wrap: wrap; /* Allow wrapping if text is too long */
+            justify-content: center; /* Center words */
         }
 
-        /* Keyframe Animations */
+        .splash-screen .tagline span {
+            opacity: 0; /* Start hidden for individual animations */
+        }
+
+        /* New Keyframe Animations for individual words */
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInTop {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInBottom {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Apply new animations to individual words */
+        .splash-screen .tagline .word-practice {
+            animation: slideInLeft 0.7s ease-out forwards;
+        }
+        .splash-screen .tagline .word-smart {
+            animation: slideInTop 0.7s ease-out 0.2s forwards; /* 0.2s delay */
+        }
+        .splash-screen .tagline .word-crack {
+            animation: slideInRight 0.7s ease-out 0.4s forwards; /* 0.4s delay */
+        }
+        .splash-screen .tagline .word-ssc {
+            animation: slideInBottom 0.7s ease-out 0.6s forwards; /* 0.6s delay */
+        }
+
+        /* Keyframe Animations (existing) */
         @keyframes scaleIn {
             from {
                 transform: scale(0.8);
@@ -823,7 +888,12 @@
     <!-- Splash Screen -->
     <div class="splash-screen" id="splash-screen">
         <img src="image.png" alt="SSC KNOCKOUT Logo">
-        <div class="tagline">Practice Smart, Crack SSC</div>
+        <div class="tagline">
+            <span class="word-practice">Practice</span>
+            <span class="word-smart">Smart,</span>
+            <span class="word-crack">Crack</span>
+            <span class="word-ssc">Exam</span>
+        </div>
     </div>
 
     <!-- Authentication Container (Login/Signup) -->
