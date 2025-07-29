@@ -138,7 +138,9 @@
 
 
         /* Glassmorphism for all main content containers (excluding splash-screen) */
-        .quiz-container, .subject-selection-container, .question-count-container, .user-data-container, .user-profile-container, .home-screen-container, .result-summary-container, .solution-explanation-container, .settings-container, .extra-features-container, .ga-subjects-container, .reasoning-subjects-container, .quantitative-aptitude-subjects-container, .english-language-subjects-container, .computer-knowledge-subjects-container, .general-studies-subjects-container, .current-affairs-subjects-container, .mock-test-zone-subjects-container, .auth-container {
+        .quiz-container, .subject-selection-container, .question-count-container, .user-data-container, .user-profile-container, .home-screen-container, .result-summary-container, .solution-explanation-container, .settings-container, .extra-features-container, .ga-subjects-container, .reasoning-subjects-container, .quantitative-aptitude-subjects-container, .english-language-subjects-container, .computer-knowledge-subjects-container, .general-studies-subjects-container, .current-affairs-subjects-container, .mock-test-zone-subjects-container, .auth-container,
+        /* New feature pages */
+        .daily-quiz-notification-page, .bookmark-questions-page, .doubt-discussion-forum-page, .leaderboard-page, .offline-mode-page {
             background: rgba(0, 0, 0, 0.3); /* Darker semi-transparent background */
             border-radius: 0.8rem; /* Slightly reduced border-radius */
             box-shadow: 0 6px 24px 0 rgba(0, 0, 0, 0.3); /* Slightly reduced shadow */
@@ -160,7 +162,9 @@
         }
 
         /* Gradient lighting effect for auth-container (and now all main containers, excluding splash-screen) */
-        .auth-container::before, .quiz-container::before, .subject-selection-container::before, .question-count-container::before, .user-data-container::before, .user-profile-container::before, .home-screen-container::before, .result-summary-container::before, .solution-explanation-container::before, .settings-container::before, .extra-features-container::before, .ga-subjects-container::before, .reasoning-subjects-container::before, .quantitative-aptitude-subjects-container::before, .english-language-subjects-container::before, .computer-knowledge-subjects-container::before, .general-studies-subjects-container::before, .current-affairs-subjects-container::before, .mock-test-zone-subjects-container::before {
+        .auth-container::before, .quiz-container::before, .subject-selection-container::before, .question-count-container::before, .user-data-container::before, .user-profile-container::before, .home-screen-container::before, .result-summary-container::before, .solution-explanation-container::before, .settings-container::before, .extra-features-container::before, .ga-subjects-container::before, .reasoning-subjects-container::before, .quantitative-aptitude-subjects-container::before, .english-language-subjects-container::before, .computer-knowledge-subjects-container::before, .general-studies-subjects-container::before, .current-affairs-subjects-container::before, .mock-test-zone-subjects-container::before,
+        /* New feature pages */
+        .daily-quiz-notification-page::before, .bookmark-questions-page::before, .doubt-discussion-forum-page::before, .leaderboard-page::before, .offline-mode-page::before {
             content: '';
             position: absolute;
             top: -150%;
@@ -732,21 +736,30 @@
             color: #818cf8; /* Indigo for streak */
             margin-bottom: 0.6rem; /* Reduced margin */
         }
+        /* Profile Info (Main Section) */
         .profile-info {
-            margin-top: 0.8rem; /* Reduced margin */
-            text-align: left;
+            margin-top: 0.8rem;
+            text-align: center; /* Center content within this flex item */
             display: flex;
             flex-direction: column;
-            align-items: center; /* Center profile content */
+            align-items: center; /* Center children */
+            gap: 0.6rem; /* Reduced gap between elements */
+            padding-bottom: 0.8rem; /* Add padding at the bottom */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator */
         }
         .profile-info img {
-            width: 90px; /* Reduced image size */
-            height: 90px; /* Reduced image size */
+            width: 100px; /* Slightly increased image size */
+            height: 100px; /* Slightly increased image size */
             border-radius: 50%;
             object-fit: cover;
-            margin-bottom: 0.6rem; /* Reduced margin */
-            border: 3px solid #4c51bf; /* Border around profile pic */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 0.4rem; /* Reduced margin */
+            border: 4px solid #4c51bf; /* Thicker border around profile pic */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .profile-info img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         }
         .profile-info p {
             font-size: 0.95rem; /* Reduced font size */
@@ -890,12 +903,14 @@
             margin-bottom: 1.2rem; /* Reduced margin */
         }
         .profile-stat-card {
-            background-color: rgba(255, 255, 255, 0.1); /* Glassmorphism background */
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05)); /* Subtle gradient */
             padding: 0.7rem; /* Reduced padding */
             border-radius: 0.6rem; /* Reduced border-radius */
             font-weight: 600;
             color: white; /* Changed for glassmorphism */
             border: 1px solid rgba(255, 255, 255, 0.2); /* Glassmorphism border */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -903,22 +918,46 @@
             gap: 0.2rem; /* Reduced gap */
             font-size: 0.95rem; /* Reduced font size */
         }
+        .profile-stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.1));
+        }
         .profile-stat-card .stat-value {
             font-size: 1.6rem; /* Reduced font size */
             font-weight: 700;
             color: #818cf8; /* Indigo for stat value */
+            text-shadow: 0 0 5px rgba(129, 140, 248, 0.5); /* Subtle glow */
         }
         .weak-areas-list {
-            list-style: disc;
-            margin-left: 12px; /* Reduced margin */
+            list-style: none; /* Remove default bullet points */
+            padding-left: 0; /* Remove default padding */
+            margin-left: 0;
             text-align: left;
             color: #f87171; /* Red for weak areas */
             font-weight: 500;
             font-size: 0.85rem; /* Reduced font size */
         }
+        .weak-areas-list li {
+            margin-bottom: 0.3rem; /* Reduced margin */
+            padding-left: 1.2rem; /* Space for custom bullet */
+            position: relative;
+            color: rgba(255, 255, 255, 0.8); /* Changed for glassmorphism */
+        }
+        .weak-areas-list li::before {
+            content: '•'; /* Custom bullet point */
+            color: #f87171; /* Red color for bullet */
+            font-size: 1.2rem; /* Larger bullet */
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
         .weak-areas-section {
             margin-top: 0.8rem; /* Reduced margin */
             text-align: left;
+            padding-top: 0.8rem; /* Padding to separate from stats */
+            border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator */
         }
         .weak-areas-section h2 {
             font-size: 1.2rem; /* Reduced font size */
@@ -988,6 +1027,14 @@
             color: white; /* Changed for glassmorphism */
             font-weight: 500;
             text-align: left;
+            cursor: pointer; /* Make it look clickable */
+            transition: all 0.2s ease-in-out;
+        }
+        .feature-item:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
         }
         .feature-item .icon {
             font-size: 1.4rem; /* Reduced icon size */
@@ -1684,29 +1731,74 @@
     <div class="extra-features-container" id="extra-features-container" style="display: none;">
         <h1 class="text-3xl font-bold mb-4">Extra Features (Future Scope)</h1>
 
-        <div class="feature-item">
+        <button class="feature-item" id="feature-daily-quiz-notification">
             <span class="icon">🔔</span>
             Daily Quiz Notification
-        </div>
-        <div class="feature-item">
+        </button>
+        <button class="feature-item" id="feature-bookmark-questions">
             <span class="icon">📌</span>
             Bookmark Difficult Questions
-        </div>
-        <div class="feature-item">
+        </button>
+        <button class="feature-item" id="feature-doubt-discussion-forum">
             <span class="icon">💬</span>
             Doubt Discussion Forum
-        </div>
-        <div class="feature-item">
+        </button>
+        <button class="feature-item" id="feature-leaderboard">
             <span class="icon">🏆</span>
             Leaderboard (Compare with peers)
-        </div>
-        <div class="feature-item">
+        </button>
+        <button class="feature-item" id="feature-offline-mode">
             <span class="icon">📴</span>
             Offline Mode
-        </div>
+        </button>
 
         <button id="back-to-home-from-extra-features" class="glass-button-base glass-button-primary mt-4">Back to Home</button>
     </div>
+
+    <!-- NEW FEATURE PAGES START HERE -->
+
+    <!-- Daily Quiz Notification Page -->
+    <div class="daily-quiz-notification-page" id="daily-quiz-notification-page" style="display: none;">
+        <h1 class="text-3xl font-bold mb-4">Daily Quiz Notification</h1>
+        <p class="text-lg mb-4">Get daily reminders for your quiz practice!</p>
+        <p class="text-gray-400">This feature will allow you to set up personalized daily notifications for new quizzes and practice sessions.</p>
+        <button id="back-to-extra-features-from-daily-quiz" class="glass-button-base glass-button-primary mt-4">Back to Extra Features</button>
+    </div>
+
+    <!-- Bookmark Difficult Questions Page -->
+    <div class="bookmark-questions-page" id="bookmark-questions-page" style="display: none;">
+        <h1 class="text-3xl font-bold mb-4">Bookmark Difficult Questions</h1>
+        <p class="text-lg mb-4">Save questions you find challenging for later review.</p>
+        <p class="text-gray-400">You will be able to mark questions as difficult during a quiz and revisit them from this section for focused revision.</p>
+        <button id="back-to-extra-features-from-bookmark" class="glass-button-base glass-button-primary mt-4">Back to Extra Features</button>
+    </div>
+
+    <!-- Doubt Discussion Forum Page -->
+    <div class="doubt-discussion-forum-page" id="doubt-discussion-forum-page" style="display: none;">
+        <h1 class="text-3xl font-bold mb-4">Doubt Discussion Forum</h1>
+        <p class="text-lg mb-4">Connect with other users and discuss your doubts.</p>
+        <p class="text-gray-400">This forum will provide a platform to ask questions, share insights, and help each other with challenging topics.</p>
+        <button id="back-to-extra-features-from-doubt-forum" class="glass-button-base glass-button-primary mt-4">Back to Extra Features</button>
+    </div>
+
+    <!-- Leaderboard Page -->
+    <div class="leaderboard-page" id="leaderboard-page" style="display: none;">
+        <h1 class="text-3xl font-bold mb-4">Leaderboard</h1>
+        <p class="text-lg mb-4">See how you rank against other quiz takers!</p>
+        <p class="text-gray-400">Compete with friends and other users to climb the ranks based on your quiz scores and performance.</p>
+        <button id="back-to-extra-features-from-leaderboard" class="glass-button-base glass-button-primary mt-4">Back to Extra Features</button>
+    </div>
+
+    <!-- Offline Mode Page -->
+    <div class="offline-mode-page" id="offline-mode-page" style="display: none;">
+        <h1 class="text-3xl font-bold mb-4">Offline Mode</h1>
+        <p class="text-lg mb-4">Practice quizzes even without an internet connection.</p>
+        <p class="text-gray-400">Download quiz packs and practice on the go, anytime, anywhere, without needing an active internet connection.</p>
+        <button id="back-to-extra-features-from-offline-mode" class="glass-button-base glass-button-primary mt-4">Back to Extra Features</button>
+    </div>
+
+    <!-- NEW FEATURE PAGES END HERE -->
+
 
     <script type="module">
         // Import Firebase functions
@@ -1849,6 +1941,13 @@
         const solutionExplanationContainer = document.getElementById('solution-explanation-container'); 
         const settingsContainer = document.getElementById('settings-container'); 
         const extraFeaturesContainer = document.getElementById('extra-features-container'); 
+
+        // New feature pages
+        const dailyQuizNotificationPage = document.getElementById('daily-quiz-notification-page');
+        const bookmarkQuestionsPage = document.getElementById('bookmark-questions-page');
+        const doubtDiscussionForumPage = document.getElementById('doubt-discussion-forum-page');
+        const leaderboardPage = document.getElementById('leaderboard-page');
+        const offlineModePage = document.getElementById('offline-mode-page');
 
         const economyButton = document.getElementById('economy-button');
         const politicsButton = document.getElementById('politics-button');
@@ -1995,6 +2094,20 @@
 
         // New elements for Extra Features Page
         const backToHomeFromExtraFeaturesButton = document.getElementById('back-to-home-from-extra-features');
+        // New feature item buttons
+        const featureDailyQuizNotification = document.getElementById('feature-daily-quiz-notification');
+        const featureBookmarkQuestions = document.getElementById('feature-bookmark-questions');
+        const featureDoubtDiscussionForum = document.getElementById('feature-doubt-discussion-forum');
+        const featureLeaderboard = document.getElementById('feature-leaderboard');
+        const featureOfflineMode = document.getElementById('feature-offline-mode');
+
+        // New back buttons for feature pages
+        const backToExtraFeaturesFromDailyQuiz = document.getElementById('back-to-extra-features-from-daily-quiz');
+        const backToExtraFeaturesFromBookmark = document.getElementById('back-to-extra-features-from-bookmark');
+        const backToExtraFeaturesFromDoubtForum = document.getElementById('back-to-extra-features-from-doubt-forum');
+        const backToExtraFeaturesFromLeaderboard = document.getElementById('back-to-extra-features-from-leaderboard');
+        const backToExtraFeaturesFromOfflineMode = document.getElementById('back-to-extra-features-from-offline-mode');
+
 
         // New element for Question History Page
         const questionHistoryContainer = document.getElementById('question-history-container');
@@ -2136,7 +2249,7 @@
 
                 // Update global header elements
                 headerUserDisplayName.textContent = userDisplayName.split(' ')[0]; // Show first name
-                headerProfilePhoto.src = user.photoURL || "https://placehold.co/40x40/cccccc/333333?text=";
+                headerProfilePhoto.src = user.photoURL || "https://placehold.co/40x40/cccccc/333333?text=👤";
                 mainHeader.style.display = 'flex'; // Show the header when logged in
 
                 welcomeUserName.textContent = userDisplayName.split(' ')[0]; // Show first name or full if no space
@@ -2166,6 +2279,13 @@
                     settingsContainer.style.display = 'none'; 
                     extraFeaturesContainer.style.display = 'none'; 
                     questionHistoryContainer.style.display = 'none'; // NEW: Hide question history
+                    // New feature pages
+                    dailyQuizNotificationPage.style.display = 'none';
+                    bookmarkQuestionsPage.style.display = 'none';
+                    doubtDiscussionForumPage.style.display = 'none';
+                    leaderboardPage.style.display = 'none';
+                    offlineModePage.style.display = 'none';
+
                     authErrorMessage.style.display = 'none'; 
                     authErrorMessageSignup.style.display = 'none'; // Also hide signup error
                 }, 500); // Match this to the transition duration in CSS
@@ -2245,6 +2365,12 @@
                     settingsContainer.style.display = 'none'; 
                     extraFeaturesContainer.style.display = 'none'; 
                     questionHistoryContainer.style.display = 'none'; // NEW: Hide question history
+                    // New feature pages
+                    dailyQuizNotificationPage.style.display = 'none';
+                    bookmarkQuestionsPage.style.display = 'none';
+                    doubtDiscussionForumPage.style.display = 'none';
+                    leaderboardPage.style.display = 'none';
+                    offlineModePage.style.display = 'none';
                     // Clear input fields on logout
                     loginEmailInput.value = '';
                     loginPasswordInput.value = '';
@@ -2475,6 +2601,12 @@
             extraFeaturesContainer.style.display = 'none';
             splashScreen.style.display = 'none';
             questionHistoryContainer.style.display = 'none'; // NEW: Hide question history
+            // New feature pages
+            dailyQuizNotificationPage.style.display = 'none';
+            bookmarkQuestionsPage.style.display = 'none';
+            doubtDiscussionForumPage.style.display = 'none';
+            leaderboardPage.style.display = 'none';
+            offlineModePage.style.display = 'none';
         }
 
         /**
@@ -3236,7 +3368,7 @@
                 editGenderInput.value = ''; 
                 editAboutYouInput.value = ''; 
                 profileUserId.textContent = currentUserId;
-                profilePhoto.src = auth.currentUser.photoURL || "https://placehold.co/120x120/cccccc/333333?text=�";
+                profilePhoto.src = auth.currentUser.photoURL || "https://placehold.co/120x120/cccccc/333333?text=👤";
                 profileTestsAttempted.textContent = 'N/A';
                 profileAverageScore.textContent = 'N/A';
                 profileTotalPoints.textContent = 'N/A'; // Also set points to N/A on error
@@ -3771,6 +3903,35 @@
             if (backToProfileFromQuestionHistoryButton) {
                 backToProfileFromQuestionHistoryButton.addEventListener('click', displayUserProfile);
             }
+
+            // Event listeners for Extra Features items
+            featureDailyQuizNotification.addEventListener('click', () => {
+                hideAllContainers();
+                dailyQuizNotificationPage.style.display = 'flex';
+            });
+            featureBookmarkQuestions.addEventListener('click', () => {
+                hideAllContainers();
+                bookmarkQuestionsPage.style.display = 'flex';
+            });
+            featureDoubtDiscussionForum.addEventListener('click', () => {
+                hideAllContainers();
+                doubtDiscussionForumPage.style.display = 'flex';
+            });
+            featureLeaderboard.addEventListener('click', () => {
+                hideAllContainers();
+                leaderboardPage.style.display = 'flex';
+            });
+            featureOfflineMode.addEventListener('click', () => {
+                hideAllContainers();
+                offlineModePage.style.display = 'flex';
+            });
+
+            // Event listeners for "Back to Extra Features" buttons on new pages
+            backToExtraFeaturesFromDailyQuiz.addEventListener('click', displayExtraFeatures);
+            backToExtraFeaturesFromBookmark.addEventListener('click', displayExtraFeatures);
+            backToExtraFeaturesFromDoubtForum.addEventListener('click', displayExtraFeatures);
+            backToExtraFeaturesFromLeaderboard.addEventListener('click', displayExtraFeatures);
+            backToExtraFeaturesFromOfflineMode.addEventListener('click', displayExtraFeatures);
         });
     </script>
 </body>
