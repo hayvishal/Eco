@@ -140,7 +140,7 @@
         /* Glassmorphism for all main content containers (excluding splash-screen) */
         .quiz-container, .subject-selection-container, .question-count-container, .user-data-container, .user-profile-container, .home-screen-container, .result-summary-container, .solution-explanation-container, .settings-container, .extra-features-container, .ga-subjects-container, .reasoning-subjects-container, .quantitative-aptitude-subjects-container, .english-language-subjects-container, .computer-knowledge-subjects-container, .general-studies-subjects-container, .current-affairs-subjects-container, .mock-test-zone-subjects-container, .auth-container,
         /* New feature pages */
-        .daily-quiz-notification-page, .bookmark-questions-page, .doubt-discussion-forum-page, .leaderboard-page, .offline-mode-page {
+        .daily-quiz-notification-page, .bookmark-questions-page, .doubt-discussion-forum-page, .leaderboard-page, .offline-mode-page, .notification-modal-content {
             background: rgba(0, 0, 0, 0.3); /* Darker semi-transparent background */
             border-radius: 0.8rem; /* Slightly reduced border-radius */
             box-shadow: 0 6px 24px 0 rgba(0, 0, 0, 0.3); /* Slightly reduced shadow */
@@ -164,7 +164,7 @@
         /* Gradient lighting effect for auth-container (and now all main containers, excluding splash-screen) */
         .auth-container::before, .quiz-container::before, .subject-selection-container::before, .question-count-container::before, .user-data-container::before, .user-profile-container::before, .home-screen-container::before, .result-summary-container::before, .solution-explanation-container::before, .settings-container::before, .extra-features-container::before, .ga-subjects-container::before, .reasoning-subjects-container::before, .quantitative-aptitude-subjects-container::before, .english-language-subjects-container::before, .computer-knowledge-subjects-container::before, .general-studies-subjects-container::before, .current-affairs-subjects-container::before, .mock-test-zone-subjects-container::before,
         /* New feature pages */
-        .daily-quiz-notification-page::before, .bookmark-questions-page::before, .doubt-discussion-forum-page::before, .leaderboard-page::before, .offline-mode-page::before {
+        .daily-quiz-notification-page::before, .bookmark-questions-page::before, .doubt-discussion-forum-page::before, .leaderboard-page::before, .offline-mode-page::before, .notification-modal-content::before {
             content: '';
             position: absolute;
             top: -150%;
@@ -1189,6 +1189,118 @@
             color: white;
             line-height: 1.3; /* Reduced line height */
         }
+
+        /* New styles for admin updates section */
+        .admin-updates-section {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: left;
+        }
+
+        .admin-updates-section h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.8rem;
+        }
+
+        .admin-update-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 0.6rem;
+            padding: 0.8rem;
+            margin-bottom: 0.6rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-update-item p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+        }
+
+        .admin-update-item .update-meta {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.4rem;
+        }
+
+        /* Notification Modal Styles */
+        .notification-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .notification-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .notification-modal-content {
+            max-width: 450px; /* Slightly smaller than main containers */
+            width: 90%;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.4); /* Darker glassmorphism */
+            border-radius: 1rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            color: white;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification-modal.show .notification-modal-content {
+            transform: translateY(0);
+        }
+
+        .notification-modal-content h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: #818cf8; /* Indigo for heading */
+        }
+
+        .notification-modal-content .new-updates-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            padding-right: 5px;
+            text-align: left;
+        }
+
+        .notification-modal-content .new-update-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 0.6rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            line-height: 1.3;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .notification-modal-content .new-update-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .notification-modal-content .glass-button-primary {
+            margin-top: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -1354,10 +1466,10 @@
     <!-- Home Screen -->
     <div class="home-screen-container" id="home-screen-container" style="display: none;">
         <!-- Profile Icon removed from here, now in global header -->
-        <h1 class="text-3xl font-bold mb-4">Hello, <span id="welcome-user-name">User</span> 👋 Ready to Practice?</h1>
+        <h1 class="text-3xl font-bold mb-4">Hello, <span id="welcome-user-name">User</span><span id="first-time-greeting-suffix"> 👋 Ready to Practice?</span></h1>
         
-        <h2 class="text-2xl font-bold mb-3">📌 Quick Access: Choose a Subject to Practice</h2>
-        <p class="text-lg mb-3"></p>
+        <h2 class="text-2xl font-bold mb-3">Choose a Subject to Practice</h2>
+        <!-- Removed the empty paragraph here -->
 
         <h3 class="text-xl font-bold mt-4 mb-2 text-left">🔹 Core Sections</h3>
         <div class="quick-access-grid">
@@ -1762,6 +1874,15 @@
         <h1 class="text-3xl font-bold mb-4">Daily Quiz Notification</h1>
         <p class="text-lg mb-4">Get daily reminders for your quiz practice!</p>
         <p class="text-gray-400">This feature will allow you to set up personalized daily notifications for new quizzes and practice sessions.</p>
+        
+        <div class="admin-updates-section">
+            <h2 class="text-2xl font-bold mb-3">Admin Updates</h2>
+            <div id="admin-updates-list">
+                <!-- Admin updates will be dynamically inserted here -->
+                <p class="text-gray-600">Loading admin updates...</p>
+            </div>
+        </div>
+
         <button id="back-to-extra-features-from-daily-quiz" class="glass-button-base glass-button-primary mt-4">Back to Extra Features</button>
     </div>
 
@@ -1798,6 +1919,17 @@
     </div>
 
     <!-- NEW FEATURE PAGES END HERE -->
+
+    <!-- Notification Modal -->
+    <div class="notification-modal" id="notification-modal">
+        <div class="notification-modal-content">
+            <h2 class="mb-4">New Updates!</h2>
+            <div id="new-updates-list" class="new-updates-list">
+                <!-- New updates will be dynamically inserted here -->
+            </div>
+            <button id="close-notification-modal" class="glass-button-base glass-button-primary">Got it!</button>
+        </div>
+    </div>
 
 
     <script type="module">
@@ -1907,6 +2039,7 @@
 
         const homeScreenContainer = document.getElementById('home-screen-container'); 
         const welcomeUserName = document.getElementById('welcome-user-name'); 
+        const firstTimeGreetingSuffix = document.getElementById('first-time-greeting-suffix'); // New element for conditional text
         const cardGeneralAwareness = document.getElementById('card-general-awareness'); 
         const cardReasoning = document.getElementById('card-reasoning'); 
         const cardQuantitativeAptitude = document.getElementById('card-quantitative-aptitude'); 
@@ -2116,6 +2249,12 @@
         const cardQuestionHistory = document.getElementById('card-question-history'); // New reference for the card
         const backToProfileFromQuestionHistoryButton = document.getElementById('back-to-profile-from-question-history');
 
+        // New elements for Admin Updates and Notification Modal
+        const adminUpdatesList = document.getElementById('admin-updates-list');
+        const notificationModal = document.getElementById('notification-modal');
+        const newUpdatesList = document.getElementById('new-updates-list');
+        const closeNotificationModalButton = document.getElementById('close-notification-modal');
+
 
         /**
          * Toggles the visibility between the login and signup forms.
@@ -2252,7 +2391,59 @@
                 headerProfilePhoto.src = user.photoURL || "https://placehold.co/40x40/cccccc/333333?text=👤";
                 mainHeader.style.display = 'flex'; // Show the header when logged in
 
-                welcomeUserName.textContent = userDisplayName.split(' ')[0]; // Show first name or full if no space
+                // Update welcome message on home screen
+                welcomeUserName.textContent = userDisplayName.split(' ')[0]; // Always set the user's first name
+
+                // Fetch user data to check hasSeenFirstTimeWelcome flag
+                const userRef = ref(db, `users/${userId}`);
+                try {
+                    const snapshot = await get(userRef);
+                    let userData = {};
+                    if (snapshot.exists()) {
+                        userData = snapshot.val();
+                    }
+
+                    if (!userData.hasSeenFirstTimeWelcome) {
+                        firstTimeGreetingSuffix.style.display = 'inline'; // Show the suffix
+                        // Set the flag in DB
+                        await update(userRef, { hasSeenFirstTimeWelcome: true });
+                        console.log("UI: First-time welcome message suffix shown and flag updated.");
+                    } else {
+                        firstTimeGreetingSuffix.style.display = 'none'; // Hide the suffix
+                        console.log("UI: First-time welcome message suffix hidden.");
+                    }
+
+                    currentStreakDisplay.textContent = userData.currentStreak || 0;
+                    userPoints = userData.totalPoints || 0; // Initialize userPoints
+                    console.log("UI: Fetched user streak:", userData.currentStreak, "and points:", userPoints);
+
+                    // Update user profile data in Realtime DB (display name, email, photoURL)
+                    const profileUpdates = {};
+                    if (user.displayName && userData.displayName !== user.displayName) {
+                        profileUpdates.displayName = user.displayName;
+                    }
+                    if (user.email && userData.email !== user.email) {
+                        profileUpdates.email = user.email;
+                    }
+                    if (user.photoURL && userData.photoURL !== user.photoURL) {
+                        profileUpdates.photoURL = user.photoURL;
+                    }
+                    
+                    if (Object.keys(profileUpdates).length > 0) {
+                        await update(userRef, profileUpdates);
+                        console.log("UI: User profile data updated in Realtime DB:", profileUpdates);
+                    }
+
+                    // Check for new admin updates and show modal
+                    await checkForNewAdminUpdates();
+
+                } catch (error) {
+                    console.error("UI: Error fetching/setting user data for welcome message or streak/profile:", error);
+                    // Fallback to default if error
+                    firstTimeGreetingSuffix.style.display = 'none'; // Hide suffix on error
+                    currentStreakDisplay.textContent = "Error";
+                }
+
 
                 // Hide splash screen and auth container, show home screen
                 console.log("UI: Setting main content display timeout.");
@@ -2289,52 +2480,6 @@
                     authErrorMessage.style.display = 'none'; 
                     authErrorMessageSignup.style.display = 'none'; // Also hide signup error
                 }, 500); // Match this to the transition duration in CSS
-
-                // Fetch and display user streak and points from Realtime Database
-                if (userId) {
-                    const userRef = ref(db, `users/${userId}`);
-                    try {
-                        const snapshot = await get(userRef);
-                        let userData = {};
-                        if (snapshot.exists()) {
-                            userData = snapshot.val();
-                            currentStreakDisplay.textContent = userData.currentStreak || 0;
-                            userPoints = userData.totalPoints || 0; // Initialize userPoints
-                            console.log("UI: Fetched user streak:", userData.currentStreak, "and points:", userPoints);
-                        } else {
-                            // If user data doesn't exist, initialize with defaults
-                            userData.currentStreak = 0;
-                            userData.lastQuizDate = null;
-                            userData.totalPoints = 0; // Initialize totalPoints for new users
-                            currentStreakDisplay.textContent = 0;
-                            userPoints = 0;
-                            console.log("UI: Initialized new user data in Realtime DB with default streak and points.");
-                        }
-
-                        // Update user profile data in Realtime DB (display name, email, photoURL)
-                        // This ensures basic profile info is stored for all login types
-                        const profileUpdates = {};
-                        if (user.displayName && userData.displayName !== user.displayName) {
-                            profileUpdates.displayName = user.displayName;
-                        }
-                        if (user.email && userData.email !== user.email) {
-                            profileUpdates.email = user.email;
-                        }
-                        // Add photoURL if available (e.g., from Google login)
-                        if (user.photoURL && userData.photoURL !== user.photoURL) {
-                            profileUpdates.photoURL = user.photoURL;
-                        }
-                        
-                        if (Object.keys(profileUpdates).length > 0) {
-                            await update(userRef, profileUpdates);
-                            console.log("UI: User profile data updated in Realtime DB:", profileUpdates);
-                        }
-
-                    } catch (error) {
-                        console.error("UI: Error fetching/setting user streak or profile from Realtime DB:", error);
-                        currentStreakDisplay.textContent = "Error";
-                    }
-                }
 
             } else {
                 userId = null;
@@ -2506,7 +2651,9 @@
                     createdAt: serverTimestamp(),
                     currentStreak: 0,
                     lastQuizDate: null,
-                    totalPoints: 0 // Initialize totalPoints for new users
+                    totalPoints: 0, // Initialize totalPoints for new users
+                    lastViewedAdminUpdateTimestamp: serverTimestamp(), // Initialize for new users
+                    hasSeenFirstTimeWelcome: false // New flag: user has not seen the first-time welcome yet
                 });
                 console.log("AUTH: Additional user profile data saved to Realtime Database.");
 
@@ -2607,6 +2754,7 @@
             doubtDiscussionForumPage.style.display = 'none';
             leaderboardPage.style.display = 'none';
             offlineModePage.style.display = 'none';
+            notificationModal.classList.remove('show'); // Hide notification modal
         }
 
         /**
@@ -3571,6 +3719,173 @@
             }
         }
 
+        /**
+         * Fetches and displays admin updates on the Daily Quiz Notification page.
+         */
+        async function displayAdminUpdates() {
+            console.log("ADMIN_UPDATES: displayAdminUpdates called.");
+            adminUpdatesList.innerHTML = '<p class="text-gray-600">Loading admin updates...</p>';
+
+            const adminUpdatesRef = ref(db, 'adminUpdates');
+            try {
+                const snapshot = await get(adminUpdatesRef);
+                if (!snapshot.exists() || Object.keys(snapshot.val()).length === 0) {
+                    adminUpdatesList.innerHTML = '<p class="text-gray-600">No admin updates available yet.</p>';
+                    console.log("ADMIN_UPDATES: No admin updates found.");
+                } else {
+                    const updatesData = snapshot.val();
+                    const updatesArray = Object.keys(updatesData).map(key => ({
+                        id: key,
+                        ...updatesData[key]
+                    }));
+
+                    // Sort by timestamp descending (most recent first)
+                    updatesArray.sort((a, b) => b.timestamp - a.timestamp);
+
+                    let updatesHtml = '';
+                    updatesArray.forEach((update) => {
+                        const date = formatTimestamp(update.timestamp);
+                        let updateMessage = `<strong>Admin: ${update.adminName || 'Unknown'}</strong> `;
+
+                        if (update.updateType === 'questionUpload') {
+                            updateMessage += `uploaded <strong>${update.questionCount || 'some'} new questions</strong> for ${update.subject || 'various subjects'}.`;
+                        } else if (update.updateType === 'announcement') {
+                            updateMessage += `announced: <strong>${update.message}</strong>`;
+                        } else {
+                            updateMessage += `posted an update: <strong>${update.message || 'No specific message.'}</strong>`;
+                        }
+                        
+                        updatesHtml += `
+                            <div class="admin-update-item">
+                                <p>${updateMessage}</p>
+                                <p class="update-meta">Update ID: #${update.id.substring(0, 5)}... | Date: ${date}</p>
+                            </div>
+                        `;
+                    });
+                    adminUpdatesList.innerHTML = updatesHtml;
+                    console.log("ADMIN_UPDATES: Admin updates displayed.");
+                }
+            } catch (error) {
+                console.error("ADMIN_UPDATES: Error fetching admin updates:", error);
+                adminUpdatesList.innerHTML = '<p class="text-red-500">Error loading updates. Please try again.</p>';
+            }
+        }
+
+        /**
+         * Checks for new admin updates and shows a notification modal if any are found.
+         */
+        async function checkForNewAdminUpdates() {
+            if (!auth.currentUser || !auth.currentUser.uid) {
+                console.log("NOTIFICATION: No user logged in, skipping admin update check.");
+                return;
+            }
+
+            const currentUserId = auth.currentUser.uid;
+            const userRef = ref(db, `users/${currentUserId}`);
+            const adminUpdatesRef = ref(db, 'adminUpdates');
+
+            try {
+                const userSnapshot = await get(userRef);
+                const userData = userSnapshot.exists() ? userSnapshot.val() : {};
+                const lastViewedTimestamp = userData.lastViewedAdminUpdateTimestamp || 0; // Default to 0 if not set
+
+                const adminUpdatesSnapshot = await get(query(adminUpdatesRef, orderByChild('timestamp')));
+                
+                if (!adminUpdatesSnapshot.exists()) {
+                    console.log("NOTIFICATION: No admin updates found in DB.");
+                    return;
+                }
+
+                const allUpdates = adminUpdatesSnapshot.val();
+                let newUpdates = [];
+                let latestUpdateTimestamp = 0;
+
+                Object.keys(allUpdates).forEach(key => {
+                    const update = allUpdates[key];
+                    // Ensure timestamp is a number for comparison
+                    const updateTimestamp = typeof update.timestamp === 'object' && update.timestamp !== null 
+                                          ? update.timestamp.toMillis() // If it's a serverTimestamp object
+                                          : update.timestamp; // If it's already a number
+                    
+                    if (updateTimestamp > lastViewedTimestamp) {
+                        newUpdates.push(update);
+                    }
+                    if (updateTimestamp > latestUpdateTimestamp) {
+                        latestUpdateTimestamp = updateTimestamp;
+                    }
+                });
+
+                if (newUpdates.length > 0) {
+                    console.log(`NOTIFICATION: Found ${newUpdates.length} new admin updates.`);
+                    showNotificationModal(newUpdates, latestUpdateTimestamp);
+                } else {
+                    console.log("NOTIFICATION: No new admin updates since last view.");
+                }
+
+            } catch (error) {
+                console.error("NOTIFICATION: Error checking for new admin updates:", error);
+            }
+        }
+
+        /**
+         * Displays the notification modal with new updates.
+         * @param {Array} updates - An array of new admin update objects.
+         * @param {number} latestTimestamp - The timestamp of the very latest update.
+         */
+        function showNotificationModal(updates, latestTimestamp) {
+            newUpdatesList.innerHTML = ''; // Clear previous content
+            updates.sort((a, b) => {
+                const tsA = typeof a.timestamp === 'object' && a.timestamp !== null ? a.timestamp.toMillis() : a.timestamp;
+                const tsB = typeof b.timestamp === 'object' && b.timestamp !== null ? b.timestamp.toMillis() : b.timestamp;
+                return tsB - tsA; // Sort newest first
+            });
+
+            updates.forEach(update => {
+                const updateItem = document.createElement('div');
+                updateItem.classList.add('new-update-item');
+                let updateMessage = `<strong>Admin: ${update.adminName || 'Unknown'}</strong> `;
+
+                if (update.updateType === 'questionUpload') {
+                    updateMessage += `uploaded <strong>${update.questionCount || 'some'} new questions</strong> for ${update.subject || 'various subjects'}.`;
+                } else if (update.updateType === 'announcement') {
+                    updateMessage += `announced: <strong>${update.message}</strong>`;
+                } else {
+                    updateMessage += `posted an update: <strong>${update.message || 'No specific message.'}</strong>`;
+                }
+                updateItem.innerHTML = updateMessage;
+                newUpdatesList.appendChild(updateItem);
+            });
+
+            notificationModal.classList.add('show');
+
+            // Store the latest timestamp to mark as read when closed
+            notificationModal.dataset.latestUpdateTimestamp = latestTimestamp;
+        }
+
+        /**
+         * Marks the currently displayed new admin updates as read for the user.
+         */
+        async function markAdminUpdatesAsRead() {
+            if (!auth.currentUser || !auth.currentUser.uid) {
+                console.log("NOTIFICATION: Cannot mark updates as read, no user logged in.");
+                return;
+            }
+
+            const latestTimestamp = notificationModal.dataset.latestUpdateTimestamp;
+            if (latestTimestamp) {
+                const userRef = ref(db, `users/${auth.currentUser.uid}`);
+                try {
+                    await update(userRef, {
+                        lastViewedAdminUpdateTimestamp: parseInt(latestTimestamp, 10)
+                    });
+                    console.log("NOTIFICATION: Admin updates marked as read up to timestamp:", latestTimestamp);
+                } catch (error) {
+                    console.error("NOTIFICATION: Error marking admin updates as read:", error);
+                }
+            }
+            notificationModal.classList.remove('show'); // Hide the modal
+        }
+
 
         /**
          * Moves to the next question or ends the quiz if all questions are answered.
@@ -3908,6 +4223,7 @@
             featureDailyQuizNotification.addEventListener('click', () => {
                 hideAllContainers();
                 dailyQuizNotificationPage.style.display = 'flex';
+                displayAdminUpdates(); // Call function to display updates when page is shown
             });
             featureBookmarkQuestions.addEventListener('click', () => {
                 hideAllContainers();
@@ -3932,6 +4248,9 @@
             backToExtraFeaturesFromDoubtForum.addEventListener('click', displayExtraFeatures);
             backToExtraFeaturesFromLeaderboard.addEventListener('click', displayExtraFeatures);
             backToExtraFeaturesFromOfflineMode.addEventListener('click', displayExtraFeatures);
+
+            // Event listener for closing the notification modal
+            closeNotificationModalButton.addEventListener('click', markAdminUpdatesAsRead);
         });
     </script>
 </body>
