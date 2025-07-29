@@ -16,7 +16,7 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding-top: 80px; /* Space for the fixed header (approximate height) */
+            padding-top: 60px; /* Reduced space for the fixed header */
             box-sizing: border-box;
             position: relative;
             overflow-x: hidden; /* Prevent horizontal scrolling */
@@ -52,25 +52,25 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 40px;
+            padding: 10px 20px; /* Reduced padding */
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             color: white; /* Default text color for header */
-            min-height: 60px; /* Ensure a minimum height */
+            min-height: 50px; /* Reduced minimum height */
         }
 
         .main-header .logo {
-            font-size: 24px;
+            font-size: 20px; /* Reduced font size */
             font-weight: bold;
             letter-spacing: 1px;
             color: white;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px; /* Reduced gap */
         }
 
         .main-header .logo img {
-            height: 40px; /* Adjust logo size */
-            width: 40px;
+            height: 35px; /* Reduced logo size */
+            width: 35px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid rgba(255, 255, 255, 0.3);
@@ -79,22 +79,22 @@
         .main-header .user-profile-section {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px; /* Reduced gap */
         }
 
         .main-header .user-profile-section .user-display-name {
-            font-size: 1rem;
+            font-size: 0.9rem; /* Reduced font size */
             font-weight: 500;
             color: rgba(255, 255, 255, 0.8);
             white-space: nowrap; /* Prevent name from wrapping */
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 150px; /* Limit width for long names */
+            max-width: 120px; /* Reduced max-width for long names */
         }
 
         .main-header .user-profile-section .profile-photo {
-            width: 40px;
-            height: 40px;
+            width: 35px; /* Reduced width */
+            height: 35px; /* Reduced height */
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid #818cf8; /* Indigo border for profile pic */
@@ -109,30 +109,30 @@
         /* Responsive adjustments for header */
         @media (max-width: 768px) {
             .main-header {
-                padding: 10px 20px;
+                padding: 8px 15px; /* Further reduced padding */
             }
             .main-header .logo {
-                font-size: 20px;
-                gap: 5px;
+                font-size: 18px; /* Further reduced font size */
+                gap: 4px; /* Further reduced gap */
             }
             .main-header .logo img {
-                height: 30px;
-                width: 30px;
+                height: 28px; /* Further reduced size */
+                width: 28px;
             }
             .main-header .user-profile-section {
-                gap: 10px;
+                gap: 8px; /* Further reduced gap */
             }
             .main-header .user-profile-section .user-display-name {
-                font-size: 0.9rem;
-                max-width: 100px;
+                font-size: 0.8rem; /* Further reduced font size */
+                max-width: 80px; /* Further reduced max-width */
             }
             .main-header .user-profile-section .profile-photo {
-                width: 35px;
-                height: 35px;
+                width: 30px; /* Further reduced size */
+                height: 30px;
             }
             .main-header .logout-button-class {
-                padding: 0.3rem 0.6rem;
-                font-size: 0.8rem;
+                padding: 0.2rem 0.5rem; /* Further reduced padding */
+                font-size: 0.7rem; /* Further reduced font size */
             }
         }
 
@@ -140,22 +140,22 @@
         /* Glassmorphism for all main content containers (excluding splash-screen) */
         .quiz-container, .subject-selection-container, .question-count-container, .user-data-container, .user-profile-container, .home-screen-container, .result-summary-container, .solution-explanation-container, .settings-container, .extra-features-container, .ga-subjects-container, .reasoning-subjects-container, .quantitative-aptitude-subjects-container, .english-language-subjects-container, .computer-knowledge-subjects-container, .general-studies-subjects-container, .current-affairs-subjects-container, .mock-test-zone-subjects-container, .auth-container {
             background: rgba(0, 0, 0, 0.3); /* Darker semi-transparent background */
-            border-radius: 1rem;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* Soft shadow */
-            backdrop-filter: blur(10px); /* Glassmorphism blur */
-            -webkit-backdrop-filter: blur(10px); /* Safari support */
-            border: 1px solid rgba(255, 255, 255, 0.18); /* Subtle white border */
+            border-radius: 0.8rem; /* Slightly reduced border-radius */
+            box-shadow: 0 6px 24px 0 rgba(0, 0, 0, 0.3); /* Slightly reduced shadow */
+            backdrop-filter: blur(8px); /* Slightly reduced blur */
+            -webkit-backdrop-filter: blur(8px); /* Safari support */
+            border: 1px solid rgba(255, 255, 255, 0.15); /* Slightly reduced border opacity */
             color: white; /* Default text color for dark theme */
-            padding: 1.5rem; /* Reduced padding */
-            max-width: 600px;
+            padding: 1rem; /* Reduced padding */
+            max-width: 550px; /* Reduced max-width */
             width: 100%;
             text-align: center;
             display: flex;
             flex-direction: column;
-            gap: 1rem; /* Reduced gap */
+            gap: 0.8rem; /* Reduced gap */
             position: relative;
             z-index: 1;
-            margin-bottom: 10px; /* Reduced margin-bottom */
+            margin-bottom: 8px; /* Reduced margin-bottom */
             overflow: hidden; /* Hide overflow for gradient effect */
         }
 
@@ -193,7 +193,7 @@
             justify-content: center;
             align-items: center;
             flex-direction: column; /* Ensure content stacks vertically */
-            gap: 2rem;
+            gap: 1.5rem; /* Reduced gap */
 
             /* Glassmorphism-like background */
             background: rgba(0, 0, 0, 0.5); /* Slightly more opaque for better content visibility */
@@ -211,21 +211,21 @@
             pointer-events: none; /* Disable interactions when hidden */
         }
         .splash-screen img {
-            width: 150px;
-            height: 150px;
+            width: 120px; /* Reduced size */
+            height: 120px; /* Reduced size */
             border-radius: 50%;
             object-fit: cover;
-            border: 5px solid white;
+            border: 4px solid white; /* Reduced border */
             animation: scaleIn 0.8s ease-out forwards; /* Apply scale-in animation */
         }
         .splash-screen .tagline {
-            font-size: 2.2rem;
+            font-size: 2rem; /* Reduced font size */
             font-weight: 700;
-            margin-top: 1rem;
+            margin-top: 0.8rem; /* Reduced margin */
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             /* Removed previous animation from here */
             display: flex; /* To arrange words horizontally */
-            gap: 0.5rem; /* Space between words */
+            gap: 0.4rem; /* Reduced space between words */
             flex-wrap: wrap; /* Allow wrapping if text is too long */
             justify-content: center; /* Center words */
         }
@@ -328,14 +328,14 @@
         }
         .quick-access-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 0.75rem; /* Reduced gap */
-            margin-bottom: 1.5rem; /* Reduced margin */
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Adjusted minmax */
+            gap: 0.6rem; /* Reduced gap */
+            margin-bottom: 1.2rem; /* Reduced margin */
         }
         .quick-access-card {
             background-color: rgba(255, 255, 255, 0.1); /* Glassmorphism background */
-            padding: 1rem; /* Reduced padding */
-            border-radius: 0.75rem;
+            padding: 0.8rem; /* Reduced padding */
+            border-radius: 0.6rem; /* Reduced border-radius */
             font-weight: 600;
             color: white; /* Changed for glassmorphism */
             cursor: pointer;
@@ -345,8 +345,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 0.3rem; /* Reduced gap */
-            font-size: 1rem; /* Slightly reduced font size */
+            gap: 0.2rem; /* Reduced gap */
+            font-size: 0.9rem; /* Reduced font size */
         }
         .quick-access-card:hover {
             background-color: rgba(255, 255, 255, 0.2); /* Darker on hover */
@@ -355,58 +355,58 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Stronger shadow on hover */
         }
         .quick-access-card .icon {
-            font-size: 2rem; /* Slightly reduced icon size */
-            margin-bottom: 0.3rem; /* Reduced margin */
+            font-size: 1.8rem; /* Reduced icon size */
+            margin-bottom: 0.2rem; /* Reduced margin */
             color: #818cf8; /* Indigo for icons */
         }
         .home-screen-buttons {
             display: flex;
-            gap: 0.75rem; /* Reduced gap */
-            margin-top: 0.75rem; /* Reduced margin */
+            gap: 0.6rem; /* Reduced gap */
+            margin-top: 0.6rem; /* Reduced margin */
             flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
             justify-content: center; /* Center buttons when wrapped */
         }
         .home-screen-buttons .glass-button-primary {
             flex: 1;
-            min-width: 160px; /* Ensure buttons don't get too small */
+            min-width: 150px; /* Ensure buttons don't get too small */
         }
 
 
         .question-text {
-            font-size: 1.4rem; /* Slightly smaller font size */
+            font-size: 1.3rem; /* Reduced font size */
             font-weight: 600;
             color: white; /* Changed for glassmorphism */
-            margin-bottom: 1rem; /* Reduced margin */
+            margin-bottom: 0.8rem; /* Reduced margin */
         }
 
         /* Base Glassmorphism Button Style */
         .glass-button-base {
-            padding: 0.6rem 1rem; /* Reduced padding */
+            padding: 0.5rem 0.8rem; /* Reduced padding */
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.75rem;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 0.6rem; /* Reduced border-radius */
+            backdrop-filter: blur(8px); /* Reduced blur */
+            -webkit-backdrop-filter: blur(8px); /* Safari support */
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2); /* Reduced shadow */
             cursor: pointer;
-            font-size: 1rem; /* Slightly reduced font size */
+            font-size: 0.95rem; /* Reduced font size */
             font-weight: 600;
             transition: all 0.3s ease;
             text-align: center;
             display: block; /* Default to block for full width */
             width: 100%; /* Default to full width */
-            margin-bottom: 0.6rem; /* Reduced space between buttons */
+            margin-bottom: 0.5rem; /* Reduced space between buttons */
             display: flex; /* For centering content, especially with icons */
             align-items: center;
             justify-content: center;
-            gap: 0.4rem; /* Reduced spacing between icon and text */
+            gap: 0.3rem; /* Reduced spacing between icon and text */
         }
         .glass-button-base:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3); /* Reduced shadow on hover */
         }
         .glass-button-base:active {
             transform: scale(0.98);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1); /* Reduced shadow on active */
         }
         .glass-button-base:disabled {
             opacity: 0.6;
@@ -486,16 +486,16 @@
         /* Auth Toggle Buttons (Sign up / Sign in) - specific styling, not using general glass-button-base */
         .auth-toggle-buttons {
             display: flex;
-            gap: 0.5rem; /* Reduced gap */
+            gap: 0.4rem; /* Reduced gap */
             background-color: rgba(255, 255, 255, 0.05); /* Very subtle transparent background */
-            border-radius: 0.75rem;
-            padding: 0.5rem;
-            margin-bottom: 1rem; /* Reduced margin */
+            border-radius: 0.6rem; /* Reduced border-radius */
+            padding: 0.4rem; /* Reduced padding */
+            margin-bottom: 0.8rem; /* Reduced margin */
         }
         .auth-toggle-buttons .toggle-auth-button {
             flex: 1;
-            padding: 0.6rem 1rem; /* Reduced padding */
-            border-radius: 0.6rem; /* Slightly smaller radius than container */
+            padding: 0.5rem 0.8rem; /* Reduced padding */
+            border-radius: 0.5rem; /* Slightly smaller radius than container */
             background-color: transparent;
             color: rgba(255, 255, 255, 0.7); /* Lighter white for inactive */
             font-weight: 600;
@@ -518,51 +518,51 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 0.8rem; /* Space between elements within this area */
-            margin-bottom: 0.8rem; /* Space below this area */
-            padding: 0.8rem; /* Padding inside the area */
+            gap: 0.6rem; /* Reduced gap */
+            margin-bottom: 0.6rem; /* Reduced margin */
+            padding: 0.6rem; /* Reduced padding */
             background: rgba(255, 255, 255, 0.08); /* Light glassmorphism background */
-            border-radius: 0.75rem;
+            border-radius: 0.6rem; /* Reduced border-radius */
             border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2); /* Reduced shadow */
         }
 
         /* Timer Display Content */
         .timer-display-content {
             display: flex; /* Ensure timer icon and text are inline */
             align-items: center;
-            gap: 0.5rem; /* Space between icon and timer text */
-            font-size: 1.8rem; /* Slightly reduced timer font size */
+            gap: 0.4rem; /* Reduced gap */
+            font-size: 1.6rem; /* Reduced timer font size */
             font-weight: 700;
             color: #f87171; /* Red for timer */
         }
         .timer-display-content .timer-icon {
-            font-size: 1.6rem; /* Reduced icon size */
+            font-size: 1.4rem; /* Reduced icon size */
             color: #818cf8; /* Indigo for timer icon */
         }
         .timer-display-content .timer-unit {
-            font-size: 1rem; /* Reduced font size */
+            font-size: 0.9rem; /* Reduced font size */
             color: rgba(255, 255, 255, 0.8);
         }
 
         .feedback-message {
-            margin-top: 0.2rem; /* Further reduced margin */
-            font-size: 1.1rem; /* Slightly reduced font size */
+            margin-top: 0.1rem; /* Further reduced margin */
+            font-size: 1rem; /* Reduced font size */
             font-weight: 500;
             color: rgba(255, 255, 255, 0.8); /* Changed for glassmorphism */
         }
         .correct-answer-display {
-            margin-top: 0.1rem; /* Further reduced margin */
-            font-size: 1rem; /* Slightly reduced font size */
+            margin-top: 0.05rem; /* Further reduced margin */
+            font-size: 0.9rem; /* Reduced font size */
             font-weight: 600;
             color: #68d391; /* Green for correct answer text */
         }
         /* Removed .timer-display styles as it's now part of .timer-display-content */
         .quiz-navigation-buttons {
             display: flex;
-            gap: 0.4rem; /* Further reduced space between buttons */
-            margin-top: 0.4rem; /* Further reduced margin above buttons */
-            margin-bottom: 0.4rem; /* Further reduced margin below buttons */
+            gap: 0.3rem; /* Further reduced space between buttons */
+            margin-top: 0.3rem; /* Further reduced margin above buttons */
+            margin-bottom: 0.3rem; /* Further reduced margin below buttons */
             justify-content: center; /* Center the buttons */
         }
         .quiz-navigation-buttons .glass-button-primary {
@@ -570,20 +570,20 @@
             margin-bottom: 0; /* Override default margin for flex container */
         }
         .quiz-finished-message {
-            font-size: 1.6rem; /* Slightly reduced font size */
+            font-size: 1.4rem; /* Reduced font size */
             font-weight: 700;
             color: #68d391; /* Green for success */
-            margin-top: 1.5rem; /* Reduced margin */
+            margin-top: 1.2rem; /* Reduced margin */
         }
         .quiz-summary {
             text-align: left;
-            margin-top: 1.5rem; /* Reduced margin */
-            padding-top: 1rem; /* Reduced padding */
+            margin-top: 1.2rem; /* Reduced margin */
+            padding-top: 0.8rem; /* Reduced padding */
             border-top: 1px solid rgba(255, 255, 255, 0.1); /* Lighter border */
         }
         .quiz-summary p {
-            font-size: 1rem; /* Slightly reduced font size */
-            margin-bottom: 0.4rem; /* Reduced margin */
+            font-size: 0.9rem; /* Reduced font size */
+            margin-bottom: 0.3rem; /* Reduced margin */
             color: rgba(255, 255, 255, 0.8); /* Changed for glassmorphism */
         }
         .quiz-summary p span {
@@ -592,14 +592,14 @@
         }
         .question-count-input, .profile-input, .settings-input {
             width: 100%;
-            padding: 0.7rem; /* Reduced padding */
+            padding: 0.6rem; /* Reduced padding */
             background-color: rgba(255, 255, 255, 0.1); /* Glassmorphism input */
             border: 1px solid rgba(255, 255, 255, 0.2); /* Glassmorphism border */
-            border-radius: 0.75rem;
-            font-size: 1rem; /* Slightly reduced font size */
+            border-radius: 0.6rem; /* Reduced border-radius */
+            font-size: 0.95rem; /* Reduced font size */
             color: white; /* Changed for glassmorphism */
             text-align: center;
-            margin-bottom: 0.8rem; /* Reduced margin */
+            margin-bottom: 0.6rem; /* Reduced margin */
         }
         .question-count-input::placeholder, .profile-input::placeholder, .settings-input::placeholder {
             color: rgba(255, 255, 255, 0.7); /* Lighter placeholder */
@@ -611,18 +611,18 @@
         }
         .error-message {
             color: #ef4444;
-            font-size: 0.8rem; /* Reduced font size */
-            margin-top: -0.4rem; /* Adjusted margin */
-            margin-bottom: 0.8rem; /* Reduced margin */
+            font-size: 0.75rem; /* Reduced font size */
+            margin-top: -0.3rem; /* Adjusted margin */
+            margin-bottom: 0.6rem; /* Reduced margin */
         }
         /* Removed .user-info-container styles as it's being replaced by global header */
         .auth-input-group {
-            margin-bottom: 0.8rem; /* Reduced margin */
+            margin-bottom: 0.6rem; /* Reduced margin */
         }
         .auth-input-group label {
             display: block;
             text-align: left;
-            margin-bottom: 0.4rem; /* Reduced margin */
+            margin-bottom: 0.3rem; /* Reduced margin */
             font-weight: 500;
             color: white; /* Already white */
         }
@@ -630,11 +630,11 @@
         /* Auth Inputs (already glassmorphism, but ensuring consistency) */
         .auth-input {
             width: 100%;
-            padding: 0.7rem; /* Reduced padding */
+            padding: 0.6rem; /* Reduced padding */
             background-color: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.75rem;
-            font-size: 1rem; /* Slightly reduced font size */
+            border-radius: 0.6rem; /* Reduced border-radius */
+            font-size: 0.95rem; /* Reduced font size */
             color: white;
             text-align: left;
             transition: all 0.2s ease-in-out;
@@ -649,17 +649,17 @@
         }
         .auth-input-phone-group {
             display: flex;
-            gap: 0.4rem; /* Reduced gap */
+            gap: 0.3rem; /* Reduced gap */
         }
         .auth-input-phone-group select {
             flex-shrink: 0;
-            width: 70px; /* Slightly smaller width for country code dropdown */
+            width: 60px; /* Further reduced width for country code dropdown */
             background-color: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 200, 0.2);
-            border-radius: 0.75rem;
+            border-radius: 0.6rem; /* Reduced border-radius */
             color: white;
-            padding: 0.7rem; /* Reduced padding */
-            font-size: 1rem; /* Slightly reduced font size */
+            padding: 0.6rem; /* Reduced padding */
+            font-size: 0.95rem; /* Reduced font size */
         }
         .auth-input-phone-group input {
             flex-grow: 1;
@@ -668,8 +668,8 @@
 
         .auth-button-group {
             display: flex;
-            gap: 0.4rem; /* Reduced gap */
-            margin-top: 0.4rem; /* Reduced margin */
+            gap: 0.3rem; /* Reduced gap */
+            margin-top: 0.3rem; /* Reduced margin */
         }
         .auth-button-group .glass-button-base {
             flex: 1;
@@ -689,10 +689,10 @@
 
         /* Terms of Service Note */
         .terms-note {
-            font-size: 0.8rem; /* Reduced font size */
+            font-size: 0.75rem; /* Reduced font size */
             color: rgba(255, 255, 255, 0.6);
-            margin-top: 1rem; /* Reduced margin */
-            line-height: 1.3; /* Reduced line height */
+            margin-top: 0.8rem; /* Reduced margin */
+            line-height: 1.2; /* Reduced line height */
         }
         .terms-note a {
             color: rgba(255, 255, 255, 0.8);
@@ -706,13 +706,13 @@
         .user-data-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 1rem; /* Reduced margin */
+            margin-top: 0.8rem; /* Reduced margin */
         }
         .user-data-table th, .user-data-table td {
             border: 1px solid rgba(255, 255, 255, 0.1); /* Glassmorphism border */
-            padding: 0.6rem; /* Reduced padding */
+            padding: 0.5rem; /* Reduced padding */
             text-align: left;
-            font-size: 0.9rem; /* Reduced font size */
+            font-size: 0.85rem; /* Reduced font size */
             color: white; /* Changed for glassmorphism */
         }
         .user-data-table th {
@@ -727,30 +727,30 @@
             background-color: rgba(255, 255, 255, 0.15); /* Darker on hover */
         }
         .streak-display {
-            font-size: 1.6rem; /* Reduced font size */
+            font-size: 1.4rem; /* Reduced font size */
             font-weight: 700;
             color: #818cf8; /* Indigo for streak */
-            margin-bottom: 0.8rem; /* Reduced margin */
+            margin-bottom: 0.6rem; /* Reduced margin */
         }
         .profile-info {
-            margin-top: 1rem; /* Reduced margin */
+            margin-top: 0.8rem; /* Reduced margin */
             text-align: left;
             display: flex;
             flex-direction: column;
             align-items: center; /* Center profile content */
         }
         .profile-info img {
-            width: 100px; /* Reduced image size */
-            height: 100px; /* Reduced image size */
+            width: 90px; /* Reduced image size */
+            height: 90px; /* Reduced image size */
             border-radius: 50%;
             object-fit: cover;
-            margin-bottom: 0.8rem; /* Reduced margin */
+            margin-bottom: 0.6rem; /* Reduced margin */
             border: 3px solid #4c51bf; /* Border around profile pic */
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         .profile-info p {
-            font-size: 1rem; /* Reduced font size */
-            margin-bottom: 0.4rem; /* Reduced margin */
+            font-size: 0.95rem; /* Reduced font size */
+            margin-bottom: 0.3rem; /* Reduced margin */
             color: rgba(255, 255, 255, 0.8); /* Changed for glassmorphism */
         }
         .profile-info p span {
@@ -759,45 +759,45 @@
         }
         .profile-field-group { /* New style for input groups in profile */
             width: 100%;
-            margin-bottom: 0.8rem; /* Reduced margin */
+            margin-bottom: 0.6rem; /* Reduced margin */
             text-align: left;
         }
         .profile-field-group label {
             display: block;
-            margin-bottom: 0.4rem; /* Reduced margin */
+            margin-bottom: 0.3rem; /* Reduced margin */
             font-weight: 500;
             color: rgba(255, 255, 255, 0.8); /* Changed for glassmorphism */
         }
         .profile-message { /* New style for profile messages */
-            font-size: 0.9rem; /* Reduced font size */
-            margin-top: 0.8rem; /* Reduced margin */
+            font-size: 0.85rem; /* Reduced font size */
+            margin-top: 0.6rem; /* Reduced margin */
             font-weight: 500;
             color: rgba(255, 255, 255, 0.8); /* Changed for glassmorphism */
         }
         .profile-intro-text { /* New style for the intro text */
             text-align: left;
-            margin-bottom: 1rem; /* Reduced margin */
+            margin-bottom: 0.8rem; /* Reduced margin */
             color: white; /* Already white */
         }
         .profile-intro-text h2 {
-            font-size: 1.6rem; /* Reduced font size */
+            font-size: 1.4rem; /* Reduced font size */
             font-weight: 700;
             color: white; /* Already white */
-            margin-bottom: 0.6rem; /* Reduced margin */
+            margin-bottom: 0.5rem; /* Reduced margin */
         }
         .profile-intro-text p {
-            font-size: 0.9rem; /* Reduced font size */
-            line-height: 1.4; /* Reduced line height */
+            font-size: 0.85rem; /* Reduced font size */
+            line-height: 1.3; /* Reduced line height */
             color: rgba(255, 255, 255, 0.8); /* Lighter white for body text */
         }
         .profile-intro-text ul {
             list-style: disc;
-            margin-left: 15px; /* Reduced margin */
-            margin-top: 8px; /* Reduced margin */
+            margin-left: 12px; /* Reduced margin */
+            margin-top: 6px; /* Reduced margin */
             color: rgba(255, 255, 255, 0.8); /* Changed for glassmorphism */
         }
         .profile-intro-text li {
-            margin-bottom: 3px; /* Reduced margin */
+            margin-bottom: 2px; /* Reduced margin */
             color: rgba(255, 255, 255, 0.8); /* Changed for glassmorphism */
         }
         
@@ -810,16 +810,16 @@
             color: white; /* Ensure all text in result summary is white */
         }
         .result-summary-container .score-percentage {
-            font-size: 2.5rem; /* Reduced font size */
+            font-size: 2.2rem; /* Reduced font size */
             font-weight: 800;
             color: #818cf8; /* Indigo for score */
-            margin: 1rem 0; /* Reduced margin */
+            margin: 0.8rem 0; /* Reduced margin */
         }
         .result-summary-buttons {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem; /* Reduced gap */
-            margin-top: 1.5rem; /* Reduced margin */
+            gap: 0.6rem; /* Reduced gap */
+            margin-top: 1.2rem; /* Reduced margin */
         }
         .result-summary-buttons .glass-button-primary {
             /* Specific overrides for result buttons */
@@ -840,16 +840,16 @@
 
         /* Solution/Explanation Page Styles */
         .solution-explanation-container h1 {
-            font-size: 2rem; /* Reduced font size */
+            font-size: 1.8rem; /* Reduced font size */
             font-weight: 700;
             color: white; /* Changed for glassmorphism */
-            margin-bottom: 1rem; /* Reduced margin */
+            margin-bottom: 0.8rem; /* Reduced margin */
         }
         .solution-item {
             background-color: rgba(255, 255, 255, 0.1); /* Glassmorphism background */
-            padding: 1rem; /* Reduced padding */
-            border-radius: 0.75rem;
-            margin-bottom: 0.8rem; /* Reduced margin */
+            padding: 0.8rem; /* Reduced padding */
+            border-radius: 0.6rem; /* Reduced border-radius */
+            margin-bottom: 0.6rem; /* Reduced margin */
             text-align: left;
             border: 1px solid rgba(255, 255, 255, 0.2); /* Glassmorphism border */
             color: white; /* Changed for glassmorphism */
@@ -868,31 +868,31 @@
         .solution-item .solution-learn-more {
             color: #818cf8; /* Indigo for learn more */
             text-decoration: underline;
-            margin-top: 0.4rem; /* Reduced margin */
+            margin-top: 0.3rem; /* Reduced margin */
             display: inline-block;
         }
         .solution-item .solution-learn-more:hover {
             color: #6366f1; /* Darker indigo on hover */
         }
         .solutions-list-container {
-            max-height: 300px; /* Reduced height for scrollability */
+            max-height: 250px; /* Reduced height for scrollability */
             overflow-y: auto; /* Enable vertical scrolling */
-            padding-right: 8px; /* Space for scrollbar */
-            margin-bottom: 1rem; /* Reduced margin */
+            padding-right: 6px; /* Space for scrollbar */
+            margin-bottom: 0.8rem; /* Reduced margin */
         }
 
         /* Profile Page Specific Styles */
         .profile-stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* Adjusted min-width */
-            gap: 0.75rem; /* Reduced gap */
-            margin-top: 1rem; /* Reduced margin */
-            margin-bottom: 1.5rem; /* Reduced margin */
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Adjusted min-width */
+            gap: 0.6rem; /* Reduced gap */
+            margin-top: 0.8rem; /* Reduced margin */
+            margin-bottom: 1.2rem; /* Reduced margin */
         }
         .profile-stat-card {
             background-color: rgba(255, 255, 255, 0.1); /* Glassmorphism background */
-            padding: 0.8rem; /* Reduced padding */
-            border-radius: 0.75rem;
+            padding: 0.7rem; /* Reduced padding */
+            border-radius: 0.6rem; /* Reduced border-radius */
             font-weight: 600;
             color: white; /* Changed for glassmorphism */
             border: 1px solid rgba(255, 255, 255, 0.2); /* Glassmorphism border */
@@ -900,37 +900,37 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 0.3rem; /* Reduced gap */
-            font-size: 1rem; /* Reduced font size */
+            gap: 0.2rem; /* Reduced gap */
+            font-size: 0.95rem; /* Reduced font size */
         }
         .profile-stat-card .stat-value {
-            font-size: 1.8rem; /* Reduced font size */
+            font-size: 1.6rem; /* Reduced font size */
             font-weight: 700;
             color: #818cf8; /* Indigo for stat value */
         }
         .weak-areas-list {
             list-style: disc;
-            margin-left: 15px; /* Reduced margin */
+            margin-left: 12px; /* Reduced margin */
             text-align: left;
             color: #f87171; /* Red for weak areas */
             font-weight: 500;
-            font-size: 0.9rem; /* Reduced font size */
+            font-size: 0.85rem; /* Reduced font size */
         }
         .weak-areas-section {
-            margin-top: 1rem; /* Reduced margin */
+            margin-top: 0.8rem; /* Reduced margin */
             text-align: left;
         }
         .weak-areas-section h2 {
-            font-size: 1.3rem; /* Reduced font size */
+            font-size: 1.2rem; /* Reduced font size */
             font-weight: 700;
             color: white; /* Changed for glassmorphism */
-            margin-bottom: 0.6rem; /* Reduced margin */
+            margin-bottom: 0.5rem; /* Reduced margin */
         }
         .profile-buttons-group {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem; /* Reduced gap */
-            margin-top: 1.5rem; /* Reduced margin */
+            gap: 0.6rem; /* Reduced gap */
+            margin-top: 1.2rem; /* Reduced margin */
         }
         .profile-buttons-group .glass-button-base {
             margin-bottom: 0; /* Override default margin for flex container */
@@ -944,28 +944,28 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.6rem 0; /* Reduced padding */
+            padding: 0.5rem 0; /* Reduced padding */
             border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Lighter border */
         }
         .settings-option:last-child {
             border-bottom: none;
         }
         .settings-option label {
-            font-size: 1rem; /* Reduced font size */
+            font-size: 0.95rem; /* Reduced font size */
             color: rgba(255, 255, 255, 0.8); /* Changed for glassmorphism */
             font-weight: 500;
         }
         .settings-option select, .settings-option input[type="checkbox"] {
-            margin-left: 0.8rem; /* Reduced margin */
+            margin-left: 0.6rem; /* Reduced margin */
             background-color: rgba(255, 255, 255, 0.1); /* Glassmorphism background */
             border: 1px solid rgba(255, 255, 255, 0.2); /* Glassmorphism border */
             color: white; /* Changed for glassmorphism */
-            border-radius: 0.5rem; /* Rounded corners for select */
-            padding: 0.3rem; /* Reduced padding */
+            border-radius: 0.4rem; /* Reduced border-radius for select */
+            padding: 0.25rem; /* Reduced padding */
         }
         .settings-option input[type="checkbox"] {
-            width: 18px; /* Reduced size */
-            height: 18px; /* Reduced size */
+            width: 16px; /* Reduced size */
+            height: 16px; /* Reduced size */
             cursor: pointer;
         }
         .settings-option .glass-button-primary {
@@ -979,59 +979,59 @@
         .feature-item {
             display: flex;
             align-items: center;
-            gap: 0.8rem; /* Reduced gap */
-            padding: 0.6rem; /* Reduced padding */
+            gap: 0.6rem; /* Reduced gap */
+            padding: 0.5rem; /* Reduced padding */
             background-color: rgba(255, 255, 255, 0.1); /* Glassmorphism background */
-            border-radius: 0.75rem;
+            border-radius: 0.6rem; /* Reduced border-radius */
             border: 1px solid rgba(255, 255, 255, 0.2); /* Glassmorphism border */
-            font-size: 1rem; /* Reduced font size */
+            font-size: 0.95rem; /* Reduced font size */
             color: white; /* Changed for glassmorphism */
             font-weight: 500;
             text-align: left;
         }
         .feature-item .icon {
-            font-size: 1.6rem; /* Reduced icon size */
+            font-size: 1.4rem; /* Reduced icon size */
             color: #818cf8; /* Indigo for icons */
         }
 
         /* Styles for Gemini Explanation */
         .gemini-explanation-area {
-            margin-top: 0.2rem; /* Further reduced margin */
-            padding: 0.8rem; /* Reduced padding */
+            margin-top: 0.1rem; /* Further reduced margin */
+            padding: 0.6rem; /* Reduced padding */
             background-color: rgba(255, 255, 255, 0.08); /* Slightly lighter glassmorphism */
-            border-radius: 0.5rem;
+            border-radius: 0.4rem; /* Reduced border-radius */
             border: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.9rem; /* Reduced font size */
+            font-size: 0.85rem; /* Reduced font size */
             color: rgba(255, 255, 255, 0.9);
             text-align: left;
-            line-height: 1.4; /* Reduced line height */
+            line-height: 1.3; /* Reduced line height */
             white-space: pre-wrap; /* Preserve whitespace and line breaks */
             word-wrap: break-word; /* Break long words */
         }
 
         /* Styles for automatic Gemini explanation on wrong answer */
         .auto-gemini-explanation-area {
-            margin-top: 0.2rem; /* Further reduced margin */
-            padding: 1rem; /* Reduced padding */
+            margin-top: 0.1rem; /* Further reduced margin */
+            padding: 0.8rem; /* Reduced padding */
             background-color: rgba(255, 255, 255, 0.08);
-            border-radius: 0.75rem; /* Slightly more rounded */
+            border-radius: 0.6rem; /* Reduced border-radius */
             border: 1px solid rgba(255, 255, 255, 0.15); /* Slightly stronger border */
-            font-size: 0.9rem; /* Reduced font size */
+            font-size: 0.85rem; /* Reduced font size */
             color: rgba(255, 255, 255, 0.9);
             text-align: left;
-            line-height: 1.5; /* Reduced line height */
+            line-height: 1.4; /* Reduced line height */
             white-space: pre-wrap;
             word-wrap: break-word;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Added subtle shadow */
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2); /* Reduced shadow */
         }
 
         /* Loading Spinner */
         .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid #818cf8; /* Indigo spinner */
+            border: 3px solid rgba(255, 255, 255, 0.3); /* Reduced border thickness */
+            border-top: 3px solid #818cf8; /* Indigo spinner */
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
+            width: 20px; /* Reduced size */
+            height: 20px; /* Reduced size */
             animation: spin 1s linear infinite;
             margin: 0 auto; /* Center the spinner */
             display: block;
@@ -1045,28 +1045,28 @@
         /* CSS Coin Emoji */
         .coin-reward-area {
             position: relative; /* To position the coin absolutely within this area */
-            height: 60px; /* Further reduced height to allow coin to float */
+            height: 50px; /* Reduced height to allow coin to float */
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden; /* Hide overflowing animation */
-            margin-top: 0.2rem; /* Further reduced margin */
+            margin-top: 0.1rem; /* Further reduced margin */
         }
 
         .coin {
-            width: 50px; /* Smaller coin for reward */
-            height: 50px;
+            width: 40px; /* Smaller coin for reward */
+            height: 40px;
             background: radial-gradient(circle at 30% 30%, #ffd700, #e6ac00);
             border-radius: 50%;
             box-shadow:
                 inset -2px -2px 5px rgba(255, 255, 255, 0.3),
                 inset 2px 2px 5px rgba(0, 0, 0, 0.4),
-                0 0 10px rgba(255, 215, 0, 0.6);
+                0 0 8px rgba(255, 215, 0, 0.6); /* Reduced shadow */
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 24px; /* Smaller font for smaller coin */
+            font-size: 20px; /* Smaller font for smaller coin */
             font-weight: bold;
             color: #fff8dc;
             border: 1px solid #fff2a8;
@@ -1085,15 +1085,15 @@
             }
             20% {
                 opacity: 1;
-                transform: translateY(-10px) scale(1); /* Adjusted translateY */
+                transform: translateY(-8px) scale(1); /* Adjusted translateY */
             }
             80% {
                 opacity: 1;
-                transform: translateY(-40px) scale(1); /* Adjusted translateY */
+                transform: translateY(-35px) scale(1); /* Adjusted translateY */
             }
             100% {
                 opacity: 0;
-                transform: translateY(-60px) scale(0.8); /* Adjusted translateY */
+                transform: translateY(-50px) scale(0.8); /* Adjusted translateY */
             }
         }
 
@@ -1106,41 +1106,41 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.4rem; /* Reduced gap */
-            margin-bottom: 0.8rem; /* Reduced margin */
+            gap: 0.3rem; /* Reduced gap */
+            margin-bottom: 0.6rem; /* Reduced margin */
         }
 
         .quiz-container .quiz-header h1 {
-            font-size: 2rem; /* Reduced font size */
+            font-size: 1.8rem; /* Reduced font size */
             font-weight: 700;
             color: white;
-            margin-bottom: 0.4rem; /* Reduced margin */
+            margin-bottom: 0.3rem; /* Reduced margin */
         }
 
         /* Removed .quiz-container .timer-box as it's consolidated */
 
         .quiz-container .question-area {
             background: rgba(255, 255, 255, 0.08);
-            border-radius: 0.75rem;
-            padding: 1rem; /* Reduced padding */
+            border-radius: 0.6rem; /* Reduced border-radius */
+            padding: 0.8rem; /* Reduced padding */
             border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            margin-bottom: 0.8rem; /* Reduced margin */
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2); /* Reduced shadow */
+            margin-bottom: 0.6rem; /* Reduced margin */
             text-align: left;
         }
 
         .quiz-container .question-number {
-            font-size: 1.1rem; /* Reduced font size */
+            font-size: 1rem; /* Reduced font size */
             font-weight: 600;
             color: #818cf8; /* Indigo for question number */
-            margin-bottom: 0.4rem; /* Reduced margin */
+            margin-bottom: 0.3rem; /* Reduced margin */
         }
 
         .quiz-container .question-text-content {
-            font-size: 1.2rem; /* Reduced font size */
+            font-size: 1.1rem; /* Reduced font size */
             font-weight: 600;
             color: white;
-            line-height: 1.4; /* Reduced line height */
+            line-height: 1.3; /* Reduced line height */
         }
     </style>
 </head>
@@ -1176,8 +1176,8 @@
 
     <!-- Authentication Container (Login/Signup) -->
     <div class="auth-container" id="auth-container" style="display: none;">
-        <h1 class="text-3xl font-bold mb-6" id="auth-main-title">Welcome to the Quiz App!</h1>
-        <p class="text-lg mb-4" id="auth-intro-text">Please log in or sign up to continue.</p>
+        <h1 class="text-3xl font-bold mb-4" id="auth-main-title">Welcome to the Quiz App!</h1>
+        <p class="text-lg mb-3" id="auth-intro-text">Please log in or sign up to continue.</p>
 
         <div class="auth-toggle-buttons">
             <button id="show-login-button" class="toggle-auth-button active">Sign In</button>
@@ -1197,9 +1197,9 @@
             <p id="auth-error-message" class="error-message" style="display: none;"></p>
 
             <button id="email-login-button" class="glass-button-base glass-button-primary">Sign In with Email</button>
-            <button id="forgot-password-button" class="glass-button-base glass-button-orange mt-4">Forgot Password?</button>
+            <button id="forgot-password-button" class="glass-button-base glass-button-orange mt-3">Forgot Password?</button>
             
-            <div class="my-6 text-gray-500">OR</div>
+            <div class="my-4 text-gray-500">OR</div>
 
             <button id="google-login-button" class="glass-button-base glass-button-default">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" class="w-5 h-5 inline-block mr-2">
@@ -1287,7 +1287,7 @@
 
             <button id="email-signup-button" class="glass-button-base glass-button-light">Create an account</button>
             
-            <div class="my-6 text-gray-500">OR</div>
+            <div class="my-4 text-gray-500">OR</div>
 
             <button id="google-signup-button" class="glass-button-base glass-button-default">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" class="w-5 h-5 inline-block mr-2">
@@ -1307,12 +1307,12 @@
     <!-- Home Screen -->
     <div class="home-screen-container" id="home-screen-container" style="display: none;">
         <!-- Profile Icon removed from here, now in global header -->
-        <h1 class="text-3xl font-bold mb-6">Hello, <span id="welcome-user-name">User</span> 👋 Ready to Practice?</h1>
+        <h1 class="text-3xl font-bold mb-4">Hello, <span id="welcome-user-name">User</span> 👋 Ready to Practice?</h1>
         
-        <h2 class="text-2xl font-bold mb-4">📌 Quick Access: Choose a Subject to Practice</h2>
-        <p class="text-lg mb-4"></p>
+        <h2 class="text-2xl font-bold mb-3">📌 Quick Access: Choose a Subject to Practice</h2>
+        <p class="text-lg mb-3"></p>
 
-        <h3 class="text-xl font-bold mt-6 mb-3 text-left">🔹 Core Sections</h3>
+        <h3 class="text-xl font-bold mt-4 mb-2 text-left">🔹 Core Sections</h3>
         <div class="quick-access-grid">
             <div class="quick-access-card" id="card-general-awareness">
                 <span class="icon">📘</span>
@@ -1342,7 +1342,7 @@
             </div>
         </div>
 
-        <h3 class="text-xl font-bold mt-6 mb-3 text-left">🔸 Optional / Add-on Sections</h3>
+        <h3 class="text-xl font-bold mt-4 mb-2 text-left">🔸 Optional / Add-on Sections</h3>
         <div class="quick-access-grid">
             <div class="quick-access-card" id="card-computer-knowledge">
                 <span class="icon">🖥️</span>
@@ -1373,18 +1373,18 @@
 
     <!-- Subject Selection Container (for individual GA subjects) -->
     <div class="subject-selection-container" id="subject-selection-container" style="display: none;">
-        <h1 class="text-3xl font-bold mb-6">Choose Your Quiz Subject</h1>
+        <h1 class="text-3xl font-bold mb-4">Choose Your Quiz Subject</h1>
         <button id="economy-button" class="glass-button-base glass-button-default">Indian Economy</button>
         <button id="politics-button" class="glass-button-base glass-button-default">Indian Politics</button>
         <button id="history-button" class="glass-button-base glass-button-default">Indian History</button>
         <button id="geography-button" class="glass-button-base glass-button-default">Geography</button>
-        <button id="view-activity-button" class="glass-button-base glass-button-primary mt-4">View My Activity</button>
+        <button id="view-activity-button" class="glass-button-base glass-button-primary mt-3">View My Activity</button>
         <button id="view-profile-button" class="glass-button-base glass-button-primary mt-2">View My Profile</button>
     </div>
 
     <!-- General Awareness Sub-subjects Container -->
     <div class="ga-subjects-container" id="ga-subjects-container" style="display: none;">
-        <h1 class="text-3xl font-bold mb-6">General Awareness: Select Topic</h1>
+        <h1 class="text-3xl font-bold mb-4">General Awareness: Select Topic</h1>
         <button id="ga-static-gk-button" class="glass-button-base glass-button-default">Static GK</button>
         <button id="ga-current-affairs-button" class="glass-button-base glass-button-default">Current Affairs</button>
         <button id="ga-polity-button" class="glass-button-base glass-button-default">Polity</button>
@@ -1392,90 +1392,90 @@
         <button id="ga-geography-button" class="glass-button-base glass-button-default">Geography</button>
         <button id="ga-science-button" class="glass-button-base glass-button-default">Science</button>
         <button id="ga-economy-button" class="glass-button-base glass-button-default">Economy</button>
-        <button id="back-to-home-from-ga-subjects" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
+        <button id="back-to-home-from-ga-subjects" class="glass-button-base glass-button-primary mt-4">Back to Home</button>
     </div>
 
     <!-- Reasoning Sub-subjects Container -->
     <div class="reasoning-subjects-container" id="reasoning-subjects-container" style="display: none;">
-        <h1 class="text-3xl font-bold mb-6">Reasoning: Select Topic</h1>
+        <h1 class="text-3xl font-bold mb-4">Reasoning: Select Topic</h1>
         <button id="reasoning-analogy-button" class="glass-button-base glass-button-default">Analogy</button>
         <button id="reasoning-series-button" class="glass-button-base glass-button-default">Series</button>
         <button id="reasoning-puzzles-button" class="glass-button-base glass-button-default">Puzzles</button>
         <button id="reasoning-coding-decoding-button" class="glass-button-base glass-button-default">Coding-Decoding</button>
         <button id="reasoning-blood-relations-button" class="glass-button-base glass-button-default">Blood Relations</button>
-        <button id="back-to-home-from-reasoning-subjects" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
+        <button id="back-to-home-from-reasoning-subjects" class="glass-button-base glass-button-primary mt-4">Back to Home</button>
     </div>
 
     <!-- Quantitative Aptitude Sub-subjects Container -->
     <div class="quantitative-aptitude-subjects-container" id="quantitative-aptitude-subjects-container" style="display: none;">
-        <h1 class="text-3xl font-bold mb-6">Quantitative Aptitude: Select Topic</h1>
+        <h1 class="text-3xl font-bold mb-4">Quantitative Aptitude: Select Topic</h1>
         <button id="quant-arithmetic-button" class="glass-button-base glass-button-default">Arithmetic</button>
         <button id="quant-algebra-button" class="glass-button-base glass-button-default">Algebra</button>
         <button id="quant-geometry-button" class="glass-button-base glass-button-default">Geometry</button>
         <button id="quant-mensuration-button" class="glass-button-base glass-button-default">Mensuration</button>
         <button id="quant-trigonometry-button" class="glass-button-base glass-button-default">Trigonometry</button>
         <button id="quant-di-button" class="glass-button-base glass-button-default">Data Interpretation</button>
-        <button id="back-to-home-from-quant-subjects" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
+        <button id="back-to-home-from-quant-subjects" class="glass-button-base glass-button-primary mt-4">Back to Home</button>
     </div>
 
     <!-- English Language Sub-subjects Container -->
     <div class="english-language-subjects-container" id="english-language-subjects-container" style="display: none;">
-        <h1 class="text-3xl font-bold mb-6">English Language: Select Topic</h1>
+        <h1 class="text-3xl font-bold mb-4">English Language: Select Topic</h1>
         <button id="english-vocabulary-button" class="glass-button-base glass-button-default">Vocabulary</button>
         <button id="english-grammar-button" class="glass-button-base glass-button-default">Grammar</button>
         <button id="english-reading-comprehension-button" class="glass-button-base glass-button-default">Reading Comprehension</button>
         <button id="english-cloze-test-button" class="glass-button-base glass-button-default">Cloze Test</button>
         <button id="english-spot-error-button" class="glass-button-base glass-button-default">Spot the Error</button>
-        <button id="back-to-home-from-english-subjects" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
+        <button id="back-to-home-from-english-subjects" class="glass-button-base glass-button-primary mt-4">Back to Home</button>
     </div>
 
     <!-- Computer Knowledge Sub-subjects Container -->
     <div class="computer-knowledge-subjects-container" id="computer-knowledge-subjects-container" style="display: none;">
-        <h1 class="text-3xl font-bold mb-6">Computer Knowledge: Select Topic</h1>
+        <h1 class="text-3xl font-bold mb-4">Computer Knowledge: Select Topic</h1>
         <button id="computer-basics-button" class="glass-button-base glass-button-default">Basics of Computer</button>
         <button id="computer-internet-button" class="glass-button-base glass-button-default">Internet</button>
         <button id="computer-ms-office-button" class="glass-button-base glass-button-default">MS Office</button>
         <button id="computer-abbreviations-button" class="glass-button-base glass-button-default">Abbreviations</button>
-        <button id="back-to-home-from-computer-subjects" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
+        <button id="back-to-home-from-computer-subjects" class="glass-button-base glass-button-primary mt-4">Back to Home</button>
     </div>
 
     <!-- General Studies Sub-subjects Container -->
     <div class="general-studies-subjects-container" id="general-studies-subjects-container" style="display: none;">
-        <h1 class="text-3xl font-bold mb-6">General Studies: Select Topic</h1>
+        <h1 class="text-3xl font-bold mb-4">General Studies: Select Topic</h1>
         <button id="gs-engineering-button" class="glass-button-base glass-button-default">Engineering Subjects</button>
         <button id="gs-advanced-economy-button" class="glass-button-base glass-button-default">Advanced Economics</button>
         <button id="gs-advanced-polity-button" class="glass-button-base glass-button-default">Advanced Polity</button>
-        <button id="back-to-home-from-general-studies-subjects" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
+        <button id="back-to-home-from-general-studies-subjects" class="glass-button-base glass-button-primary mt-4">Back to Home</button>
     </div>
 
     <!-- Current Affairs Sub-subjects Container -->
     <div class="current-affairs-subjects-container" id="current-affairs-subjects-container" style="display: none;">
-        <h1 class="text-3xl font-bold mb-6">Current Affairs: Select Topic</h1>
+        <h1 class="text-3xl font-bold mb-4">Current Affairs: Select Topic</h1>
         <button id="ca-daily-quizzes-button" class="glass-button-base glass-button-default">Daily Quizzes</button>
         <button id="ca-budget-button" class="glass-button-base glass-button-default">Budget</button>
         <button id="ca-govt-schemes-button" class="glass-button-base glass-button-default">Government Schemes</button>
         <button id="ca-monthly-pdfs-button" class="glass-button-base glass-button-default">Monthly PDFs</button>
-        <button id="back-to-home-from-current-affairs-subjects" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
+        <button id="back-to-home-from-current-affairs-subjects" class="glass-button-base glass-button-primary mt-4">Back to Home</button>
     </div>
 
     <!-- Mock Test Zone Sub-subjects Container -->
     <div class="mock-test-zone-subjects-container" id="mock-test-zone-subjects-container" style="display: none;">
-        <h1 class="text-3xl font-bold mb-6">Mock Test Zone: Select Test Type</h1>
+        <h1 class="text-3xl font-bold mb-4">Mock Test Zone: Select Test Type</h1>
         <button id="mtz-full-length-mocks-button" class="glass-button-base glass-button-default">Full Length Mocks</button>
         <button id="mtz-sectional-tests-button" class="glass-button-base glass-button-default">Sectional Tests</button>
         <button id="mtz-tier-wise-tests-button" class="glass-button-base glass-button-default">Tier-wise Tests</button>
-        <button id="back-to-home-from-mock-test-zone-subjects" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
+        <button id="back-to-home-from-mock-test-zone-subjects" class="glass-button-base glass-button-primary mt-4">Back to Home</button>
     </div>
 
     <!-- Question Count Selection Container -->
     <div class="question-count-container" id="question-count-container" style="display: none;">
-        <h1 class="text-3xl font-bold mb-4">Practice <span id="selected-subject-title"></span></h1>
-        <p class="text-lg mb-4">Total questions available: <span id="total-available-questions" class="font-bold"></span></p>
+        <h1 class="text-3xl font-bold mb-3">Practice <span id="selected-subject-title"></span></h1>
+        <p class="text-lg mb-3">Total questions available: <span id="total-available-questions" class="font-bold"></span></p>
         <label for="num-questions" class="block text-lg font-medium mb-2">How many questions do you want to practice?</label>
         <input type="number" id="num-questions" class="question-count-input" min="1" value="5">
         <p id="question-count-error" class="error-message" style="display: none;"></p>
         <button id="start-practice-button" class="glass-button-base glass-button-primary">Start Practice</button>
-        <button id="back-to-subject-selection-from-question-count" class="glass-button-base glass-button-primary mt-6">Back to Subject Selection</button>
+        <button id="back-to-subject-selection-from-question-count" class="glass-button-base glass-button-primary mt-4">Back to Subject Selection</button>
     </div>
 
     <!-- Quiz Container (Practice/Test Module Page) -->
@@ -1504,7 +1504,7 @@
             <div id="auto-gemini-explanation-area" class="auto-gemini-explanation-area" style="display: none;"></div>
         </div>
 
-        <div id="options-container" class="flex flex-col gap-3">
+        <div id="options-container" class="flex flex-col gap-2">
             <!-- Options will be dynamically inserted here -->
         </div>
 
@@ -1521,7 +1521,7 @@
 
     <!-- Result Summary Page -->
     <div class="result-summary-container" id="result-summary-container" style="display: none;">
-        <h1 class="text-3xl font-bold mb-6">Quiz Results</h1>
+        <h1 class="text-3xl font-bold mb-4">Quiz Results</h1>
         <p>Subject: <span id="result-subject"></span></p>
         <p>Total Questions: <span id="result-total-questions"></span></p>
         <p>Correct Answers: <span id="result-correct-count" class="text-green-600"></span></p>
@@ -1539,7 +1539,7 @@
 
     <!-- Solution/Explanation Page -->
     <div class="solution-explanation-container" id="solution-explanation-container" style="display: none;">
-        <h1 class="text-3xl font-bold mb-6">Solutions & Explanations</h1>
+        <h1 class="text-3xl font-bold mb-4">Solutions & Explanations</h1>
         <div id="solutions-list" class="solutions-list-container">
             <!-- Solutions will be dynamically inserted here -->
         </div>
@@ -1549,18 +1549,18 @@
 
     <!-- User Data Container (Activity & Results) -->
     <div class="user-data-container" id="user-data-container" style="display: none;">
-        <h1 class="text-3xl font-bold mb-6">Your Activity & Results</h1>
+        <h1 class="text-3xl font-bold mb-4">Your Activity & Results</h1>
         <p class="streak-display">Current Daily Streak: <span id="current-streak-display">0</span> 🔥</p>
-        <h2 class="text-2xl font-bold mb-4">Past Quiz Attempts</h2>
+        <h2 class="text-2xl font-bold mb-3">Past Quiz Attempts</h2>
         <div id="past-attempts-list">
             <p class="text-gray-600">Loading your past quiz attempts...</p>
         </div>
-        <button id="back-to-quiz-selection" class="glass-button-base glass-button-primary mt-6">Back to Quiz Selection</button>
+        <button id="back-to-quiz-selection" class="glass-button-base glass-button-primary mt-4">Back to Quiz Selection</button>
     </div>
 
     <!-- User Profile Container -->
     <div class="user-profile-container" id="user-profile-container" style="display: none;">
-        <h1 class="text-3xl font-bold mb-6">My Profile</h1>
+        <h1 class="text-3xl font-bold mb-4">My Profile</h1>
         <div class="profile-info">
             <img id="profile-photo" src="https://placehold.co/120x120/cccccc/333333?text=No+Photo" alt="Profile Photo">
             
@@ -1604,7 +1604,7 @@
             <p id="profile-message" class="profile-message" style="display: none;"></p>
         </div>
 
-        <h2 class="text-2xl font-bold mb-4">Progress Stats</h2>
+        <h2 class="text-2xl font-bold mb-3">Progress Stats</h2>
         <div class="profile-stats-grid">
             <div class="profile-stat-card">
                 <span class="stat-value" id="profile-tests-attempted">0</span>
@@ -1638,16 +1638,16 @@
 
     <!-- Question History Container -->
     <div class="user-data-container" id="question-history-container" style="display: none;">
-        <h1 class="text-3xl font-bold mb-6">Your Question History</h1>
+        <h1 class="text-3xl font-bold mb-4">Your Question History</h1>
         <div id="question-history-list">
             <p class="text-gray-600">Loading your question history...</p>
         </div>
-        <button id="back-to-profile-from-question-history" class="glass-button-base glass-button-primary mt-6">Back to Profile</button>
+        <button id="back-to-profile-from-question-history" class="glass-button-base glass-button-primary mt-4">Back to Profile</button>
     </div>
 
     <!-- Settings Page -->
     <div class="settings-container" id="settings-container" style="display: none;">
-        <h1 class="text-3xl font-bold mb-6">Settings</h1>
+        <h1 class="text-3xl font-bold mb-4">Settings</h1>
 
         <div class="settings-option">
             <label for="change-password-button">Change Password</label>
@@ -1677,12 +1677,12 @@
             <button id="help-feedback-button" class="glass-button-base glass-button-primary">Go</button>
         </div>
 
-        <button id="back-to-profile-from-settings" class="glass-button-base glass-button-primary mt-6">Back to Profile</button>
+        <button id="back-to-profile-from-settings" class="glass-button-base glass-button-primary mt-4">Back to Profile</button>
     </div>
 
     <!-- Extra Features Page -->
     <div class="extra-features-container" id="extra-features-container" style="display: none;">
-        <h1 class="text-3xl font-bold mb-6">Extra Features (Future Scope)</h1>
+        <h1 class="text-3xl font-bold mb-4">Extra Features (Future Scope)</h1>
 
         <div class="feature-item">
             <span class="icon">🔔</span>
@@ -1705,7 +1705,7 @@
             Offline Mode
         </div>
 
-        <button id="back-to-home-from-extra-features" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
+        <button id="back-to-home-from-extra-features" class="glass-button-base glass-button-primary mt-4">Back to Home</button>
     </div>
 
     <script type="module">
@@ -2993,14 +2993,14 @@
                 // Add Gemini Explanation Button and Area
                 const geminiButton = document.createElement('button');
                 geminiButton.textContent = 'Get More Explanation (Gemini)';
-                geminiButton.classList.add('glass-button-base', 'glass-button-primary', 'mt-4');
+                geminiButton.classList.add('glass-button-base', 'glass-button-primary', 'mt-3'); /* Reduced margin-top */
                 geminiButton.style.width = 'auto'; // Adjust width for this button
-                geminiButton.style.padding = '0.6rem 1rem'; // Adjust padding
-                geminiButton.style.fontSize = '0.9rem'; // Adjust font size
+                geminiButton.style.padding = '0.5rem 0.8rem'; /* Reduced padding */
+                geminiButton.style.fontSize = '0.85rem'; /* Reduced font size */
                 solutionItem.appendChild(geminiButton);
 
                 const geminiExplanationArea = document.createElement('div');
-                geminiExplanationArea.classList.add('gemini-explanation-area', 'mt-3');
+                geminiExplanationArea.classList.add('gemini-explanation-area', 'mt-2'); /* Reduced margin-top */
                 geminiExplanationArea.style.display = 'none'; // Hidden by default
                 solutionItem.appendChild(geminiExplanationArea);
 
@@ -3236,7 +3236,7 @@
                 editGenderInput.value = ''; 
                 editAboutYouInput.value = ''; 
                 profileUserId.textContent = currentUserId;
-                profilePhoto.src = auth.currentUser.photoURL || "https://placehold.co/120x120/cccccc/333333?text=👤";
+                profilePhoto.src = auth.currentUser.photoURL || "https://placehold.co/120x120/cccccc/333333?text=�";
                 profileTestsAttempted.textContent = 'N/A';
                 profileAverageScore.textContent = 'N/A';
                 profileTotalPoints.textContent = 'N/A'; // Also set points to N/A on error
