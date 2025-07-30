@@ -1020,7 +1020,7 @@
             align-items: center;
             gap: 0.6rem; /* Reduced gap */
             padding: 0.5rem; /* Reduced padding */
-            background-color: rgba(255, 255, 255, 0.1); /* Glassmorphism background */
+            background-color: rgba(255, 255, 255, 0.1);
             border-radius: 0.6rem; /* Reduced border-radius */
             border: 1px solid rgba(255, 255, 255, 0.2); /* Glassmorphism border */
             font-size: 0.95rem; /* Reduced font size */
@@ -1669,6 +1669,9 @@
 
         <!-- Quiz Navigation Buttons (Moved here) -->
         <div class="quiz-navigation-buttons">
+            <button id="bookmark-question-button" class="glass-button-base glass-button-default">
+                <span class="icon">🔖</span> Bookmark
+            </button>
             <button id="back-to-question-count-from-quiz" class="glass-button-base glass-button-primary">Back</button>
             <button id="next-button" class="glass-button-base glass-button-primary" disabled>Next</button>
             <button id="show-result-button" class="glass-button-base glass-button-primary">Result</button>
@@ -1891,6 +1894,12 @@
         <h1 class="text-3xl font-bold mb-4">Bookmark Difficult Questions</h1>
         <p class="text-lg mb-4">Save questions you find challenging for later review.</p>
         <p class="text-gray-400">You will be able to mark questions as difficult during a quiz and revisit them from this section for focused revision.</p>
+        
+        <div id="bookmarked-questions-list" class="solutions-list-container mt-4">
+            <!-- Bookmarked questions will be dynamically inserted here -->
+            <p class="text-gray-600">Loading bookmarked questions...</p>
+        </div>
+
         <button id="back-to-extra-features-from-bookmark" class="glass-button-base glass-button-primary mt-4">Back to Extra Features</button>
     </div>
 
@@ -1985,6 +1994,7 @@
 
         let allQuestionsFromDB = {}; 
         let quizQuestionsAttempted = []; // New: To store questions for solutions page
+        let bookmarkedQuestionsData = {}; // New: To store bookmarked question IDs and their data
 
         let questions = []; 
         let currentQuestionIndex = 0;
@@ -2255,6 +2265,10 @@
         const newUpdatesList = document.getElementById('new-updates-list');
         const closeNotificationModalButton = document.getElementById('close-notification-modal');
 
+        // New: Bookmark button and list
+        const bookmarkQuestionButton = document.getElementById('bookmark-question-button');
+        const bookmarkedQuestionsList = document.getElementById('bookmarked-questions-list');
+
 
         /**
          * Toggles the visibility between the login and signup forms.
@@ -2394,8 +2408,10 @@
                 // Update welcome message on home screen
                 welcomeUserName.textContent = userDisplayName.split(' ')[0]; // Always set the user's first name
 
-                // Fetch user data to check hasSeenFirstTimeWelcome flag
+                // Fetch user data to check hasSeenFirstTimeWelcome flag and bookmarks
                 const userRef = ref(db, `users/${userId}`);
+                const bookmarkedRef = ref(db, `users/${userId}/bookmarkedQuestions`);
+
                 try {
                     const snapshot = await get(userRef);
                     let userData = {};
@@ -2416,6 +2432,17 @@
                     currentStreakDisplay.textContent = userData.currentStreak || 0;
                     userPoints = userData.totalPoints || 0; // Initialize userPoints
                     console.log("UI: Fetched user streak:", userData.currentStreak, "and points:", userPoints);
+
+                    // Fetch bookmarked questions for the logged-in user
+                    const bookmarkSnapshot = await get(bookmarkedRef);
+                    if (bookmarkSnapshot.exists()) {
+                        bookmarkedQuestionsData = bookmarkSnapshot.val();
+                        console.log("UI: Fetched user's bookmarked questions:", Object.keys(bookmarkedQuestionsData).length);
+                    } else {
+                        bookmarkedQuestionsData = {};
+                        console.log("UI: No bookmarked questions found for user.");
+                    }
+
 
                     // Update user profile data in Realtime DB (display name, email, photoURL)
                     const profileUpdates = {};
@@ -2438,10 +2465,11 @@
                     await checkForNewAdminUpdates();
 
                 } catch (error) {
-                    console.error("UI: Error fetching/setting user data for welcome message or streak/profile:", error);
+                    console.error("UI: Error fetching/setting user data for welcome message or streak/profile/bookmarks:", error);
                     // Fallback to default if error
                     firstTimeGreetingSuffix.style.display = 'none'; // Hide suffix on error
                     currentStreakDisplay.textContent = "Error";
+                    bookmarkedQuestionsData = {}; // Ensure it's empty on error
                 }
 
 
@@ -2485,6 +2513,7 @@
                 userId = null;
                 currentUserEmail = null;
                 userPoints = 0; // Reset points on logout
+                bookmarkedQuestionsData = {}; // Clear bookmarks on logout
                 console.log("UI: User logged out, showing login screen.");
                 mainHeader.style.display = 'none'; // Hide the header when logged out
                 splashScreen.classList.add('hidden'); // Ensure splash screen fades out
@@ -2895,6 +2924,16 @@
                 timerDisplay.textContent = timePerQuestion; 
                 questionStartTime = new Date().getTime(); 
 
+                // Check if the current question is bookmarked and update the bookmark button's state
+                const isBookmarked = bookmarkedQuestionsData[questionData.id] ? true : false;
+                if (isBookmarked) {
+                    bookmarkQuestionButton.classList.add('glass-button-orange'); // Highlight if bookmarked
+                    bookmarkQuestionButton.innerHTML = '<span class="icon">✅</span> Bookmarked';
+                } else {
+                    bookmarkQuestionButton.classList.remove('glass-button-orange');
+                    bookmarkQuestionButton.innerHTML = '<span class="icon">🔖</span> Bookmark';
+                }
+
                 // Randomize the order of options for the current question
                 const shuffledOptions = shuffleArray([...questionData.options]); 
 
@@ -3017,24 +3056,52 @@
                 incorrectAnswersCount++;
                 console.log("QUIZ: Answer: Incorrect!");
 
-                // Automatically get Gemini explanation for incorrect answers
+                // --- NEW LOGIC FOR EXPLANATION ---
                 autoGeminiExplanationArea.style.display = 'block';
-                autoGeminiExplanationArea.innerHTML = '<div class="spinner"></div><p class="text-center text-gray-400">Generating explanation with Gemini...</p>';
-                console.log("GEMINI: Requesting explanation for incorrect answer...");
+                autoGeminiExplanationArea.innerHTML = '<div class="spinner"></div><p class="text-center text-gray-400">Generating explanation...</p>';
+                console.log("EXPLANATION: Checking for existing explanation in DB...");
 
-                try {
-                    const geminiExp = await getGeminiExplanation(
-                        currentQuestion.question,
-                        currentQuestion.answer,
-                        currentQuestion.explanation || ''
-                    );
-                    autoGeminiExplanationArea.textContent = geminiExp;
-                    console.log("GEMINI: Explanation received and displayed.");
-                } catch (error) {
-                    autoGeminiExplanationArea.textContent = `Error getting explanation: ${error.message}`;
-                    autoGeminiExplanationArea.style.color = '#ef4444';
-                    console.error("GEMINI: Error getting explanation:", error);
+                let explanationToDisplay = currentQuestion.explanation || '';
+                let explanationSource = 'DB';
+
+                if (!explanationToDisplay.trim()) { // If explanation is empty or just whitespace
+                    console.log("EXPLANATION: No existing explanation found in DB. Calling Gemini...");
+                    autoGeminiExplanationArea.innerHTML = '<div class="spinner"></div><p class="text-center text-gray-400">Generating explanation with Gemini...</p>';
+                    try {
+                        const geminiExp = await getGeminiExplanation(
+                            currentQuestion.question,
+                            currentQuestion.answer,
+                            '' // No existing explanation to pass as context
+                        );
+                        explanationToDisplay = geminiExp;
+                        explanationSource = 'Gemini';
+
+                        // Save the Gemini-generated explanation back to the database
+                        if (auth.currentUser && auth.currentUser.uid && currentQuestion.id) {
+                            const questionRef = ref(db, `questions/${currentQuestion.id}/explanation`);
+                            await set(questionRef, geminiExp);
+                            console.log(`DB: Gemini explanation saved for question ID: ${currentQuestion.id}`);
+
+                            // Update the local allQuestionsFromDB cache
+                            if (allQuestionsFromDB[currentQuestion.subject]) {
+                                const qIndex = allQuestionsFromDB[currentQuestion.subject].findIndex(q => q.id === currentQuestion.id);
+                                if (qIndex !== -1) {
+                                    allQuestionsFromDB[currentQuestion.subject][qIndex].explanation = geminiExp;
+                                    console.log(`LOCAL_CACHE: Updated explanation in local cache for question ID: ${currentQuestion.id}`);
+                                }
+                            }
+                        }
+                    } catch (error) {
+                        explanationToDisplay = `Error getting explanation: ${error.message}`;
+                        explanationSource = 'Error';
+                        console.error("GEMINI: Error getting explanation:", error);
+                    }
+                } else {
+                    console.log("EXPLANATION: Existing explanation found in DB.");
                 }
+                
+                autoGeminiExplanationArea.textContent = explanationToDisplay;
+                // --- END NEW LOGIC ---
             }
             showAnswer(correctAnswer, selectedButton);
             nextButton.disabled = false; 
@@ -3059,6 +3126,58 @@
                 } catch (error) {
                     console.error("DB: Error saving question attempt:", error);
                 }
+            }
+        }
+
+        /**
+         * Toggles the bookmark status of the current question.
+         */
+        async function toggleBookmark() {
+            if (!auth.currentUser || !auth.currentUser.uid) {
+                console.warn("BOOKMARK: No user logged in to bookmark questions.");
+                // Optionally show a message to the user
+                return;
+            }
+
+            const currentUserId = auth.currentUser.uid;
+            const currentQuestion = questions[currentQuestionIndex];
+            if (!currentQuestion || !currentQuestion.id) {
+                console.error("BOOKMARK: No current question or question ID available to bookmark.");
+                return;
+            }
+
+            const bookmarkRef = ref(db, `users/${currentUserId}/bookmarkedQuestions/${currentQuestion.id}`);
+
+            try {
+                const snapshot = await get(bookmarkRef);
+                if (snapshot.exists()) {
+                    // Question is already bookmarked, remove it
+                    await set(bookmarkRef, null); // Remove the node
+                    delete bookmarkedQuestionsData[currentQuestion.id]; // Remove from local cache
+                    bookmarkQuestionButton.classList.remove('glass-button-orange');
+                    bookmarkQuestionButton.innerHTML = '<span class="icon">🔖</span> Bookmark';
+                    console.log(`BOOKMARK: Question ${currentQuestion.id} unbookmarked.`);
+                } else {
+                    // Question is not bookmarked, add it
+                    await set(bookmarkRef, {
+                        questionId: currentQuestion.id,
+                        questionText: currentQuestion.question,
+                        subject: selectedSubjectName,
+                        timestamp: serverTimestamp()
+                    });
+                    bookmarkedQuestionsData[currentQuestion.id] = { // Add to local cache
+                        questionId: currentQuestion.id,
+                        questionText: currentQuestion.question,
+                        subject: selectedSubjectName,
+                        timestamp: new Date().getTime() // Use client-side time for immediate UI update
+                    };
+                    bookmarkQuestionButton.classList.add('glass-button-orange');
+                    bookmarkQuestionButton.innerHTML = '<span class="icon">✅</span> Bookmarked';
+                    console.log(`BOOKMARK: Question ${currentQuestion.id} bookmarked.`);
+                }
+            } catch (error) {
+                console.error("BOOKMARK: Error toggling bookmark:", error);
+                // Optionally show an error message to the user
             }
         }
 
@@ -3316,6 +3435,144 @@
 
                 solutionsList.appendChild(solutionItem);
             });
+        }
+
+        /**
+         * Fetches and displays the user's bookmarked questions.
+         */
+        async function displayBookmarkQuestions() {
+            console.log("BOOKMARK_VIEW: displayBookmarkQuestions called.");
+            if (!auth.currentUser || !auth.currentUser.uid) {
+                console.log("BOOKMARK_VIEW: No user logged in to display bookmarked questions.");
+                // Optionally show a message to the user
+                return;
+            }
+
+            hideAllContainers();
+            bookmarkQuestionsPage.style.display = 'flex';
+            bookmarkedQuestionsList.innerHTML = '<p class="text-gray-600">Loading your bookmarked questions...</p>';
+
+            const currentUserId = auth.currentUser.uid;
+            const bookmarkedRef = ref(db, `users/${currentUserId}/bookmarkedQuestions`);
+
+            try {
+                const snapshot = await get(bookmarkedRef);
+                if (!snapshot.exists() || Object.keys(snapshot.val()).length === 0) {
+                    bookmarkedQuestionsList.innerHTML = '<p class="text-gray-600">You have no bookmarked questions yet.</p>';
+                    console.log("BOOKMARK_VIEW: No bookmarked questions found.");
+                    bookmarkedQuestionsData = {}; // Clear local cache if none found
+                } else {
+                    const bookmarks = snapshot.val();
+                    bookmarkedQuestionsData = bookmarks; // Update local cache
+                    const bookmarkedArray = Object.keys(bookmarks).map(key => ({
+                        id: key,
+                        ...bookmarks[key]
+                    }));
+
+                    // Sort by timestamp descending (most recent first)
+                    bookmarkedArray.sort((a, b) => b.timestamp - a.timestamp);
+
+                    let bookmarksHtml = '';
+                    for (const bookmark of bookmarkedArray) {
+                        const date = formatTimestamp(bookmark.timestamp);
+                        
+                        // Fetch full question data to get explanation if available
+                        let fullQuestionData = null;
+                        if (allQuestionsFromDB[bookmark.subject]) {
+                            fullQuestionData = allQuestionsFromDB[bookmark.subject].find(q => q.id === bookmark.questionId);
+                        } else {
+                            // If subject not found in allQuestionsFromDB (e.g., new subject added after last fetch)
+                            // Try to fetch individual question from /questions/{questionId} if possible
+                            const questionSnap = await get(ref(db, `questions/${bookmark.questionId}`));
+                            if (questionSnap.exists()) {
+                                fullQuestionData = questionSnap.val();
+                                fullQuestionData.id = bookmark.questionId; // Add ID
+                            }
+                        }
+
+                        const explanationText = fullQuestionData?.explanation || 'Explanation not available for this question.';
+                        const correctAnswer = fullQuestionData?.answer || 'N/A';
+                        const questionText = fullQuestionData?.question || bookmark.questionText; // Fallback to bookmarked text
+
+                        bookmarksHtml += `
+                            <div class="solution-item">
+                                <p class="font-bold">Question: <span class="solution-q-text">${questionText}</span></p>
+                                <p>Subject: ${bookmark.subject || 'N/A'}</p>
+                                <p>Correct Answer: <span class="solution-a-text">${correctAnswer}</span></p>
+                                <p>Bookmarked on: <span class="text-gray-400">${date}</span></p>
+                                <p class="text-gray-700 mt-2">Explanation: <span class="solution-exp-text">${explanationText}</span></p>
+                                
+                                <button class="glass-button-base glass-button-danger mt-3 remove-bookmark-button" data-question-id="${bookmark.id}">
+                                    <span class="icon">🗑️</span> Remove Bookmark
+                                </button>
+                                <button class="glass-button-base glass-button-primary mt-2 view-gemini-explanation" data-question="${questionText}" data-answer="${correctAnswer}" data-explanation="${explanationText}">
+                                    Get More Explanation (Gemini)
+                                </button>
+                                <div class="gemini-explanation-area mt-2" style="display: none;"></div>
+                            </div>
+                        `;
+                    }
+                    bookmarkedQuestionsList.innerHTML = bookmarksHtml;
+                    console.log("BOOKMARK_VIEW: Bookmarked questions displayed.");
+
+                    // Attach event listeners for "Remove Bookmark" buttons
+                    document.querySelectorAll('.remove-bookmark-button').forEach(button => {
+                        button.addEventListener('click', async (event) => {
+                            const questionIdToRemove = event.target.dataset.questionId;
+                            console.log(`BOOKMARK_VIEW: Removing bookmark for question ID: ${questionIdToRemove}`);
+                            const bookmarkToRemoveRef = ref(db, `users/${currentUserId}/bookmarkedQuestions/${questionIdToRemove}`);
+                            try {
+                                await set(bookmarkToRemoveRef, null);
+                                delete bookmarkedQuestionsData[questionIdToRemove]; // Update local cache
+                                event.target.closest('.solution-item').remove(); // Remove from UI
+                                if (Object.keys(bookmarkedQuestionsData).length === 0) {
+                                    bookmarkedQuestionsList.innerHTML = '<p class="text-gray-600">You have no bookmarked questions yet.</p>';
+                                }
+                                console.log(`BOOKMARK_VIEW: Bookmark ${questionIdToRemove} removed successfully.`);
+                            } catch (error) {
+                                console.error("BOOKMARK_VIEW: Error removing bookmark:", error);
+                                // Optionally show error to user
+                            }
+                        });
+                    });
+
+                    // Attach event listeners for Gemini explanation buttons
+                    document.querySelectorAll('.view-gemini-explanation').forEach(button => {
+                        button.addEventListener('click', async (event) => {
+                            const btn = event.target;
+                            const qText = btn.dataset.question;
+                            const ans = btn.dataset.answer;
+                            const existingExp = btn.dataset.explanation;
+                            const explanationArea = btn.nextElementSibling; // The div right after the button
+
+                            btn.disabled = true;
+                            btn.textContent = ''; // Clear text
+                            const spinner = document.createElement('div');
+                            spinner.classList.add('spinner');
+                            btn.appendChild(spinner); // Add spinner
+
+                            explanationArea.style.display = 'block';
+                            explanationArea.innerHTML = '<p class="text-center text-gray-400">Generating explanation with Gemini...</p>';
+
+                            try {
+                                const geminiExp = await getGeminiExplanation(qText, ans, existingExp);
+                                explanationArea.textContent = geminiExp;
+                            } catch (error) {
+                                explanationArea.textContent = `Error: ${error.message}`;
+                                explanationArea.style.color = '#ef4444';
+                                console.error("BOOKMARK_VIEW: Error getting Gemini explanation:", error);
+                            } finally {
+                                btn.disabled = false;
+                                btn.textContent = 'Get More Explanation (Gemini)'; // Restore text
+                                spinner.remove(); // Remove spinner
+                            }
+                        });
+                    });
+                }
+            } catch (error) {
+                console.error("BOOKMARK_VIEW: Error fetching bookmarked questions:", error);
+                bookmarkedQuestionsList.innerHTML = '<p class="text-red-500">Error loading bookmarked questions. Please try again.</p>';
+            }
         }
 
         /**
@@ -4228,6 +4485,7 @@
             featureBookmarkQuestions.addEventListener('click', () => {
                 hideAllContainers();
                 bookmarkQuestionsPage.style.display = 'flex';
+                displayBookmarkQuestions(); // Call function to display bookmarked questions
             });
             featureDoubtDiscussionForum.addEventListener('click', () => {
                 hideAllContainers();
@@ -4251,6 +4509,9 @@
 
             // Event listener for closing the notification modal
             closeNotificationModalButton.addEventListener('click', markAdminUpdatesAsRead);
+
+            // Quiz Bookmark Button
+            bookmarkQuestionButton.addEventListener('click', toggleBookmark);
         });
     </script>
 </body>
