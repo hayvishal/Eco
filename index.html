@@ -3961,28 +3961,65 @@
                     historyArray.sort((a, b) => b.timestamp - a.timestamp);
 
                     let historyHtml = '';
-                    historyArray.forEach((data) => {
+                    for (const data of historyArray) { // Use for...of for async operations inside loop
                         const statusClass = data.isCorrect ? 'text-green-500' : 'text-red-500';
                         const statusText = data.isCorrect ? 'Correct' : 'Incorrect';
                         const date = formatTimestamp(data.timestamp);
 
+                        let questionExplanation = 'Explanation not available for this question.';
+                        let questionCorrectAnswer = 'N/A';
+                        let questionText = data.questionText; // Default to stored text
+
+                        // Attempt to fetch full question data from allQuestionsFromDB cache
+                        let fullQuestionData = null;
+                        if (data.subject && allQuestionsFromDB[data.subject]) {
+                            fullQuestionData = allQuestionsFromDB[data.subject].find(q => q.id === data.questionId);
+                        }
+
+                        // If not found in local cache, try fetching directly from /questions/
+                        if (!fullQuestionData && data.questionId) {
+                            try {
+                                const questionSnap = await get(ref(db, `questions/${data.questionId}`));
+                                if (questionSnap.exists()) {
+                                    fullQuestionData = questionSnap.val();
+                                    fullQuestionData.id = data.questionId; // Ensure ID is set
+                                    // Optionally, update allQuestionsFromDB for future use if this is a new subject/question
+                                    if (fullQuestionData.subject && !allQuestionsFromDB[fullQuestionData.subject]) {
+                                        allQuestionsFromDB[fullQuestionData.subject] = [];
+                                    }
+                                    if (fullQuestionData.subject && !allQuestionsFromDB[fullQuestionData.subject].some(q => q.id === fullQuestionData.id)) {
+                                        allQuestionsFromDB[fullQuestionData.subject].push(fullQuestionData);
+                                    }
+                                }
+                            } catch (error) {
+                                console.error(`HISTORY: Error fetching full question data for ${data.questionId}:`, error);
+                            }
+                        }
+
+                        if (fullQuestionData) {
+                            questionExplanation = fullQuestionData.explanation || questionExplanation;
+                            questionCorrectAnswer = fullQuestionData.answer || questionCorrectAnswer;
+                            questionText = fullQuestionData.question || questionText;
+                        }
+
                         historyHtml += `
                             <div class="solution-item">
-                                <p class="font-bold">Question: <span class="solution-q-text">${data.questionText}</span></p>
+                                <p class="font-bold">Question: <span class="solution-q-text">${questionText}</span></p>
                                 <p>Your Answer: ${data.userAnswer}</p>
-                                <p>Correct Answer: <span class="solution-a-text">${data.correctAnswer}</span></p>
+                                <p>Correct Answer: <span class="solution-a-text">${questionCorrectAnswer}</span></p>
                                 <p>Status: <span class="${statusClass}">${statusText}</span></p>
+                                <p class="text-gray-700 mt-2">Explanation: <span class="solution-exp-text">${questionExplanation}</span></p>
                                 <p class="text-sm text-gray-400">Attempted on: ${date}</p>
                                 <button class="glass-button-base glass-button-primary mt-2 view-gemini-explanation" 
-                                        data-question="${encodeURIComponent(data.questionText)}" 
-                                        data-answer="${encodeURIComponent(data.correctAnswer)}" 
-                                        data-explanation="">
-                                    Get Explanation
+                                        data-question="${encodeURIComponent(questionText)}" 
+                                        data-answer="${encodeURIComponent(questionCorrectAnswer)}" 
+                                        data-explanation="${encodeURIComponent(questionExplanation)}">
+                                    Get More Explanation (Gemini)
                                 </button>
                                 <div class="gemini-explanation-area mt-2" style="display: none;"></div>
                             </div>
                         `;
-                    });
+                    }
                     questionHistoryList.innerHTML = historyHtml;
                     console.log("HISTORY: Question history displayed.");
 
@@ -4013,7 +4050,7 @@
                                 console.error("HISTORY: Error getting Gemini explanation for history:", error);
                             } finally {
                                 btn.disabled = false;
-                                btn.textContent = 'Get Explanation'; // Restore text
+                                btn.textContent = 'Get More Explanation (Gemini)'; // Restore text
                                 spinner.remove(); // Remove spinner
                             }
                         });
@@ -4253,7 +4290,10 @@
             console.log("SHARE: Share Score button clicked.");
             const score = resultScorePercentage.textContent;
             const subject = resultSubject.textContent;
-            const message = `I scored ${score} in the ${subject} quiz on SSC Prep App! Can you beat me? #SSCPrep #Quiz`;
+            const userDisplayName = auth.currentUser ? auth.currentUser.displayName || auth.currentUser.email || 'A Quiz Taker' : 'A Quiz Taker';
+            const shareUrl = "https://example.com/quiz-results"; // Placeholder URL for a hypothetical results page
+
+            const message = `Hey, check out my score! I, ${userDisplayName.split(' ')[0]}, just scored ${score} in the ${subject} quiz on SSC Prep App! Challenge yourself: ${shareUrl} #SSCPrep #Quiz`;
             
             if (navigator.share) {
                 console.log("SHARE: Using Web Share API.");
@@ -4261,6 +4301,7 @@
                     await navigator.share({
                         title: 'My Quiz Score',
                         text: message,
+                        url: shareUrl // Include the URL in the share data
                     });
                     console.log('SHARE: Share successful');
                 } catch (error) {
