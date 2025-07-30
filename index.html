@@ -161,6 +161,13 @@
             overflow: hidden; /* Hide overflow for gradient effect */
         }
 
+        /* Specific style for bookmark-questions-page to allow full vertical scrolling */
+        .bookmark-questions-page {
+            /* Removed min-height and overflow: visible to allow internal scrolling */
+            justify-content: space-between; /* Pushes content to top and bottom */
+        }
+
+
         /* Gradient lighting effect for auth-container (and now all main containers, excluding splash-screen) */
         .auth-container::before, .quiz-container::before, .subject-selection-container::before, .question-count-container::before, .user-data-container::before, .user-profile-container::before, .home-screen-container::before, .result-summary-container::before, .solution-explanation-container::before, .settings-container::before, .extra-features-container::before, .ga-subjects-container::before, .reasoning-subjects-container::before, .quantitative-aptitude-subjects-container::before, .english-language-subjects-container::before, .computer-knowledge-subjects-container::before, .general-studies-subjects-container::before, .current-affairs-subjects-container::before, .mock-test-zone-subjects-container::before,
         /* New feature pages */
@@ -321,9 +328,6 @@
         }
 
         /* Home Screen Styles */
-        .home-screen-container {
-            /* Removed absolute positioning for profile icon, now handled by global header */
-        }
         .home-screen-container h1,
         .home-screen-container h2,
         .home-screen-container h3,
@@ -394,7 +398,7 @@
             cursor: pointer;
             font-size: 0.95rem; /* Reduced font size */
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: all 0.3s ease; /* Enhanced transition */
             text-align: center;
             display: block; /* Default to block for full width */
             width: 100%; /* Default to full width */
@@ -403,20 +407,40 @@
             align-items: center;
             justify-content: center;
             gap: 0.3rem; /* Reduced spacing between icon and text */
+            position: relative; /* For pseudo-elements or subtle effects */
+            overflow: hidden; /* For hover effects */
         }
         .glass-button-base:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3); /* Reduced shadow on hover */
+            transform: translateY(-3px); /* More pronounced lift */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Stronger shadow */
+            background-color: rgba(255, 255, 255, 0.25); /* Slightly more opaque */
+            border-color: rgba(255, 255, 255, 0.5); /* More visible border */
         }
         .glass-button-base:active {
-            transform: scale(0.98);
-            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1); /* Reduced shadow on active */
+            transform: scale(0.96); /* More pronounced press */
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
         }
         .glass-button-base:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
+        }
+
+        /* Add a subtle "shine" effect on hover */
+        .glass-button-base::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1) 50%, transparent);
+            transition: transform 0.4s ease-in-out;
+            z-index: 0;
+        }
+        .glass-button-base:hover::before {
+            transform: translateX(100%);
         }
 
         /* Specific Button Styles */
@@ -477,14 +501,16 @@
 
         /* Special styles for correct/incorrect options in quiz */
         .option-button.correct {
-            background-color: rgba(167, 243, 208, 0.3); /* Green for correct with transparency */
+            background-color: rgba(167, 243, 208, 0.4); /* Slightly more opaque green for correct with transparency */
             border-color: #34d399;
             color: white; /* Keep text white */
+            box-shadow: 0 0 15px rgba(52, 211, 153, 0.6); /* Subtle glow for correct */
         }
         .option-button.incorrect {
-            background-color: rgba(254, 202, 202, 0.3); /* Red for incorrect with transparency */
+            background-color: rgba(254, 202, 202, 0.4); /* Slightly more opaque red for incorrect with transparency */
             border-color: #ef4444;
             color: white; /* Keep text white */
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.6); /* Subtle glow for incorrect */
         }
 
         /* Auth Toggle Buttons (Sign up / Sign in) - specific styling, not using general glass-button-base */
@@ -568,10 +594,12 @@
             margin-top: 0.3rem; /* Further reduced margin above buttons */
             margin-bottom: 0.3rem; /* Further reduced margin below buttons */
             justify-content: center; /* Center the buttons */
+            flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
         }
         .quiz-navigation-buttons .glass-button-primary {
             flex: 1; /* Make buttons take equal width */
-            margin-bottom: 0; /* Override default margin for flex container */
+            min-width: 120px; /* Ensure buttons don't get too small */
+            margin-bottom: 0.3rem; /* Add margin for wrapping */
         }
         .quiz-finished-message {
             font-size: 1.4rem; /* Reduced font size */
@@ -877,6 +905,8 @@
         }
         .solution-item .solution-exp-text {
             color: rgba(255, 255, 255, 0.8); /* Changed for glassmorphism */
+            white-space: pre-wrap; /* Ensure text wraps correctly */
+            word-wrap: break-word; /* Break long words */
         }
         .solution-item .solution-learn-more {
             color: #818cf8; /* Indigo for learn more */
@@ -888,11 +918,20 @@
             color: #6366f1; /* Darker indigo on hover */
         }
         .solutions-list-container {
-            max-height: 250px; /* Reduced height for scrollability */
+            max-height: calc(100vh - 250px); /* Dynamic height for scrollability */
             overflow-y: auto; /* Enable vertical scrolling */
             padding-right: 6px; /* Space for scrollbar */
             margin-bottom: 0.8rem; /* Reduced margin */
         }
+
+        /* Specific styles for the bookmarked questions list to allow internal scrolling */
+        #bookmarked-questions-list {
+            max-height: calc(100vh - 250px); /* Set a dynamic max-height to fit the screen */
+            overflow-y: auto; /* Enable vertical scrolling */
+            flex-grow: 1; /* Allow it to take available space within its flex parent */
+            padding-right: 6px; /* Space for scrollbar */
+        }
+
 
         /* Profile Page Specific Styles */
         .profile-stats-grid {
@@ -1036,6 +1075,7 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
         }
+
         .feature-item .icon {
             font-size: 1.4rem; /* Reduced icon size */
             color: #818cf8; /* Indigo for icons */
@@ -1693,9 +1733,9 @@
 
         <div class="result-summary-buttons">
             <button id="view-solutions-button" class="glass-button-base glass-button-primary">View Solutions</button>
-            <button id="retry-test-button" class="glass-button-base glass-button-green">Retry Test</button>
+            <button id="retry-test-button" class="glass-button-base glass-button-green">Home</button>
             <button id="share-score-button" class="glass-button-base glass-button-orange">Share Score</button>
-            <button id="back-to-question-count-from-result" class="glass-button-base glass-button-primary">Back to Question Count</button>
+            <button id="back-to-question-count-from-result" class="glass-button-base glass-button-primary">Retry</button>
         </div>
     </div>
 
@@ -1801,7 +1841,7 @@
     <!-- Question History Container -->
     <div class="user-data-container" id="question-history-container" style="display: none;">
         <h1 class="text-3xl font-bold mb-4">Your Question History</h1>
-        <div id="question-history-list">
+        <div id="question-history-list" class="solutions-list-container">
             <p class="text-gray-600">Loading your question history...</p>
         </div>
         <button id="back-to-profile-from-question-history" class="glass-button-base glass-button-primary mt-4">Back to Profile</button>
@@ -1892,8 +1932,6 @@
     <!-- Bookmark Difficult Questions Page -->
     <div class="bookmark-questions-page" id="bookmark-questions-page" style="display: none;">
         <h1 class="text-3xl font-bold mb-4">Bookmark Difficult Questions</h1>
-        <p class="text-lg mb-4">Save questions you find challenging for later review.</p>
-        <p class="text-gray-400">You will be able to mark questions as difficult during a quiz and revisit them from this section for focused revision.</p>
         
         <div id="bookmarked-questions-list" class="solutions-list-container mt-4">
             <!-- Bookmarked questions will be dynamically inserted here -->
@@ -2838,7 +2876,7 @@
                 startPracticeButton.disabled = true; 
                 
                 hideAllContainers(); // Hide all containers
-                questionCountContainer.style.display = 'flex'; 
+                questionCountContainer.style.display = 'flex';
 
                 selectedSubjectTitle.textContent = subject;
                 totalAvailableQuestionsSpan.textContent = 0; 
@@ -3139,13 +3177,13 @@
                 return;
             }
 
-            const currentUserId = auth.currentUser.uid;
             const currentQuestion = questions[currentQuestionIndex];
             if (!currentQuestion || !currentQuestion.id) {
                 console.error("BOOKMARK: No current question or question ID available to bookmark.");
                 return;
             }
 
+            const currentUserId = auth.currentUser.uid;
             const bookmarkRef = ref(db, `users/${currentUserId}/bookmarkedQuestions/${currentQuestion.id}`);
 
             try {
@@ -3490,9 +3528,10 @@
                             }
                         }
 
-                        const explanationText = fullQuestionData?.explanation || 'Explanation not available for this question.';
+                        // Ensure questionText, correctAnswer, and explanationText are available, with fallbacks
+                        const questionText = fullQuestionData?.question || bookmark.questionText || 'Question text not available.';
                         const correctAnswer = fullQuestionData?.answer || 'N/A';
-                        const questionText = fullQuestionData?.question || bookmark.questionText; // Fallback to bookmarked text
+                        const explanationText = fullQuestionData?.explanation || 'Explanation not available for this question.';
 
                         bookmarksHtml += `
                             <div class="solution-item">
@@ -3505,7 +3544,10 @@
                                 <button class="glass-button-base glass-button-danger mt-3 remove-bookmark-button" data-question-id="${bookmark.id}">
                                     <span class="icon">🗑️</span> Remove Bookmark
                                 </button>
-                                <button class="glass-button-base glass-button-primary mt-2 view-gemini-explanation" data-question="${questionText}" data-answer="${correctAnswer}" data-explanation="${explanationText}">
+                                <button class="glass-button-base glass-button-primary mt-2 view-gemini-explanation" 
+                                        data-question="${encodeURIComponent(questionText)}" 
+                                        data-answer="${encodeURIComponent(correctAnswer)}" 
+                                        data-explanation="${encodeURIComponent(explanationText)}">
                                     Get More Explanation (Gemini)
                                 </button>
                                 <div class="gemini-explanation-area mt-2" style="display: none;"></div>
@@ -3540,9 +3582,10 @@
                     document.querySelectorAll('.view-gemini-explanation').forEach(button => {
                         button.addEventListener('click', async (event) => {
                             const btn = event.target;
-                            const qText = btn.dataset.question;
-                            const ans = btn.dataset.answer;
-                            const existingExp = btn.dataset.explanation;
+                            // Decode URI components as they were encoded when set
+                            const qText = decodeURIComponent(btn.dataset.question);
+                            const ans = decodeURIComponent(btn.dataset.answer);
+                            const existingExp = decodeURIComponent(btn.dataset.explanation);
                             const explanationArea = btn.nextElementSibling; // The div right after the button
 
                             btn.disabled = true;
@@ -3930,7 +3973,12 @@
                                 <p>Correct Answer: <span class="solution-a-text">${data.correctAnswer}</span></p>
                                 <p>Status: <span class="${statusClass}">${statusText}</span></p>
                                 <p class="text-sm text-gray-400">Attempted on: ${date}</p>
-                                <button class="glass-button-base glass-button-primary mt-2 view-gemini-explanation" data-question="${data.questionText}" data-answer="${data.correctAnswer}">Get Explanation</button>
+                                <button class="glass-button-base glass-button-primary mt-2 view-gemini-explanation" 
+                                        data-question="${encodeURIComponent(data.questionText)}" 
+                                        data-answer="${encodeURIComponent(data.correctAnswer)}" 
+                                        data-explanation="">
+                                    Get Explanation
+                                </button>
                                 <div class="gemini-explanation-area mt-2" style="display: none;"></div>
                             </div>
                         `;
@@ -3942,8 +3990,9 @@
                     document.querySelectorAll('.view-gemini-explanation').forEach(button => {
                         button.addEventListener('click', async (event) => {
                             const btn = event.target;
-                            const qText = btn.dataset.question;
-                            const ans = btn.dataset.answer;
+                            const qText = decodeURIComponent(btn.dataset.question);
+                            const ans = decodeURIComponent(btn.dataset.answer);
+                            const existingExp = decodeURIComponent(btn.dataset.explanation);
                             const explanationArea = btn.nextElementSibling; // The div right after the button
 
                             btn.disabled = true;
@@ -3956,7 +4005,7 @@
                             explanationArea.innerHTML = '<p class="text-center text-gray-400">Generating explanation with Gemini...</p>';
 
                             try {
-                                const geminiExp = await getGeminiExplanation(qText, ans, ''); // No existing explanation for history
+                                const geminiExp = await getGeminiExplanation(qText, ans, existingExp); // Pass existingExp
                                 explanationArea.textContent = geminiExp;
                             } catch (error) {
                                 explanationArea.textContent = `Error: ${error.message}`;
