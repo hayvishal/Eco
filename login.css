@@ -1,0 +1,211 @@
+/* login.css */
+/* This file contains styles specific to the login.html page. */
+/* Most base styles are handled by Tailwind CSS, but you can add custom overrides here. */
+
+body {
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden; /* Hide scrollbars as the content should fit the screen */
+}
+
+#background-video {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1;
+    object-fit: cover;
+}
+
+.splash-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+.splash-screen img {
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+.tagline span {
+    font-size: 2rem;
+    font-weight: bold;
+    opacity: 0;
+    animation: fadeInWord 1s forwards;
+}
+.word-practice { animation-delay: 0.5s; }
+.word-smart { animation-delay: 1s; }
+.word-crack { animation-delay: 1.5s; }
+.word-ssc { animation-delay: 2s; }
+
+@keyframes fadeInWord {
+    to { opacity: 1; }
+}
+
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+.card {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 15px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.toggle-btns {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.toggle-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    color: #ccc;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.toggle-btn.active {
+    background: #4a90e2;
+    color: white;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+}
+
+input::placeholder {
+    color: #bbb;
+}
+
+.name-inputs {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: #357abd;
+}
+
+.divider {
+    text-align: center;
+    margin: 1.5rem 0;
+    color: #ccc;
+}
+
+.oauth-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.oauth-btn {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.oauth-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.terms-text {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #ccc;
+    margin-top: 1.5rem;
+}
+
+.terms-text a {
+    color: #4a90e2;
+    text-decoration: none;
+}
+
+.error-message {
+    color: #ff4d4d;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* Base styles for glass buttons from your original code */
+.glass-button-base {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.glass-button-base:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+.glass-button-orange {
+    background: rgba(243, 156, 18, 0.2);
+    border-color: rgba(243, 156, 18, 0.5);
+}
+.glass-button-default {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}

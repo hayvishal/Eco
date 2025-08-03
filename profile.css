@@ -1,0 +1,152 @@
+/* profile.css */
+/* This file contains styles specific to the profile.html page. */
+
+.profile-main-container {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.user-profile-container, .settings-container {
+    text-align: center;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+#profile-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #e2e8f0;
+}
+
+.profile-field-group {
+    width: 100%;
+    max-width: 400px;
+    text-align: left;
+}
+
+.profile-field-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    color: #4a5568;
+}
+
+.profile-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.profile-input:disabled {
+    background-color: #f7fafc;
+    color: #718096;
+}
+
+.profile-message {
+    padding: 0.75rem;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    font-weight: 500;
+}
+
+.profile-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.profile-stat-card {
+    background-color: #f7fafc;
+    padding: 1.5rem 1rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.stat-value {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #4a90e2;
+}
+
+.profile-buttons-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+/* Settings Page Specific Styles */
+.settings-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e2e8f0;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.settings-option label {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* Custom toggle switch */
+.settings-input[type="checkbox"] {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #cbd5e0;
+    outline: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.settings-input[type="checkbox"]::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    top: 2px;
+    left: 2px;
+    transition: left 0.3s;
+}
+
+.settings-input[type="checkbox"]:checked {
+    background: #48bb78;
+}
+
+.settings-input[type="checkbox"]:checked::before {
+    left: 22px;
+}
+
+/* Danger button style */
+.glass-button-danger {
+    background-color: #e53e3e;
+    color: white;
+}
+.glass-button-danger:hover {
+    background-color: #c53030;
+}

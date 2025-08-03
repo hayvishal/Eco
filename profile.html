@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile - SSC Knockout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="profile.css">
+</head>
+<body class="app-background">
+
+    <!-- Main Header -->
+    <header class="main-header">
+        <div class="logo">
+            <img src="image.png" alt="Logo">
+            HiVal
+        </div>
+        <div class="user-profile-section">
+            <span id="header-user-display-name" class="user-display-name">User</span>
+            <img id="header-profile-photo" src="https://placehold.co/40x40/cccccc/333333?text=👤" alt="Profile" class="profile-photo">
+        </div>
+    </header>
+
+    <main class="profile-main-container">
+        <!-- User Profile Container -->
+        <div class="user-profile-container" id="user-profile-container">
+            <h1 class="text-3xl font-bold mb-6">My Profile</h1>
+            <div class="profile-info">
+                <img id="profile-photo" src="https://placehold.co/120x120/cccccc/333333?text=No+Photo" alt="Profile Photo">
+                
+                <div class="profile-field-group">
+                    <label for="edit-display-name-input">Full Name:</label>
+                    <input type="text" id="edit-display-name-input" class="profile-input" placeholder="Your Full Name">
+                </div>
+                
+                <div class="profile-field-group">
+                    <label for="edit-email-input">Email Address:</label>
+                    <input type="email" id="edit-email-input" class="profile-input" placeholder="your@example.com" disabled>
+                </div>
+
+                <p>User ID: <strong id="profile-user-id">N/A</strong></p>
+                <p id="profile-message" class="profile-message" style="display: none;"></p>
+            </div>
+
+            <h2 class="text-2xl font-bold my-4">Progress Stats</h2>
+            <div class="profile-stats-grid">
+                <div class="profile-stat-card">
+                    <span class="stat-value" id="profile-tests-attempted">0</span>
+                    <span>Tests Attempted</span>
+                </div>
+                <div class="profile-stat-card">
+                    <span class="stat-value" id="profile-average-score">0%</span>
+                    <span>Average Score</span>
+                </div>
+                <div class="profile-stat-card">
+                    <span class="stat-value" id="profile-total-points">0</span>
+                    <span>Total Points</span>
+                </div>
+            </div>
+
+            <div class="profile-buttons-group">
+                <button id="save-profile-button" class="glass-button-base glass-button-green">Save Profile</button>
+                <button id="go-to-settings-button" class="glass-button-base glass-button-default">Settings</button>
+                <button id="back-to-home-from-profile" class="glass-button-base glass-button-primary">Back to Home</button>
+                <button id="logout-button" class="glass-button-base glass-button-danger">Logout</button>
+            </div>
+        </div>
+
+        <!-- Settings Container -->
+        <div class="settings-container" id="settings-container" style="display: none;">
+            <h1 class="text-3xl font-bold mb-6">Settings</h1>
+
+            <div class="settings-option">
+                <label for="dark-mode-toggle">Dark Mode</label>
+                <input type="checkbox" id="dark-mode-toggle" class="settings-input">
+            </div>
+
+            <div class="settings-option">
+                <label for="notifications-toggle">Push Notifications</label>
+                <input type="checkbox" id="notifications-toggle" class="settings-input" checked>
+            </div>
+
+            <div class="settings-option">
+                <label>Account</label>
+                <button id="delete-account-button" class="glass-button-base glass-button-danger">Delete Account</button>
+            </div>
+            
+            <button id="back-to-profile-from-settings" class="glass-button-base glass-button-primary mt-6">Back to Profile</button>
+        </div>
+    </main>
+
+    <script type="module" src="profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+/* history.css */
+/* This file contains styles specific to the history.html page. */
+
+.history-main-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.history-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.history-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    transition: box-shadow 0.2s ease;
+}
+
+@media (min-width: 768px) {
+    .history-item {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.history-item:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.history-item-info {
+    flex-grow: 1;
+}
+
+.history-item-info .subject {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #343a40;
+}
+
+.history-item-info .topic {
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.history-item-score {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #4a90e2;
+    text-align: right;
+    min-width: 100px;
+}
+
+.history-item-date {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 0.5rem;
+}
+
+@media (min-width: 768px) {
+    .history-item-date {
+        text-align: right;
+        margin-top: 0;
+    }
+}

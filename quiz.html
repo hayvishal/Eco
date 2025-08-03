@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz - SSC Knockout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Link to the main app stylesheet and the specific quiz stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="quiz.css">
+</head>
+<body class="app-background">
+
+    <!-- Main Header (Consistent across pages) -->
+    <header class="main-header" id="main-header">
+        <div class="logo">
+            <img src="image.png" alt="Logo">
+            HiVal
+        </div>
+        <div class="user-profile-section">
+            <span id="header-user-display-name" class="user-display-name">User</span>
+            <img id="header-profile-photo" src="https://placehold.co/40x40/cccccc/333333?text=👤" alt="Profile" class="profile-photo">
+        </div>
+    </header>
+
+    <main class="quiz-main-container">
+        <!-- Step 1: Topic Selection -->
+        <div class="generic-subject-topic-container" id="generic-subject-topic-container">
+            <h1 id="generic-topic-title" class="text-3xl font-bold mb-4">Select Topic for <span id="subject-title-placeholder">Subject</span></h1>
+            <div id="generic-topic-buttons" class="topic-buttons-grid">
+                <!-- Topic buttons will be dynamically inserted here -->
+            </div>
+            <button id="back-to-home-from-topics" class="glass-button-base glass-button-default mt-6">Back to Home</button>
+        </div>
+
+        <!-- Step 2: Question Count Selection -->
+        <div class="question-count-container" id="question-count-container" style="display: none;">
+            <h1 class="text-3xl font-bold mb-3">Practice <span id="selected-topic-title"></span></h1>
+            <p class="text-lg mb-3">Total questions available: <span id="total-available-questions" class="font-bold">0</span></p>
+            <label for="num-questions" class="block text-lg font-medium mb-2">How many questions do you want?</label>
+            <input type="number" id="num-questions" class="question-count-input" min="1" value="5">
+            <p id="question-count-error" class="error-message" style="display: none;"></p>
+            <button id="start-practice-button" class="glass-button-base glass-button-primary mt-4">Start Practice</button>
+            <button id="back-to-topic-selection" class="glass-button-base glass-button-default mt-2">Back to Topics</button>
+        </div>
+
+        <!-- Step 3: The Actual Quiz -->
+        <div class="quiz-container" id="quiz-container" style="display: none;">
+            <div class="quiz-header">
+                <div id="question-number-display" class="question-number">Question 1 / 10</div>
+                <div id="timer-display-content" class="timer-display-content">
+                    <span class="timer-icon">⏱</span>
+                    <span id="timer-display">20</span>
+                </div>
+            </div>
+
+            <div class="question-area">
+                <p id="question-display" class="question-text-content">What is the capital of India?</p>
+            </div>
+
+            <div id="options-container" class="options-grid">
+                <!-- Option buttons will be dynamically inserted here -->
+            </div>
+
+            <div id="feedback-area" class="feedback-message" style="display: none;"></div>
+            <div id="correct-answer-area" class="correct-answer-display" style="display: none;"></div>
+
+            <div class="quiz-navigation-buttons">
+                <button id="bookmark-question-button" class="glass-button-base glass-button-default">🔖 Bookmark</button>
+                <button id="next-button" class="glass-button-base glass-button-primary" disabled>Next</button>
+                <button id="show-result-button" class="glass-button-base glass-button-green" style="display: none;">Show Result</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Link to the specific JavaScript for the quiz page -->
+    <script type="module" src="quiz.js"></script>
+</body>
+</html>

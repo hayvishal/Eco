@@ -1,0 +1,70 @@
+/* results.css */
+/* This file contains styles specific to the results.html page. */
+
+.results-main-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.score-circle {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    margin: 1.5rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: conic-gradient(#48bb78 0%, #f0f0f0 0%); /* Initial state */
+    transition: background 1s ease-in-out;
+}
+
+.score-percentage {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2d3748;
+}
+
+.result-details {
+    margin-top: 2rem;
+    text-align: left;
+    display: inline-block;
+}
+
+.result-details p {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    color: #4a5568;
+}
+
+.result-details strong {
+    color: #1a202c;
+}
+
+.result-summary-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    align-items: center;
+}
+
+@media (min-width: 640px) {
+    .result-summary-buttons {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+/* Reusing button styles from style.css */
+.glass-button-green {
+    background-color: #48bb78;
+    color: white;
+}
+.glass-button-green:hover {
+    background-color: #38a169;
+}

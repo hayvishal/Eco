@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Indian Economy & Politics MCQ Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+    <video autoplay muted loop playsinline id="background-video">
+        <source src="bg.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="splash-screen" id="splash-screen">
+        <img src="image.png" alt="SSC KNOCKOUT Logo">
+        <div class="tagline">
+            <span class="word-practice">Practice</span>
+            <span class="word-smart">Smart,</span>
+            <span class="word-crack">Crack</span>
+            <span class="word-ssc">Exam</span>
+        </div>
+    </div>
+
+    <div class="container" id="auth-container" role="main" style="display: none;">
+      <section class="card" aria-label="Authentication form">
+        <div class="toggle-btns" role="tablist">
+          <button id="show-signup-button" class="toggle-btn active" role="tab">Sign up</button>
+          <button id="show-login-button" class="toggle-btn" role="tab">Sign in</button>
+        </div>
+
+        <!-- Signup Form -->
+        <div id="signup-panel" role="tabpanel">
+          <h1 class="title">Create an account</h1>
+          <form id="signup-form" autocomplete="off" novalidate>
+            <div class="name-inputs">
+                <input type="text" id="signup-first-name-input" placeholder="First Name" required />
+                <input type="text" id="signup-last-name-input" placeholder="Last name" />
+            </div>
+            <input type="email" id="signup-email-input" placeholder="Enter your email" required />
+            <input type="password" id="signup-password-input" placeholder="Create a password" required />
+            
+            <p id="auth-error-message-signup" class="error-message" style="display: none;"></p>
+            <button type="submit" id="email-signup-button" class="btn-submit">Create an account</button>
+          </form>
+          <div class="divider">OR SIGN UP WITH</div>
+          <div class="oauth-buttons">
+            <button type="button" id="google-signup-button" class="oauth-btn">Google</button>
+            <button type="button" id="apple-signup-button" class="oauth-btn">Apple</button>
+          </div>
+          <p class="terms-text">By signing up, you agree to our <a href="#">Terms & Service</a></p>
+        </div>
+
+        <!-- Signin Form -->
+        <div id="signin-panel" role="tabpanel" style="display: none;">
+          <h1 class="title">Sign in to your account</h1>
+          <form id="signin-form" autocomplete="off" novalidate>
+            <input type="email" id="login-email-input" placeholder="Enter your email" required />
+            <input type="password" id="login-password-input" placeholder="Enter your password" required />
+            <p id="auth-error-message-signin" class="error-message" style="display: none;"></p>
+            <button type="submit" id="email-login-button" class="btn-submit">Sign in</button>
+            <button type="button" id="forgot-password-button" class="glass-button-base glass-button-orange mt-3 w-full">Forgot Password?</button>
+          </form>
+          <div class="divider">OR SIGN IN WITH</div>
+          <div class="oauth-buttons">
+              <button type="button" id="google-login-button" class="oauth-btn">Google</button>
+              <button type="button" id="apple-login-button" class="oauth-btn">Apple</button>
+          </div>
+           <button id="anonymous-login-button" class="glass-button-base glass-button-default w-full mt-2">Sign In Anonymously</button>
+          <p class="terms-text">By signing in, you agree to our <a href="#">Terms & Service</a></p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyChjZ5N-1FEnejaahfpFPxIq2R7nQuTuDc",
+        authDomain: "test-2378c.firebaseapp.com",
+        databaseURL: "https://test-2378c-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "test-2378c",
+        storageBucket: "test-2378c.appspot.com",
+        messagingSenderId: "440618434249",
+        appId: "1:440618434249:web:f5c3d49edc53545a459718",
+        measurementId: "G-NB1917M42Y"
+      };
+
+      // Make the config available to the login script
+      window.firebaseConfig = firebaseConfig;
+    </script>
+    <script type="module" src="login.js"></script>
+</body>
+</html>

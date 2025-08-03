@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz History - SSC Knockout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="history.css">
+</head>
+<body class="app-background">
+
+    <!-- Main Header -->
+    <header class="main-header">
+        <div class="logo">
+            <img src="image.png" alt="Logo">
+            HiVal
+        </div>
+        <div class="user-profile-section">
+            <span id="header-user-display-name" class="user-display-name">User</span>
+            <img id="header-profile-photo" src="https://placehold.co/40x40/cccccc/333333?text=👤" alt="Profile" class="profile-photo">
+        </div>
+    </header>
+
+    <main class="history-main-container">
+        <div class="user-data-container" id="question-history-container">
+            <h1 class="text-3xl font-bold mb-4">Your Quiz History</h1>
+            <div id="question-history-list" class="history-list-container">
+                <!-- History items will be dynamically inserted here -->
+                <p class="text-gray-600" id="loading-history-message">Loading your quiz history...</p>
+            </div>
+            <button id="back-to-home-from-question-history" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
+        </div>
+    </main>
+
+    <script type="module" src="history.js"></script>
+</body>
+</html>

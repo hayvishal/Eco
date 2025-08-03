@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Extra Features - SSC Knockout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="features.css">
+</head>
+<body class="app-background">
+
+    <!-- Main Header -->
+    <header class="main-header">
+        <div class="logo">
+            <img src="image.png" alt="Logo">
+            HiVal
+        </div>
+        <div class="user-profile-section">
+            <span id="header-user-display-name" class="user-display-name">User</span>
+            <img id="header-profile-photo" src="https://placehold.co/40x40/cccccc/333333?text=👤" alt="Profile" class="profile-photo">
+        </div>
+    </header>
+
+    <main class="features-main-container">
+        <div class="extra-features-container" id="extra-features-container">
+            <h1 class="text-3xl font-bold mb-6">Extra Features</h1>
+            <p class="text-gray-600 mb-6">Explore additional tools to enhance your preparation.</p>
+
+            <div class="features-grid">
+                <button class="feature-item" id="feature-daily-quiz-notification">
+                    <span class="icon">🔔</span>
+                    Daily Quiz Notification
+                    <span class="status">Coming Soon</span>
+                </button>
+                <button class="feature-item" id="feature-bookmark-questions">
+                    <span class="icon">📌</span>
+                    Bookmarked Questions
+                    <span class="status">Coming Soon</span>
+                </button>
+                <button class="feature-item" id="feature-doubt-discussion-forum">
+                    <span class="icon">💬</span>
+                    Doubt Discussion Forum
+                    <span class="status">Coming Soon</span>
+                </button>
+                <button class="feature-item" id="feature-leaderboard">
+                    <span class="icon">🏆</span>
+                    Leaderboard
+                    <span class="status">Coming Soon</span>
+                </button>
+                <button class="feature-item" id="feature-offline-mode">
+                    <span class="icon">📴</span>
+                    Offline Mode
+                    <span class="status">Coming Soon</span>
+                </button>
+                 <button class="feature-item" id="feature-history-page">
+                    <span class="icon">📜</span>
+                    View Quiz History
+                    <span class="status-active">Available</span>
+                </button>
+            </div>
+
+            <button id="back-to-home-from-extra-features" class="glass-button-base glass-button-primary mt-8">Back to Home</button>
+        </div>
+    </main>
+
+    <script type="module" src="features.js"></script>
+</body>
+</html>
