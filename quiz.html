@@ -28,7 +28,8 @@
         <div class="generic-subject-topic-container" id="generic-subject-topic-container">
             <h1 id="generic-topic-title" class="text-3xl font-bold mb-4">Select Topic for <span id="subject-title-placeholder">Subject</span></h1>
             <div id="generic-topic-buttons" class="topic-buttons-grid">
-                <!-- Topic buttons will be dynamically inserted here -->
+                <!-- Topic buttons will be dynamically inserted here by quiz.js -->
+                <p>Loading topics...</p>
             </div>
             <button id="back-to-home-from-topics" class="glass-button-base glass-button-default mt-6">Back to Home</button>
         </div>
@@ -55,11 +56,11 @@
             </div>
 
             <div class="question-area">
-                <p id="question-display" class="question-text-content">What is the capital of India?</p>
+                <p id="question-display" class="question-text-content">Loading question...</p>
             </div>
 
             <div id="options-container" class="options-grid">
-                <!-- Option buttons will be dynamically inserted here -->
+                <!-- Option buttons will be dynamically inserted here by quiz.js -->
             </div>
 
             <div id="feedback-area" class="feedback-message" style="display: none;"></div>
@@ -73,6 +74,18 @@
         </div>
     </main>
 
+    <!-- Firebase SDK is required for auth state checking -->
+    <script type="module">
+      const firebaseConfig = {
+        apiKey: "AIzaSyChjZ5N-1FEnejaahfpFPxIq2R7nQuTuDc",
+        authDomain: "test-2378c.firebaseapp.com",
+        projectId: "test-2378c",
+        storageBucket: "test-2378c.appspot.com",
+        messagingSenderId: "440618434249",
+        appId: "1:440618434249:web:f5c3d49edc53545a459718"
+      };
+      window.firebaseConfig = firebaseConfig;
+    </script>
     <!-- Link to the specific JavaScript for the quiz page -->
     <script type="module" src="quiz.js"></script>
 </body>

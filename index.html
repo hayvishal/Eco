@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home - SSC Knockout Quiz</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Link to the main stylesheet for the app -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="app-background">
@@ -30,64 +29,51 @@
 
         <h3 class="text-xl font-bold mt-4 mb-2 text-left">🔹 Core Sections</h3>
         <div class="quick-access-grid">
-            <div class="quick-access-card" id="card-general-awareness">
+            <div class="quick-access-card" data-subject="General Awareness">
                 <span class="icon">📘</span>
                 General Awareness
                 <span class="text-sm text-gray-500">Static GK, Current Affairs, Polity, History, Geography, Science & Economy</span>
             </div>
-            <div class="quick-access-card" id="card-reasoning">
+            <div class="quick-access-card" data-subject="Reasoning">
                 <span class="icon">🧠</span>
                 Reasoning (General Intelligence)
                 <span class="text-sm text-gray-500">Analogy, Series, Puzzles, Coding-Decoding, Blood Relations & more</span>
             </div>
-            <div class="quick-access-card" id="card-quantitative-aptitude">
+            <div class="quick-access-card" data-subject="Quantitative Aptitude">
                 <span class="icon">📐</span>
                 Quantitative Aptitude (Maths)
                 <span class="text-sm text-gray-500">Arithmetic, Algebra, Geometry, Mensuration, Trigonometry & DI</span>
             </div>
-            <div class="quick-access-card" id="card-english-language">
+            <div class="quick-access-card" data-subject="English Language">
                 <span class="icon">📚</span>
                 English Language
                 <span class="text-sm text-gray-500">Vocabulary, Grammar, Reading Comprehension, Cloze Test & Spot the Error</span>
             </div>
-            <div class="quick-access-card" id="card-question-history">
+            <div id="card-question-history" class="quick-access-card">
                 <span class="icon">📜</span>
                 Attempt History
                 <span class="text-sm text-gray-500">Review your past quiz questions and answers</span>
             </div>
         </div>
 
-        <h3 class="text-xl font-bold mt-4 mb-2 text-left">🔸 Optional / Add-on Sections</h3>
-        <div class="quick-access-grid">
-            <div class="quick-access-card" id="card-computer-knowledge">
-                <span class="icon">🖥️</span>
-                Computer Knowledge
-                <span class="text-sm text-gray-500">Basics of Computer, Internet, MS Office, Abbreviations</span>
-            </div>
-            <div class="quick-access-card" id="card-general-studies">
-                <span class="icon">💼</span>
-                General Studies (JE / Tier 2)
-                <span class="text-sm text-gray-500">Engineering Subjects, Advanced Economics & Polity</span>
-            </div>
-            <div class="quick-access-card" id="card-current-affairs">
-                <span class="icon">📅</span>
-                Current Affairs
-                <span class="text-sm text-gray-500">Daily Quizzes, Budget, Govt Schemes, Monthly PDFs</span>
-            </div>
-            <div class="quick-access-card" id="card-mock-test-zone">
-                <span class="icon">🎯</span>
-                Mock Test Zone
-                <span class="text-sm text-gray-500">Full-length SSC CGL/CHSL/MTS mocks, Sectional & Tier-wise tests</span>
-            </div>
-        </div>
-
         <div class="home-screen-buttons">
             <button id="extra-features-button" class="glass-button-base glass-button-primary">Extra Features</button>
-            <button id="profile-button" class="glass-button-base glass-button-default">My Profile</button>
+            <button id="logout-button" class="glass-button-base glass-button-danger">Logout</button>
         </div>
     </main>
 
-    <!-- Link to the main JavaScript file for the app -->
+    <!-- Firebase SDK (Required on every page that needs auth) -->
+    <script type="module">
+      const firebaseConfig = {
+        apiKey: "AIzaSyChjZ5N-1FEnejaahfpFPxIq2R7nQuTuDc",
+        authDomain: "test-2378c.firebaseapp.com",
+        projectId: "test-2378c",
+        storageBucket: "test-2378c.appspot.com",
+        messagingSenderId: "440618434249",
+        appId: "1:440618434249:web:f5c3d49edc53545a459718"
+      };
+      window.firebaseConfig = firebaseConfig;
+    </script>
     <script type="module" src="script.js"></script>
 </body>
 </html>

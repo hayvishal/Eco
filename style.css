@@ -108,6 +108,14 @@
     background-color: #357abd;
 }
 
+.glass-button-danger {
+    background-color: #e53e3e;
+    color: white;
+}
+.glass-button-danger:hover {
+    background-color: #c53030;
+}
+
 .glass-button-default {
     background-color: #e2e8f0;
     color: #2d3748;

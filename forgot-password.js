@@ -1,7 +1,11 @@
-// forgot-password.js
-// This file contains the JavaScript logic for the forgot password page.
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Firebase Initialization ---
+    const app = initializeApp(window.firebaseConfig);
+    const auth = getAuth(app);
+
     // --- DOM Element References ---
     const forgotPasswordForm = document.getElementById('forgot-password-form');
     const resetMessage = document.getElementById('reset-message');
@@ -9,36 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToLoginButton = document.getElementById('back-to-login-button');
 
     // --- Functions ---
-    function handlePasswordReset(e) {
-        e.preventDefault();
-        const email = document.getElementById('reset-email-input').value;
-
-        if (!email) {
-            showMessage('Please enter your email address.', 'error');
-            return;
-        }
-
-        // Disable button to prevent multiple submissions
-        sendResetButton.disabled = true;
-        sendResetButton.textContent = 'Sending...';
-
-        // --- Firebase Logic Placeholder ---
-        // In a real app, you would call `firebase.auth().sendPasswordResetEmail(email)`
-        console.log(`Sending password reset link to: ${email}`);
-        
-        // Simulate network request
-        setTimeout(() => {
-            // On success:
-            showMessage('If an account exists for this email, a reset link has been sent.', 'success');
-            sendResetButton.textContent = 'Reset Link Sent';
-            
-            // On error (example):
-            // showMessage('Error sending reset link. Please try again.', 'error');
-            // sendResetButton.disabled = false;
-            // sendResetButton.textContent = 'Send Reset Link';
-        }, 1500);
-    }
-
     function showMessage(message, type) {
         resetMessage.textContent = message;
         resetMessage.style.display = 'block';
@@ -52,7 +26,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Event Listeners ---
-    forgotPasswordForm.addEventListener('submit', handlePasswordReset);
+    forgotPasswordForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('reset-email-input').value;
+
+        if (!email) {
+            showMessage('Please enter your email address.', 'error');
+            return;
+        }
+
+        // Disable button to prevent multiple submissions
+        sendResetButton.disabled = true;
+        sendResetButton.textContent = 'Sending...';
+
+        sendPasswordResetEmail(auth, email)
+            .then(() => {
+                showMessage('If an account exists for this email, a reset link has been sent.', 'success');
+                sendResetButton.textContent = 'Reset Link Sent';
+            })
+            .catch((error) => {
+                showMessage(error.message.replace('Firebase: ', ''), 'error');
+                sendResetButton.disabled = false;
+                sendResetButton.textContent = 'Send Reset Link';
+            });
+    });
+
     backToLoginButton.addEventListener('click', () => {
         window.location.href = 'login.html';
     });

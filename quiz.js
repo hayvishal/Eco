@@ -1,28 +1,15 @@
-// quiz.js
-// This file contains the JavaScript logic for the entire quiz flow.
-
-// --- MOCK DATABASE ---
-// In a real application, this data would be fetched from a server or Firebase.
-const quizData = {
-    "General Awareness": {
-        "Indian History": [
-            { question: "Who was the first President of India?", options: ["Jawaharlal Nehru", "Dr. Rajendra Prasad", "Sardar Patel", "Mahatma Gandhi"], answer: "Dr. Rajendra Prasad" },
-            { question: "The Battle of Plassey was fought in?", options: ["1757", "1782", "1748", "1764"], answer: "1757" }
-        ],
-        "Indian Polity": [
-            { question: "What is the minimum age for becoming a member of the Lok Sabha?", options: ["30 years", "21 years", "25 years", "35 years"], answer: "25 years" },
-            { question: "Who appoints the Chief Justice of India?", options: ["The Prime Minister", "The Parliament", "The President", "The Law Minister"], answer: "The President" }
-        ]
-    },
-    "Reasoning": {
-        "Analogy": [
-            { question: "Doctor is to Patient as Lawyer is to?", options: ["Customer", "Accused", "Client", "Magistrate"], answer: "Client" }
-        ]
-    }
-};
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { getFirestore, collection, getDocs, query, where, doc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- DOM Element References ---
+    // --- Firebase Initialization ---
+    const app = initializeApp(window.firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    let currentUser = null;
+
+    // --- DOM Element References & State ---
     const subjectTitlePlaceholder = document.getElementById('subject-title-placeholder');
     const topicContainer = document.getElementById('generic-subject-topic-container');
     const topicButtonsContainer = document.getElementById('generic-topic-buttons');
@@ -34,15 +21,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextButton = document.getElementById('next-button');
     const showResultButton = document.getElementById('show-result-button');
 
-    // --- State Variables ---
-    let selectedSubject = '';
+    let selectedSubject = localStorage.getItem('selectedSubject');
     let selectedTopic = '';
     let questionsForQuiz = [];
+    let allTopics = {};
     let currentQuestionIndex = 0;
     let score = 0;
     let timer;
+    let userAnswers = [];
 
-    // --- Functions ---
+    // --- Auth State Observer ---
+    onAuthStateChanged(auth, user => {
+        if (user) {
+            currentUser = user;
+            const displayName = user.displayName || 'User';
+            document.getElementById('header-user-display-name').textContent = displayName;
+            if(user.photoURL) {
+                document.getElementById('header-profile-photo').src = user.photoURL;
+            }
+
+            if (selectedSubject) {
+                loadTopics(selectedSubject);
+            } else {
+                topicContainer.innerHTML = `<h1>Error: No subject selected.</h1><a href="index.html" class="glass-button-base glass-button-primary mt-4">Go Home</a>`;
+                showScreen(topicContainer);
+            }
+        } else {
+            window.location.href = 'login.html';
+        }
+    });
+
+    // --- Main Functions ---
 
     function showScreen(screen) {
         topicContainer.style.display = 'none';
@@ -51,27 +60,47 @@ document.addEventListener('DOMContentLoaded', () => {
         screen.style.display = 'block';
     }
 
-    function loadTopics(subject) {
+    async function loadTopics(subject) {
         subjectTitlePlaceholder.textContent = subject;
-        topicButtonsContainer.innerHTML = '';
-        const topics = Object.keys(quizData[subject] || {});
-        if (topics.length > 0) {
-            topics.forEach(topic => {
-                const button = document.createElement('button');
-                button.className = 'topic-button';
-                button.textContent = topic;
-                button.onclick = () => selectTopic(topic);
-                topicButtonsContainer.appendChild(button);
+        topicButtonsContainer.innerHTML = '<p>Loading topics...</p>';
+
+        try {
+            const q = query(collection(db, "quizzes"), where("subject", "==", subject));
+            const querySnapshot = await getDocs(q);
+            
+            allTopics = {};
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                if (!allTopics[data.topic]) {
+                    allTopics[data.topic] = [];
+                }
+                allTopics[data.topic].push({ id: doc.id, ...data });
             });
-        } else {
-            topicButtonsContainer.innerHTML = '<p>No topics available for this subject yet.</p>';
+
+            topicButtonsContainer.innerHTML = '';
+            const topicNames = Object.keys(allTopics);
+
+            if (topicNames.length > 0) {
+                topicNames.forEach(topicName => {
+                    const button = document.createElement('button');
+                    button.className = 'topic-button';
+                    button.textContent = topicName;
+                    button.onclick = () => selectTopic(topicName);
+                    topicButtonsContainer.appendChild(button);
+                });
+            } else {
+                topicButtonsContainer.innerHTML = '<p>No topics available for this subject yet.</p>';
+            }
+        } catch (error) {
+            console.error("Error loading topics: ", error);
+            topicButtonsContainer.innerHTML = '<p>Could not load topics. Please try again.</p>';
         }
         showScreen(topicContainer);
     }
 
     function selectTopic(topic) {
         selectedTopic = topic;
-        const availableQuestions = quizData[selectedSubject][selectedTopic].length;
+        const availableQuestions = allTopics[topic].length;
         document.getElementById('selected-topic-title').textContent = topic;
         document.getElementById('total-available-questions').textContent = availableQuestions;
         document.getElementById('num-questions').max = availableQuestions;
@@ -84,15 +113,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const maxQuestions = parseInt(numQuestionsInput.max, 10);
 
         if (numQuestions > 0 && numQuestions <= maxQuestions) {
-            const allQuestions = quizData[selectedSubject][selectedTopic];
-            questionsForQuiz = allQuestions.slice(0, numQuestions); // Get the requested number of questions
+            const allQuestions = allTopics[selectedTopic];
+            questionsForQuiz = allQuestions.slice(0, numQuestions);
             currentQuestionIndex = 0;
             score = 0;
+            userAnswers = [];
             showScreen(quizContainer);
             displayQuestion();
         } else {
-            document.getElementById('question-count-error').textContent = `Please enter a number between 1 and ${maxQuestions}.`;
-            document.getElementById('question-count-error').style.display = 'block';
+            const errorEl = document.getElementById('question-count-error');
+            errorEl.textContent = `Please enter a number between 1 and ${maxQuestions}.`;
+            errorEl.style.display = 'block';
         }
     }
 
@@ -102,14 +133,16 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        clearInterval(timer); // Clear previous timer
+        clearInterval(timer);
         const question = questionsForQuiz[currentQuestionIndex];
         document.getElementById('question-number-display').textContent = `Question ${currentQuestionIndex + 1} / ${questionsForQuiz.length}`;
         document.getElementById('question-display').textContent = question.question;
 
         const optionsContainer = document.getElementById('options-container');
         optionsContainer.innerHTML = '';
-        question.options.forEach(optionText => {
+        // Shuffle options to randomize their order
+        const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
+        shuffledOptions.forEach(optionText => {
             const button = document.createElement('button');
             button.className = 'option-btn';
             button.textContent = optionText;
@@ -120,8 +153,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('feedback-area').style.display = 'none';
         document.getElementById('correct-answer-area').style.display = 'none';
         nextButton.disabled = true;
+        nextButton.style.display = 'inline-block';
+        showResultButton.style.display = 'none';
 
-        // Start timer
         let timeLeft = 20;
         const timerDisplay = document.getElementById('timer-display');
         timerDisplay.textContent = timeLeft;
@@ -130,9 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
             timerDisplay.textContent = timeLeft;
             if (timeLeft <= 0) {
                 clearInterval(timer);
-                // Handle time up (e.g., auto-move to next question)
-                // For now, just show the correct answer
-                showCorrectAnswer();
+                showCorrectAnswer(true); // true indicates time is up
             }
         }, 1000);
     }
@@ -140,10 +172,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function selectOption(btn, selectedAnswer, correctAnswer) {
         clearInterval(timer);
         const allOptions = document.querySelectorAll('.option-btn');
-        allOptions.forEach(b => b.disabled = true); // Disable all options
+        allOptions.forEach(b => b.disabled = true);
 
-        btn.classList.add('selected');
-        if (selectedAnswer === correctAnswer) {
+        const isCorrect = selectedAnswer === correctAnswer;
+        if (isCorrect) {
             btn.classList.add('correct');
             score++;
         } else {
@@ -151,6 +183,13 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('correct-answer-area').innerHTML = `Correct Answer: <strong>${correctAnswer}</strong>`;
             document.getElementById('correct-answer-area').style.display = 'block';
         }
+        
+        userAnswers.push({
+            question: questionsForQuiz[currentQuestionIndex].question,
+            selected: selectedAnswer,
+            correctAnswer: correctAnswer,
+            isCorrect: isCorrect
+        });
 
         nextButton.disabled = false;
         if (currentQuestionIndex === questionsForQuiz.length - 1) {
@@ -159,10 +198,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    function showCorrectAnswer() {
+    function showCorrectAnswer(isTimeUp) {
         const correctAnswer = questionsForQuiz[currentQuestionIndex].answer;
-        document.getElementById('correct-answer-area').innerHTML = `Time's up! Correct Answer: <strong>${correctAnswer}</strong>`;
+        if(isTimeUp) {
+            document.getElementById('correct-answer-area').innerHTML = `Time's up! Correct Answer: <strong>${correctAnswer}</strong>`;
+        }
         document.getElementById('correct-answer-area').style.display = 'block';
+        
         const allOptions = document.querySelectorAll('.option-btn');
         allOptions.forEach(b => {
             b.disabled = true;
@@ -170,6 +212,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 b.classList.add('correct');
             }
         });
+
+        if(isTimeUp) {
+            userAnswers.push({
+                question: questionsForQuiz[currentQuestionIndex].question,
+                selected: 'Time Up',
+                correctAnswer: correctAnswer,
+                isCorrect: false
+            });
+        }
+
         nextButton.disabled = false;
         if (currentQuestionIndex === questionsForQuiz.length - 1) {
             nextButton.style.display = 'none';
@@ -178,16 +230,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    function endQuiz() {
-        // In a real app, you would redirect to a results page
-        alert(`Quiz Finished!\nYour Score: ${score} / ${questionsForQuiz.length}`);
-        // Store results and redirect
-        localStorage.setItem('quizResult', JSON.stringify({
+    async function endQuiz() {
+        const resultData = {
             score: score,
             total: questionsForQuiz.length,
             subject: selectedSubject,
-            topic: selectedTopic
-        }));
+            topic: selectedTopic,
+            answers: userAnswers,
+            date: new Date().toISOString(),
+            userId: currentUser.uid
+        };
+
+        // Save results to Firestore
+        try {
+            const historyRef = collection(db, "users", currentUser.uid, "history");
+            await setDoc(doc(historyRef), resultData);
+
+            // Update user's aggregate stats
+            const userRef = doc(db, "users", currentUser.uid);
+            await updateDoc(userRef, {
+                testsAttempted: increment(1),
+                totalPoints: increment(score)
+            });
+            // Note: Calculating average score would require fetching the old values first.
+            // For simplicity, we are skipping that here.
+        } catch (error) {
+            console.error("Error saving quiz results: ", error);
+        }
+
+        localStorage.setItem('quizResult', JSON.stringify(resultData));
         window.location.href = 'results.html';
     }
 
@@ -200,15 +271,4 @@ document.addEventListener('DOMContentLoaded', () => {
         displayQuestion();
     });
     showResultButton.addEventListener('click', endQuiz);
-
-    // --- Initial Load ---
-    selectedSubject = localStorage.getItem('selectedSubject');
-    if (selectedSubject && quizData[selectedSubject]) {
-        loadTopics(selectedSubject);
-    } else {
-        // Handle case where no subject is selected or subject is invalid
-        topicContainer.innerHTML = `<h1>Error: No subject selected or subject not found.</h1><button id="back-to-home" class="glass-button-base glass-button-default mt-4">Back to Home</button>`;
-        document.getElementById('back-to-home').onclick = () => window.location.href = 'index.html';
-        showScreen(topicContainer);
-    }
 });

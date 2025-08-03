@@ -42,19 +42,33 @@
 
             <div class="result-summary-buttons">
                 <button id="retry-quiz-button" class="glass-button-base glass-button-green">Retry Quiz</button>
+                <button id="view-solutions-button" class="glass-button-base glass-button-default">View Solutions</button>
                 <button id="back-to-home-from-results" class="glass-button-base glass-button-primary">Back to Home</button>
-                <!-- <button id="view-solutions-button" class="glass-button-base glass-button-default">View Solutions</button> -->
             </div>
         </div>
 
-        <!-- This would be for a future "View Solutions" page -->
-        <!-- <div class="solution-explanation-container" id="solution-explanation-container" style="display: none;">
+        <!-- Solutions Container (hidden by default) -->
+        <div class="solution-explanation-container" id="solution-explanation-container" style="display: none;">
             <h1 class="text-3xl font-bold mb-4">Solutions & Explanations</h1>
-            <div id="solutions-list" class="solutions-list-container"></div>
-            <button id="back-to-results-button" class="glass-button-base glass-button-primary mt-2">Back to Results</button>
-        </div> -->
+            <div id="solutions-list" class="solutions-list-container">
+                <!-- Solutions will be dynamically inserted here -->
+            </div>
+            <button id="back-to-results-button" class="glass-button-base glass-button-primary mt-6">Back to Results</button>
+        </div>
     </main>
 
+    <!-- Firebase SDK is required for auth state checking -->
+    <script type="module">
+      const firebaseConfig = {
+        apiKey: "AIzaSyChjZ5N-1FEnejaahfpFPxIq2R7nQuTuDc",
+        authDomain: "test-2378c.firebaseapp.com",
+        projectId: "test-2378c",
+        storageBucket: "test-2378c.appspot.com",
+        messagingSenderId: "440618434249",
+        appId: "1:440618434249:web:f5c3d49edc53545a459718"
+      };
+      window.firebaseConfig = firebaseConfig;
+    </script>
     <!-- Link to the specific JavaScript for the results page -->
     <script type="module" src="results.js"></script>
 </body>
