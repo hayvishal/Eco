@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Upload Questions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body class="app-background">
+    <header class="main-header">
+        <div class="logo">
+            <img src="image.png" alt="Logo">
+            HiVal Admin
+        </div>
+        <div class="user-profile-section">
+            <span id="header-user-display-name" class="user-display-name">Admin</span>
+            <img id="header-profile-photo" src="https://placehold.co/40x40/A855F7/FFFFFF?text=A" alt="Profile" class="profile-photo">
+        </div>
+    </header>
+
+    <main class="admin-container">
+        <div id="admin-panel" style="display: none;">
+            <h1 class="text-3xl font-bold mb-4">Quiz Question Uploader</h1>
+            <p class="mb-6 text-gray-600">Select a JSON file containing an array of quiz questions to upload them to the Firestore database.</p>
+            
+            <div class="upload-box">
+                <label for="json-file-input" class="block mb-2 font-medium">JSON File:</label>
+                <input type="file" id="json-file-input" accept=".json" class="file-input">
+                
+                <button id="upload-button" class="glass-button-base glass-button-primary mt-4">Upload Questions</button>
+            </div>
+            
+            <div id="status-message" class="status-message mt-6"></div>
+        </div>
+
+        <div id="access-denied" class="access-denied-message" style="display: none;">
+            <h2 class="text-2xl font-bold text-red-600">Access Denied</h2>
+            <p class="mt-2">You do not have administrative privileges to view this page.</p>
+            <a href="index.html" class="glass-button-base glass-button-default mt-4">Go to Home</a>
+        </div>
+    </main>
+
+    <script type="module">
+      // This config is required for the admin page to connect to Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyChjZ5N-1FEnejaahfpFPxIq2R7nQuTuDc",
+        authDomain: "test-2378c.firebaseapp.com",
+        projectId: "test-2378c",
+        storageBucket: "test-2378c.appspot.com",
+        messagingSenderId: "440618434249",
+        appId: "1:440618434249:web:f5c3d49edc53545a459718"
+      };
+      window.firebaseConfig = firebaseConfig;
+    </script>
+    <script type="module" src="admin.js"></script>
+</body>
+</html>
