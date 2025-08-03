@@ -28,6 +28,11 @@
             <p class="text-gray-600 mb-6">Explore additional tools to enhance your preparation.</p>
 
             <div class="features-grid">
+                <button class="feature-item" id="feature-leaderboard">
+                    <span class="icon">🏆</span>
+                    Leaderboard
+                    <span class="status-active">Available</span>
+                </button>
                 <button class="feature-item" id="feature-daily-quiz-notification">
                     <span class="icon">🔔</span>
                     Daily Quiz Notification
@@ -41,11 +46,6 @@
                 <button class="feature-item" id="feature-doubt-discussion-forum">
                     <span class="icon">💬</span>
                     Doubt Discussion Forum
-                    <span class="status">Coming Soon</span>
-                </button>
-                <button class="feature-item" id="feature-leaderboard">
-                    <span class="icon">🏆</span>
-                    Leaderboard
                     <span class="status">Coming Soon</span>
                 </button>
                 <button class="feature-item" id="feature-offline-mode">
@@ -63,7 +63,19 @@
             <button id="back-to-home-from-extra-features" class="glass-button-base glass-button-primary mt-8">Back to Home</button>
         </div>
     </main>
-
+    
+    <script type="module">
+      // This config is required for the features page to connect to Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyChjZ5N-1FEnejaahfpFPxIq2R7nQuTuDc",
+        authDomain: "test-2378c.firebaseapp.com",
+        projectId: "test-2378c",
+        storageBucket: "test-2378c.appspot.com",
+        messagingSenderId: "440618434249",
+        appId: "1:440618434249:web:f5c3d49edc53545a459718"
+      };
+      window.firebaseConfig = firebaseConfig;
+    </script>
     <script type="module" src="features.js"></script>
 </body>
 </html>

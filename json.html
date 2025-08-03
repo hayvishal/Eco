@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Converter</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the application */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* A light gray background */
+        }
+        /* Custom scrollbar for a better look */
+        textarea::-webkit-scrollbar {
+            width: 8px;
+        }
+        textarea::-webkit-scrollbar-track {
+            background: #e5e7eb;
+            border-radius: 10px;
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background: #9ca3af;
+            border-radius: 10px;
+        }
+        textarea::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+        /* Style for the message box */
+        #messageBox {
+            transition: opacity 0.5s, transform 0.5s;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl p-6 md:p-8">
+        
+        <!-- Header Section -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">JSON Format Converter</h1>
+            <p class="text-gray-500 mt-2">Paste your raw JSON below, or upload a file, to convert it.</p>
+        </header>
+
+        <!-- Main Content: Input and Output Textareas -->
+        <main class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Input JSON Section -->
+            <div>
+                <label for="inputJson" class="block text-lg font-semibold text-gray-700 mb-2">Raw JSON Input</label>
+                <!-- File Upload Button -->
+                <div class="mb-4">
+                    <label for="fileUpload" class="w-full sm:w-auto cursor-pointer inline-flex items-center justify-center bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                        Upload JSON File (.json, .txt)
+                    </label>
+                    <input type="file" id="fileUpload" class="hidden" accept=".json,.txt">
+                    <span id="fileName" class="ml-4 text-gray-500 italic"></span>
+                </div>
+                <textarea id="inputJson"
+                    class="w-full h-96 p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 resize-none shadow-sm bg-gray-50"
+                    placeholder="Paste your raw JSON object here..."></textarea>
+            </div>
+            <!-- Output JSON Section -->
+            <div>
+                <label for="outputJson" class="block text-lg font-semibold text-gray-700 mb-2">Formatted JSON Output</label>
+                <textarea id="outputJson"
+                    class="w-full h-96 p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-200 resize-none shadow-sm bg-gray-50 mt-[52px]"
+                    placeholder="Converted JSON will appear here..." readonly></textarea>
+            </div>
+        </main>
+
+        <!-- Action Buttons Section for JSON -->
+        <footer class="mt-8 flex flex-wrap items-center justify-center gap-4">
+            <button id="convertBtn" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                Convert to JSON
+            </button>
+            <button id="copyBtn" class="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                Copy JSON
+            </button>
+            <button id="downloadJsonBtn" class="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+                Download JSON
+            </button>
+            <button id="clearBtn" class="w-full sm:w-auto bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                Clear All
+            </button>
+        </footer>
+
+        <!-- Floating Message Box for notifications -->
+        <div id="messageBox" class="fixed bottom-5 right-5 bg-gray-800 text-white py-2 px-4 rounded-lg shadow-lg opacity-0 transform translate-y-3">
+            <span id="messageText"></span>
+        </div>
+    </div>
+
+    <script>
+        // Get references to all the necessary DOM elements
+        const inputJsonEl = document.getElementById('inputJson');
+        const outputJsonEl = document.getElementById('outputJson');
+        
+        const convertBtn = document.getElementById('convertBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const downloadJsonBtn = document.getElementById('downloadJsonBtn');
+        
+        const messageBox = document.getElementById('messageBox');
+        const messageText = document.getElementById('messageText');
+        const fileUploadEl = document.getElementById('fileUpload');
+        const fileNameEl = document.getElementById('fileName');
+        let messageTimeout;
+
+        /**
+         * Displays a temporary message to the user.
+         * @param {string} text - The message to display.
+         * @param {string} bgColor - The background color for the message box.
+         */
+        function showMessage(text, bgColor = 'bg-gray-800') {
+            clearTimeout(messageTimeout);
+            messageText.textContent = text;
+            messageBox.className = `fixed bottom-5 right-5 text-white py-2 px-4 rounded-lg shadow-lg opacity-0 transform translate-y-3 ${bgColor}`;
+            
+            requestAnimationFrame(() => {
+                messageBox.classList.remove('opacity-0', 'translate-y-3');
+                messageBox.classList.add('opacity-100', 'translate-y-0');
+            });
+
+            messageTimeout = setTimeout(() => {
+                messageBox.classList.remove('opacity-100', 'translate-y-0');
+                messageBox.classList.add('opacity-0', 'translate-y-3');
+            }, 3000); // Increased duration for better readability
+        }
+
+        /**
+         * Processes a potential collection of questions from an object or array.
+         * @param {any} collection - The data to process.
+         * @returns {Array} An array of formatted question objects.
+         */
+        function processCollection(collection) {
+            const questions = [];
+            if (Array.isArray(collection)) {
+                // If it's an array, assume it's the correct format and return it.
+                // A deeper validation could be added here if needed.
+                return collection;
+            }
+            if (typeof collection === 'object' && collection !== null) {
+                // If it's an object, iterate over its values to find question objects.
+                for (const key in collection) {
+                    if (Object.hasOwnProperty.call(collection, key)) {
+                        const item = collection[key];
+                        // Check if the value is a valid question object (i.e., has a 'question' property).
+                        if (typeof item === 'object' && item !== null && item.question) {
+                            questions.push({
+                                subject: item.subject || 'N/A',
+                                topic: item.topic || item.subject || 'N/A', // Fallback for topic
+                                question: item.question,
+                                options: item.options || [],
+                                answer: item.answer || 'N/A'
+                            });
+                        }
+                    }
+                }
+            }
+            return questions;
+        }
+
+        /**
+         * The main JSON conversion logic.
+         */
+        function performJsonConversion() {
+            const rawJson = inputJsonEl.value.trim();
+            if (!rawJson) {
+                showMessage('Input is empty!', 'bg-yellow-600');
+                outputJsonEl.value = 'Please paste your JSON in the input area first.';
+                return false;
+            }
+
+            try {
+                const data = JSON.parse(rawJson);
+                let convertedArray = [];
+
+                // First attempt: process the top-level data structure.
+                convertedArray = processCollection(data);
+
+                // Second attempt: if the first try yielded nothing, check for a common "wrapped object" pattern.
+                // This handles cases like { "results": [...] } or { "data": { "q1": ... } }.
+                if (convertedArray.length === 0 && typeof data === 'object' && data !== null && !Array.isArray(data)) {
+                    const keys = Object.keys(data);
+                    if (keys.length === 1) {
+                        convertedArray = processCollection(data[keys[0]]);
+                        if (convertedArray.length > 0) {
+                            showMessage('Detected and processed wrapped JSON.', 'bg-blue-600');
+                        }
+                    }
+                }
+                
+                // Final check and user feedback.
+                if (convertedArray.length > 0) {
+                    // Only show the generic success message if a more specific one wasn't already shown.
+                    const existingMessage = messageBox.classList.contains('opacity-100');
+                    if (!existingMessage) {
+                        showMessage('JSON conversion successful!', 'bg-green-600');
+                    }
+                } else {
+                    showMessage('Conversion resulted in an empty array. Check input format.', 'bg-yellow-600');
+                }
+
+                outputJsonEl.value = JSON.stringify(convertedArray, null, 2);
+                return true;
+
+            } catch (error) {
+                outputJsonEl.value = `Error: Invalid JSON format.\n\nDetails: ${error.message}`;
+                showMessage('Invalid JSON format!', 'bg-red-600');
+                return false;
+            }
+        }
+
+        /**
+         * Triggers a file download in the browser.
+         */
+        function downloadFile(content, fileName, contentType) {
+            if (!content || content.startsWith('Error:')) {
+                showMessage(`Nothing to download for ${fileName}.`, 'bg-yellow-600');
+                return;
+            }
+            const a = document.createElement("a");
+            const file = new Blob([content], { type: contentType });
+            a.href = URL.createObjectURL(file);
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            URL.revokeObjectURL(a.href);
+            document.body.removeChild(a);
+            showMessage(`Downloading ${fileName}...`, 'bg-blue-600');
+        }
+
+        /**
+         * Copies text to the clipboard using modern API with a fallback.
+         */
+        function copyToClipboard(text) {
+             if (!text || text.startsWith('Error:')) {
+                showMessage(`Nothing to copy!`, 'bg-yellow-600');
+                return;
+            }
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showMessage(`JSON copied to clipboard!`, 'bg-green-600');
+                }).catch(() => {
+                    copyFallback(text); // Use fallback if promise rejects
+                });
+            } else {
+                copyFallback(text); // Use fallback for older browsers/insecure contexts
+            }
+        }
+
+        function copyFallback(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.top = '-9999px';
+            textArea.style.left = '-9999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showMessage('Copied to clipboard!', 'bg-green-600');
+            } catch (err) {
+                showMessage('Failed to copy text.', 'bg-red-600');
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // --- Event Listeners ---
+
+        convertBtn.addEventListener('click', performJsonConversion);
+
+        fileUploadEl.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (!file.type.match('application/json') && !file.type.match('text/plain')) {
+                showMessage('Please upload a .json or .txt file.', 'bg-yellow-600');
+                fileNameEl.textContent = 'Invalid file type.';
+                fileUploadEl.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                inputJsonEl.value = e.target.result;
+                fileNameEl.textContent = `Loaded: ${file.name}`;
+                showMessage('File loaded successfully!', 'bg-green-600');
+                performJsonConversion();
+            };
+            reader.onerror = () => {
+                showMessage('Failed to read the file.', 'bg-red-600');
+                fileNameEl.textContent = 'Error reading file.';
+            };
+            reader.readAsText(file);
+        });
+
+        copyBtn.addEventListener('click', () => copyToClipboard(outputJsonEl.value));
+
+        downloadJsonBtn.addEventListener('click', () => {
+            downloadFile(outputJsonEl.value, 'converted_data.json', 'application/json');
+        });
+
+        clearBtn.addEventListener('click', () => {
+            inputJsonEl.value = '';
+            outputJsonEl.value = '';
+            fileNameEl.textContent = '';
+            fileUploadEl.value = '';
+            showMessage('Cleared!', 'bg-gray-800');
+        });
+
+    </script>
+</body>
+</html>
