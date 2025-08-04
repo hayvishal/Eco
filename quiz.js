@@ -14,16 +14,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const questionCountContainer = document.getElementById('question-count-container');
     const quizContainer = document.getElementById('quiz-container');
     const startPracticeButton = document.getElementById('start-practice-button');
-    const backToHomeBtn = document.getElementById('back-to-home-from-topics');
     const backToTopicsBtn = document.getElementById('back-to-topic-selection');
     const nextButton = document.getElementById('next-button');
     const showResultButton = document.getElementById('show-result-button');
     const bookmarkButton = document.getElementById('bookmark-question-button');
     const autoGeminiExplanationArea = document.getElementById('auto-gemini-explanation-area');
 
-    // Get subject and topic from previous page
     let selectedSubject = localStorage.getItem('selectedSubject');
-    let selectedTopic = localStorage.getItem('selectedTopic'); // This is the key change
+    let selectedTopic = localStorage.getItem('selectedTopic');
 
     let questionsForQuiz = [];
     let currentQuestionIndex = 0;
@@ -48,17 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 userBookmarks = userDoc.data().bookmarks;
             }
             
-            // 🟢 START: UPDATED LOGIC 🟢
-            // Directly prepare the quiz instead of showing topic selection again
             if (selectedSubject && selectedTopic) {
                 prepareQuizForTopic(selectedSubject, selectedTopic);
             } else {
-                // Fallback if something went wrong
                 topicContainer.innerHTML = `<h1>Error: No subject or topic selected.</h1><a href="index.html" class="glass-button-base glass-button-primary mt-4">Go Home</a>`;
                 showScreen(topicContainer);
             }
-            // 🟢 END: UPDATED LOGIC 🟢
-
         } else {
             window.location.href = 'login.html';
         }
@@ -73,12 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
         screen.style.display = 'block';
     }
 
-    // 🟢 START: NEW FUNCTION 🟢
-    /**
-     * Fetches questions for a specific topic and displays the question count screen.
-     * @param {string} subject - The main subject (e.g., "General Awareness").
-     * @param {string} topic - The specific topic (e.g., "History").
-     */
     async function prepareQuizForTopic(subject, topic) {
         try {
             const q = query(collection(db, "quizzes"), where("subject", "==", subject), where("topic", "==", topic));
@@ -90,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (topicQuestions.length > 0) {
-                questionsForQuiz = topicQuestions; // Store fetched questions
+                questionsForQuiz = topicQuestions;
                 document.getElementById('selected-topic-title').textContent = `${subject} - ${topic}`;
                 document.getElementById('total-available-questions').textContent = topicQuestions.length;
                 document.getElementById('num-questions').max = topicQuestions.length;
@@ -103,13 +90,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error("Error fetching questions for topic: ", error);
-            questionCountContainer.innerHTML = `<p>Error loading questions. Please check your database rules and connection.</p><button id="back-btn" class="glass-button-base glass-button-default mt-4">Go Back</button>`;
+            questionCountContainer.innerHTML = `<p>Error loading questions.</p><button id="back-btn" class="glass-button-base glass-button-default mt-4">Go Back</button>`;
             document.getElementById('back-btn').onclick = () => window.history.back();
             showScreen(questionCountContainer);
         }
     }
-    // 🟢 END: NEW FUNCTION 🟢
-
 
     function startQuiz() {
         const numQuestionsInput = document.getElementById('num-questions');
@@ -117,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const maxQuestions = questionsForQuiz.length;
 
         if (numQuestions > 0 && numQuestions <= maxQuestions) {
-            // Shuffle the questions and slice the requested number
             questionsForQuiz = questionsForQuiz.sort(() => 0.5 - Math.random()).slice(0, numQuestions);
             currentQuestionIndex = 0;
             score = 0;
@@ -132,29 +116,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayQuestion() {
+        // 🟢 START: FIX 🟢
+        // Clear any previous timer to prevent multiple timers running at once.
+        clearInterval(timer);
+
         if (currentQuestionIndex >= questionsForQuiz.length) {
             endQuiz();
             return;
         }
 
-        clearInterval(timer);
-        const question = questionsForQuiz[currentQuestionIndex];
+        const questionData = questionsForQuiz[currentQuestionIndex];
+
+        // Validate that the question data is correct before proceeding.
+        if (!questionData || !questionData.question || !Array.isArray(questionData.options)) {
+            console.error("Invalid question data:", questionData);
+            // Skip to the next question or end the quiz if data is bad.
+            currentQuestionIndex++;
+            displayQuestion();
+            return;
+        }
+
         document.getElementById('question-number-display').textContent = `Question ${currentQuestionIndex + 1} / ${questionsForQuiz.length}`;
-        document.getElementById('question-display').textContent = question.question;
+        document.getElementById('question-display').textContent = questionData.question;
         
         updateBookmarkButton();
         autoGeminiExplanationArea.style.display = 'none';
         autoGeminiExplanationArea.innerHTML = '';
 
-
         const optionsContainer = document.getElementById('options-container');
         optionsContainer.innerHTML = '';
-        const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
+        
+        const shuffledOptions = [...questionData.options].sort(() => Math.random() - 0.5);
         shuffledOptions.forEach(optionText => {
             const button = document.createElement('button');
             button.className = 'option-btn';
             button.textContent = optionText;
-            button.onclick = () => selectOption(button, optionText, question.answer);
+            button.onclick = () => selectOption(button, optionText, questionData.answer);
             optionsContainer.appendChild(button);
         });
         
@@ -164,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         nextButton.style.display = 'inline-block';
         showResultButton.style.display = 'none';
 
+        // Start the timer
         let timeLeft = 20;
         const timerDisplay = document.getElementById('timer-display');
         timerDisplay.textContent = timeLeft;
@@ -175,6 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showCorrectAnswer(true);
             }
         }, 1000);
+        // 🟢 END: FIX 🟢
     }
 
     async function getGeminiExplanation(questionText, correctAnswer) {
@@ -183,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let chatHistory = [];
         chatHistory.push({ role: "user", parts: [{ text: prompt }] });
         const payload = { contents: chatHistory };
-        const apiKey = ""; // This will be provided by the environment
+        const apiKey = ""; 
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
         try {
@@ -220,9 +219,25 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('correct-answer-area').style.display = 'block';
 
             autoGeminiExplanationArea.style.display = 'block';
-            autoGeminiExplanationArea.innerHTML = '<div class="spinner"></div><p>Generating explanation...</p>';
-            const explanation = await getGeminiExplanation(questionsForQuiz[currentQuestionIndex].question, correctAnswer);
-            autoGeminiExplanationArea.innerHTML = `<p>${explanation}</p>`;
+            autoGeminiExplanationArea.innerHTML = '<div class="spinner"></div><p>Loading explanation...</p>';
+
+            const currentQuestion = questionsForQuiz[currentQuestionIndex];
+            
+            if (currentQuestion.explanation && currentQuestion.explanation.trim() !== '') {
+                autoGeminiExplanationArea.innerHTML = `<p>${currentQuestion.explanation}</p>`;
+            } else {
+                try {
+                    const explanation = await getGeminiExplanation(currentQuestion.question, correctAnswer);
+                    autoGeminiExplanationArea.innerHTML = `<p>${explanation}</p>`;
+                    
+                    const questionRef = doc(db, "quizzes", currentQuestion.id);
+                    await updateDoc(questionRef, { explanation: explanation });
+                    currentQuestion.explanation = explanation;
+                } catch (error) {
+                     autoGeminiExplanationArea.innerHTML = `<p>Could not load explanation at this time.</p>`;
+                     console.error("Error getting or saving explanation:", error);
+                }
+            }
         }
         
         userAnswers.push({
@@ -326,8 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Event Listeners ---
     startPracticeButton.addEventListener('click', startQuiz);
-    backToHomeBtn.addEventListener('click', () => window.location.href = 'index.html');
-    backToTopicsBtn.addEventListener('click', () => window.history.back()); // Go back to the previous topic page
+    backToTopicsBtn.addEventListener('click', () => window.history.back());
     nextButton.addEventListener('click', () => {
         currentQuestionIndex++;
         displayQuestion();

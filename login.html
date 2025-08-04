@@ -5,18 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign In & Sign Up - SSC Knockout</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- The new design is now in login.css -->
     <link rel="stylesheet" href="login.css">
 </head>
 <body>
 
-    <!-- Background Video -->
     <video autoplay muted loop playsinline id="background-video">
         <source src="bg.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
 
-    <!-- Splash Screen (remains the same) -->
     <div class="splash-screen" id="splash-screen">
         <img src="image.png" alt="SSC KNOCKOUT Logo">
         <div class="tagline">
@@ -27,21 +24,15 @@
         </div>
     </div>
 
-    <!-- Main Auth Container -->
     <div class="container" id="auth-container" role="main" style="display: none;">
       <section class="card" aria-label="Authentication form">
-        <!-- Toggle buttons -->
         <div class="toggle-btns" role="tablist">
           <button id="show-signup-button" class="toggle-btn active" role="tab">Sign up</button>
           <button id="show-login-button" class="toggle-btn" role="tab">Sign in</button>
         </div>
-
-        <!-- Close button -->
         <button class="close-btn" aria-label="Close form" title="Close">
             <svg viewBox="0 0 24 24" fill="none"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
         </button>
-
-        <!-- Sign Up panel -->
         <div id="signup-panel" role="tabpanel">
           <h1 class="title">Create an account</h1>
           <form id="signup-form" autocomplete="off" novalidate>
@@ -55,7 +46,6 @@
             </div>
             <input type="password" id="signup-password-input" placeholder="Create a password" required />
             <input type="password" id="signup-confirm-password-input" placeholder="Confirm your password" required />
-            
             <p id="auth-error-message-signup" class="error-message" style="display: none;"></p>
             <button type="submit" id="email-signup-button" class="btn-submit">Create an account</button>
           </form>
@@ -72,8 +62,6 @@
           </div>
           <p class="terms-text">By signing up, you agree to our <a href="#">Terms & Service</a></p>
         </div>
-
-        <!-- Sign In panel -->
         <div id="signin-panel" role="tabpanel" style="display: none;">
           <h1 class="title">Sign in to your account</h1>
           <form id="signin-form" autocomplete="off" novalidate>
@@ -102,8 +90,6 @@
         </div>
       </section>
     </div>
-
-    <!-- Firebase SDK -->
     <script type="module">
       const firebaseConfig = {
         apiKey: "AIzaSyChjZ5N-1FEnejaahfpFPxIq2R7nQuTuDc",
@@ -113,7 +99,7 @@
         storageBucket: "test-2378c.appspot.com",
         messagingSenderId: "440618434249",
         appId: "1:440618434249:web:f5c3d49edc53545a459718",
-        measurementId: "G-NB1917M42Y"
+        measurementId: "G-NB1717M42Y"
       };
       window.firebaseConfig = firebaseConfig;
     </script>
