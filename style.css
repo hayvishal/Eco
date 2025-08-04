@@ -38,6 +38,19 @@
     gap: 15px;
 }
 
+/* 🟢 START: NEW STYLE 🟢 */
+.header-link {
+    font-weight: 500;
+    color: #4a5568;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.header-link:hover {
+    color: #4a90e2;
+}
+/* 🟢 END: NEW STYLE 🟢 */
+
 .user-display-name {
     font-weight: 500;
 }

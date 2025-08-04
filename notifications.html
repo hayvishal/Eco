@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notifications - SSC Knockout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="notifications.css">
+</head>
+<body class="app-background">
+
+    <!-- Main Header -->
+    <header class="main-header">
+        <div class="logo">
+            <img src="image.png" alt="Logo">
+            HiVal
+        </div>
+        <div class="user-profile-section">
+            <span id="header-user-display-name" class="user-display-name">User</span>
+            <img id="header-profile-photo" src="https://placehold.co/40x40/cccccc/333333?text=👤" alt="Profile" class="profile-photo">
+        </div>
+    </header>
+
+    <main class="notifications-container">
+        <h1 class="text-3xl font-bold mb-4">Daily Quiz Notifications</h1>
+        <p class="text-gray-600 mb-6">Get a daily reminder to keep your practice streak going!</p>
+
+        <div class="notification-settings-box">
+            <div class="setting-item">
+                <label for="enable-notifications-toggle" class="setting-label">Enable Daily Reminders</label>
+                <input type="checkbox" id="enable-notifications-toggle" class="toggle-switch">
+            </div>
+            
+            <div id="time-selector-container" class="setting-item" style="display: none;">
+                <label for="notification-time" class="setting-label">Preferred Time</label>
+                <input type="time" id="notification-time" class="time-input">
+            </div>
+
+            <button id="save-settings-btn" class="glass-button-base glass-button-primary mt-4">Save Settings</button>
+            <p id="status-message" class="status-message" style="display: none;"></p>
+        </div>
+
+        <div class="permission-notice" id="permission-notice" style="display: none;">
+            <p><strong>Note:</strong> To receive notifications, you must grant permission when prompted by your browser.</p>
+        </div>
+
+        <button id="back-to-features" class="glass-button-base glass-button-default mt-6">Back to Features</button>
+    </main>
+
+    <script type="module">
+      // This config is required for the notifications page to connect to Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyChjZ5N-1FEnejaahfpFPxIq2R7nQuTuDc",
+        authDomain: "test-2378c.firebaseapp.com",
+        projectId: "test-2378c",
+        storageBucket: "test-2378c.appspot.com",
+        messagingSenderId: "440618434249",
+        appId: "1:440618434249:web:f5c3d49edc53545a459718"
+      };
+      window.firebaseConfig = firebaseConfig;
+    </script>
+    <script type="module" src="notifications.js"></script>
+</body>
+</html>

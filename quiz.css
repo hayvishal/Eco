@@ -153,7 +153,14 @@
     border-top: 1px solid #e2e8f0;
 }
 
-/* Button styles from style.css might be reused or overridden here */
+/* 🟢 START: NEW STYLE 🟢 */
+#bookmark-question-button.bookmarked {
+    background-color: #fefcbf; /* Yellow background */
+    color: #713f12; /* Darker text */
+    border-color: #facc15; /* Yellow border */
+}
+/* 🟢 END: NEW STYLE 🟢 */
+
 .glass-button-green {
     background-color: #48bb78;
     color: white;

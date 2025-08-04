@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Post - SSC Knockout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="forum.css"> <!-- Reusing forum.css for similar styles -->
+</head>
+<body class="app-background">
+
+    <!-- Main Header -->
+    <header class="main-header">
+        <div class="logo">
+            <img src="image.png" alt="Logo">
+            HiVal
+        </div>
+        <div class="user-profile-section">
+            <span id="header-user-display-name" class="user-display-name">User</span>
+            <img id="header-profile-photo" src="https://placehold.co/40x40/cccccc/333333?text=👤" alt="Profile" class="profile-photo">
+        </div>
+    </header>
+
+    <main class="forum-container">
+        <!-- Main Post Display -->
+        <div id="main-post-container">
+            <p id="loading-post" class="text-gray-600">Loading post...</p>
+            <!-- Post content will be injected here by post.js -->
+        </div>
+
+        <!-- Container for action buttons like Delete -->
+        <div id="post-actions" class="post-actions-container"></div>
+
+        <!-- Replies Section -->
+        <div id="replies-section" class="replies-section" style="display: none;">
+            <h2 class="text-2xl font-bold mb-4">Replies</h2>
+            <div id="replies-list" class="replies-list">
+                <!-- Replies will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <!-- Add a Reply Form -->
+        <div id="add-reply-form-container" class="add-reply-form" style="display: none;">
+            <h3 class="text-xl font-bold mb-3">Add Your Reply</h3>
+            <form id="add-reply-form">
+                <textarea id="reply-content-input" placeholder="Write your reply here..." rows="4" class="modal-input" required></textarea>
+                <button type="submit" id="submit-reply-btn" class="glass-button-base glass-button-primary mt-2">Submit Reply</button>
+            </form>
+        </div>
+
+        <button id="back-to-forum" class="glass-button-base glass-button-default mt-6">← Back to Forum</button>
+    </main>
+    
+    <script type="module">
+      // This config is required for the post page to connect to Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyChjZ5N-1FEnejaahfpFPxIq2R7nQuTuDc",
+        authDomain: "test-2378c.firebaseapp.com",
+        projectId: "test-2378c",
+        storageBucket: "test-2378c.appspot.com",
+        messagingSenderId: "440618434249",
+        appId: "1:440618434249:web:f5c3d49edc53545a459718"
+      };
+      window.firebaseConfig = firebaseConfig;
+    </script>
+    <script type="module" src="post.js"></script>
+</body>
+</html>

@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quiz History - SSC Knockout</title>
+    <title>Bookmarked Questions - SSC Knockout</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="history.css">
-    <link rel="stylesheet" href="dark-mode.css">
+    <link rel="stylesheet" href="bookmarks.css">
 </head>
 <body class="app-background">
 
@@ -18,23 +17,25 @@
             HiVal
         </div>
         <div class="user-profile-section">
-            <a href="about.html" class="header-link">About</a>
             <span id="header-user-display-name" class="user-display-name">User</span>
             <img id="header-profile-photo" src="https://placehold.co/40x40/cccccc/333333?text=👤" alt="Profile" class="profile-photo">
         </div>
     </header>
 
-    <main class="history-main-container">
-        <div class="user-data-container" id="question-history-container">
-            <h1 class="text-3xl font-bold mb-4">Your Quiz History</h1>
-            <div id="question-history-list" class="history-list-container">
-                <p class="text-gray-600" id="loading-history-message">Loading your quiz history...</p>
-            </div>
-            <button id="back-to-home-from-question-history" class="glass-button-base glass-button-primary mt-6">Back to Home</button>
+    <main class="bookmarks-container">
+        <h1 class="text-3xl font-bold mb-4">Your Bookmarked Questions</h1>
+        <p class="text-gray-600 mb-6">Review the questions you saved for later.</p>
+
+        <div id="bookmarked-questions-list" class="bookmarks-list">
+            <!-- Bookmarked questions will be dynamically inserted here by bookmarks.js -->
+            <p id="loading-bookmarks" class="text-gray-600">Loading your bookmarks...</p>
         </div>
+
+        <button id="back-to-features" class="glass-button-base glass-button-primary mt-6">Back to Features</button>
     </main>
 
     <script type="module">
+      // This config is required for the bookmarks page to connect to Firebase
       const firebaseConfig = {
         apiKey: "AIzaSyChjZ5N-1FEnejaahfpFPxIq2R7nQuTuDc",
         authDomain: "test-2378c.firebaseapp.com",
@@ -45,7 +46,6 @@
       };
       window.firebaseConfig = firebaseConfig;
     </script>
-    <script type="module" src="history.js"></script>
-    <script type="module" src="settings.js"></script>
+    <script type="module" src="bookmarks.js"></script>
 </body>
 </html>

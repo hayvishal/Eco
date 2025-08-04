@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quiz Results - SSC Knockout</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Link to the main app stylesheet and the specific results stylesheet -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="results.css">
+    <link rel="stylesheet" href="dark-mode.css">
 </head>
 <body class="app-background">
 
@@ -18,6 +18,7 @@
             HiVal
         </div>
         <div class="user-profile-section">
+            <a href="about.html" class="header-link">About</a>
             <span id="header-user-display-name" class="user-display-name">User</span>
             <img id="header-profile-photo" src="https://placehold.co/40x40/cccccc/333333?text=👤" alt="Profile" class="profile-photo">
         </div>
@@ -27,11 +28,9 @@
         <!-- Result Summary Container -->
         <div class="result-summary-container" id="result-summary-container">
             <h1 class="text-3xl font-bold mb-4">Quiz Results</h1>
-            
             <div class="score-circle" id="score-circle">
                 <span class="score-percentage" id="result-score-percentage">0%</span>
             </div>
-
             <div class="result-details">
                 <p>Subject: <strong id="result-subject">N/A</strong></p>
                 <p>Topic: <strong id="result-topic">N/A</strong></p>
@@ -39,25 +38,20 @@
                 <p class="text-green-600">Correct Answers: <strong id="result-correct-count">0</strong></p>
                 <p class="text-red-600">Incorrect Answers: <strong id="result-incorrect-count">0</strong></p>
             </div>
-
             <div class="result-summary-buttons">
                 <button id="retry-quiz-button" class="glass-button-base glass-button-green">Retry Quiz</button>
                 <button id="view-solutions-button" class="glass-button-base glass-button-default">View Solutions</button>
                 <button id="back-to-home-from-results" class="glass-button-base glass-button-primary">Back to Home</button>
             </div>
         </div>
-
         <!-- Solutions Container (hidden by default) -->
         <div class="solution-explanation-container" id="solution-explanation-container" style="display: none;">
             <h1 class="text-3xl font-bold mb-4">Solutions & Explanations</h1>
-            <div id="solutions-list" class="solutions-list-container">
-                <!-- Solutions will be dynamically inserted here -->
-            </div>
+            <div id="solutions-list" class="solutions-list-container"></div>
             <button id="back-to-results-button" class="glass-button-base glass-button-primary mt-6">Back to Results</button>
         </div>
     </main>
 
-    <!-- Firebase SDK is required for auth state checking -->
     <script type="module">
       const firebaseConfig = {
         apiKey: "AIzaSyChjZ5N-1FEnejaahfpFPxIq2R7nQuTuDc",
@@ -69,7 +63,7 @@
       };
       window.firebaseConfig = firebaseConfig;
     </script>
-    <!-- Link to the specific JavaScript for the results page -->
     <script type="module" src="results.js"></script>
+    <script type="module" src="settings.js"></script>
 </body>
 </html>

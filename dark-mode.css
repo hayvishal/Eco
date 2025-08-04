@@ -1,0 +1,95 @@
+/* dark-mode.css */
+/* This file contains all the styles for the dark theme. */
+
+body.dark-mode {
+    background-color: #1a202c; /* A dark slate color */
+    color: #e2e8f0; /* A light gray for text */
+}
+
+/* Header */
+body.dark-mode .main-header {
+    background-color: #2d3748; /* A slightly lighter slate */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+body.dark-mode .logo,
+body.dark-mode .header-link,
+body.dark-mode .user-display-name {
+    color: #e2e8f0;
+}
+
+/* Main Content Containers (Cards) */
+body.dark-mode .home-screen-container,
+body.dark-mode .quiz-main-container,
+body.dark-mode .results-main-container,
+body.dark-mode .profile-main-container,
+body.dark-mode .features-main-container,
+body.dark-mode .history-main-container,
+body.dark-mode .leaderboard-container,
+body.dark-mode .bookmarks-container,
+body.dark-mode .forum-container,
+body.dark-mode .about-container,
+body.dark-mode .notifications-container {
+    background-color: #2d3748;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+/* Smaller cards and items */
+body.dark-mode .quick-access-card,
+body.dark-mode .profile-stat-card,
+body.dark-mode .feature-item,
+body.dark-mode .history-item,
+body.dark-mode .leaderboard-row,
+body.dark-mode .bookmark-item,
+body.dark-mode .post-item,
+body.dark-mode .reply-item,
+body.dark-mode .notification-settings-box {
+    background-color: #4a5568; /* A lighter gray */
+    border-color: #718096;
+}
+
+/* Text and Headings */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode .post-item-title,
+body.dark-mode .stat-value,
+body.dark-mode .score-percentage,
+body.dark-mode .points {
+    color: #ffffff;
+}
+
+body.dark-mode p,
+body.dark-mode .text-gray-600,
+body.dark-mode .post-item-meta,
+body.dark-mode .post-item-stats {
+    color: #a0aec0; /* A softer gray for secondary text */
+}
+
+/* Buttons */
+body.dark-mode .glass-button-default {
+    background-color: #718096;
+    color: #ffffff;
+}
+body.dark-mode .glass-button-default:hover {
+    background-color: #4a5568;
+}
+
+/* Specific Quiz Elements */
+body.dark-mode .option-btn {
+    background-color: #4a5568;
+    border-color: #718096;
+}
+body.dark-mode .option-btn:not([disabled]):hover {
+    background-color: #2d3748;
+    border-color: #4a90e2;
+}
+body.dark-mode .option-btn.correct {
+    background-color: #2f855a;
+    border-color: #38a169;
+    color: #ffffff;
+}
+body.dark-mode .option-btn.incorrect {
+    background-color: #c53030;
+    border-color: #e53e3e;
+    color: #ffffff;
+}

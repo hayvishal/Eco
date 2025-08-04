@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="features.css">
+    <link rel="stylesheet" href="dark-mode.css">
 </head>
 <body class="app-background">
 
@@ -17,6 +18,7 @@
             HiVal
         </div>
         <div class="user-profile-section">
+            <a href="about.html" class="header-link">About</a>
             <span id="header-user-display-name" class="user-display-name">User</span>
             <img id="header-profile-photo" src="https://placehold.co/40x40/cccccc/333333?text=👤" alt="Profile" class="profile-photo">
         </div>
@@ -33,20 +35,20 @@
                     Leaderboard
                     <span class="status-active">Available</span>
                 </button>
-                <button class="feature-item" id="feature-daily-quiz-notification">
-                    <span class="icon">🔔</span>
-                    Daily Quiz Notification
-                    <span class="status">Coming Soon</span>
-                </button>
                 <button class="feature-item" id="feature-bookmark-questions">
                     <span class="icon">📌</span>
                     Bookmarked Questions
-                    <span class="status">Coming Soon</span>
+                    <span class="status-active">Available</span>
                 </button>
                 <button class="feature-item" id="feature-doubt-discussion-forum">
                     <span class="icon">💬</span>
                     Doubt Discussion Forum
-                    <span class="status">Coming Soon</span>
+                    <span class="status-active">Available</span>
+                </button>
+                <button class="feature-item" id="feature-daily-quiz-notification">
+                    <span class="icon">🔔</span>
+                    Daily Quiz Notification
+                    <span class="status-active">Available</span>
                 </button>
                 <button class="feature-item" id="feature-offline-mode">
                     <span class="icon">📴</span>
@@ -65,7 +67,6 @@
     </main>
     
     <script type="module">
-      // This config is required for the features page to connect to Firebase
       const firebaseConfig = {
         apiKey: "AIzaSyChjZ5N-1FEnejaahfpFPxIq2R7nQuTuDc",
         authDomain: "test-2378c.firebaseapp.com",
@@ -77,5 +78,6 @@
       window.firebaseConfig = firebaseConfig;
     </script>
     <script type="module" src="features.js"></script>
+    <script type="module" src="settings.js"></script>
 </body>
 </html>

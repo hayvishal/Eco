@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-import { getFirestore, collection, getDocs, query, where, doc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, where, doc, setDoc, updateDoc, increment, arrayUnion, arrayRemove, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- Firebase Initialization ---
@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToTopicsBtn = document.getElementById('back-to-topic-selection');
     const nextButton = document.getElementById('next-button');
     const showResultButton = document.getElementById('show-result-button');
+    const bookmarkButton = document.getElementById('bookmark-question-button');
 
     let selectedSubject = localStorage.getItem('selectedSubject');
     let selectedTopic = '';
@@ -29,15 +30,23 @@ document.addEventListener('DOMContentLoaded', () => {
     let score = 0;
     let timer;
     let userAnswers = [];
+    let userBookmarks = [];
 
     // --- Auth State Observer ---
-    onAuthStateChanged(auth, user => {
+    onAuthStateChanged(auth, async (user) => {
         if (user) {
             currentUser = user;
             const displayName = user.displayName || 'User';
             document.getElementById('header-user-display-name').textContent = displayName;
             if(user.photoURL) {
                 document.getElementById('header-profile-photo').src = user.photoURL;
+            }
+
+            // Fetch user's bookmarks
+            const userDocRef = doc(db, "users", user.uid);
+            const userDoc = await getDoc(userDocRef);
+            if (userDoc.exists() && userDoc.data().bookmarks) {
+                userBookmarks = userDoc.data().bookmarks;
             }
 
             if (selectedSubject) {
@@ -138,9 +147,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('question-number-display').textContent = `Question ${currentQuestionIndex + 1} / ${questionsForQuiz.length}`;
         document.getElementById('question-display').textContent = question.question;
 
+        // Update bookmark button state
+        updateBookmarkButton();
+
         const optionsContainer = document.getElementById('options-container');
         optionsContainer.innerHTML = '';
-        // Shuffle options to randomize their order
         const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
         shuffledOptions.forEach(optionText => {
             const button = document.createElement('button');
@@ -164,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
             timerDisplay.textContent = timeLeft;
             if (timeLeft <= 0) {
                 clearInterval(timer);
-                showCorrectAnswer(true); // true indicates time is up
+                showCorrectAnswer(true);
             }
         }, 1000);
     }
@@ -229,6 +240,39 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    async function toggleBookmark() {
+        if (!currentUser || !questionsForQuiz[currentQuestionIndex]) return;
+        
+        const questionId = questionsForQuiz[currentQuestionIndex].id;
+        const userDocRef = doc(db, "users", currentUser.uid);
+        
+        // Check if the question is already bookmarked
+        if (userBookmarks.includes(questionId)) {
+            // Remove it
+            await updateDoc(userDocRef, {
+                bookmarks: arrayRemove(questionId)
+            });
+            userBookmarks = userBookmarks.filter(id => id !== questionId);
+        } else {
+            // Add it
+            await updateDoc(userDocRef, {
+                bookmarks: arrayUnion(questionId)
+            });
+            userBookmarks.push(questionId);
+        }
+        updateBookmarkButton();
+    }
+
+    function updateBookmarkButton() {
+        const questionId = questionsForQuiz[currentQuestionIndex]?.id;
+        if (userBookmarks.includes(questionId)) {
+            bookmarkButton.innerHTML = '🔖 Bookmarked';
+            bookmarkButton.classList.add('bookmarked');
+        } else {
+            bookmarkButton.innerHTML = '🔖 Bookmark';
+            bookmarkButton.classList.remove('bookmarked');
+        }
+    }
 
     async function endQuiz() {
         const resultData = {
@@ -241,19 +285,14 @@ document.addEventListener('DOMContentLoaded', () => {
             userId: currentUser.uid
         };
 
-        // Save results to Firestore
         try {
             const historyRef = collection(db, "users", currentUser.uid, "history");
             await setDoc(doc(historyRef), resultData);
-
-            // Update user's aggregate stats
             const userRef = doc(db, "users", currentUser.uid);
             await updateDoc(userRef, {
                 testsAttempted: increment(1),
                 totalPoints: increment(score)
             });
-            // Note: Calculating average score would require fetching the old values first.
-            // For simplicity, we are skipping that here.
         } catch (error) {
             console.error("Error saving quiz results: ", error);
         }
@@ -271,4 +310,5 @@ document.addEventListener('DOMContentLoaded', () => {
         displayQuestion();
     });
     showResultButton.addEventListener('click', endQuiz);
+    bookmarkButton.addEventListener('click', toggleBookmark);
 });

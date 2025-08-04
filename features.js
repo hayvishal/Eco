@@ -1,49 +1,43 @@
-// features.js
-// This file contains the JavaScript logic for the extra features page.
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Firebase Initialization ---
+    const app = initializeApp(window.firebaseConfig);
+    const auth = getAuth(app);
+
     // --- DOM Element References ---
     const backToHomeButton = document.getElementById('back-to-home-from-extra-features');
     const historyButton = document.getElementById('feature-history-page');
+    const leaderboardButton = document.getElementById('feature-leaderboard');
+    const bookmarksButton = document.getElementById('feature-bookmark-questions');
+    const forumButton = document.getElementById('feature-doubt-discussion-forum');
+    const notificationsButton = document.getElementById('feature-daily-quiz-notification');
     
-    // --- Mock User Data (for header consistency) ---
-    const mockUser = {
-        displayName: 'Aspirant',
-        photoURL: 'https://placehold.co/40x40/4a90e2/ffffff?text=A'
-    };
-
-    // --- Functions ---
-    function populateHeader(user) {
-        if (!user) return;
-        if (user.photoURL) {
-            document.getElementById('header-profile-photo').src = user.photoURL;
+    // --- Auth State Observer ---
+    onAuthStateChanged(auth, user => {
+        if (user) {
+            document.getElementById('header-user-display-name').textContent = user.displayName || 'User';
+            if (user.photoURL) {
+                document.getElementById('header-profile-photo').src = user.photoURL;
+            }
+        } else {
+            window.location.href = 'login.html';
         }
-        document.getElementById('header-user-display-name').textContent = user.displayName || 'User';
-    }
+    });
 
     function showComingSoonAlert() {
         alert('This feature is coming soon. Stay tuned!');
     }
 
     // --- Event Listeners ---
-    backToHomeButton.addEventListener('click', () => {
-        window.location.href = 'index.html';
-    });
-
-    if (historyButton) {
-        historyButton.addEventListener('click', () => {
-            window.location.href = 'history.html';
-        });
-    }
+    backToHomeButton.addEventListener('click', () => window.location.href = 'index.html');
+    historyButton.addEventListener('click', () => window.location.href = 'history.html');
+    leaderboardButton.addEventListener('click', () => window.location.href = 'leaderboard.html');
+    bookmarksButton.addEventListener('click', () => window.location.href = 'bookmarks.html');
+    forumButton.addEventListener('click', () => window.location.href = 'forum.html');
+    notificationsButton.addEventListener('click', () => window.location.href = 'notifications.html');
 
     // Add event listeners for all "coming soon" features
-    document.getElementById('feature-daily-quiz-notification').addEventListener('click', showComingSoonAlert);
-    document.getElementById('feature-bookmark-questions').addEventListener('click', showComingSoonAlert);
-    document.getElementById('feature-doubt-discussion-forum').addEventListener('click', showComingSoonAlert);
-    document.getElementById('feature-leaderboard').addEventListener('click', showComingSoonAlert);
     document.getElementById('feature-offline-mode').addEventListener('click', showComingSoonAlert);
-
-    // --- Initial Load ---
-    populateHeader(mockUser);
 });
-
