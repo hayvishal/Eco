@@ -2,6 +2,11 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebas
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import { getFirestore, collection, getDocs, query, where, doc, setDoc, updateDoc, increment, arrayUnion, arrayRemove, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+// 🟢 START: FIX - Add your Gemini API Key here 🟢
+// You can get a free key from Google AI Studio.
+const GEMINI_API_KEY = "AIzaSyC_fN4BF66NPCP2gqrOFW2wyABV_uwK9Xc"; // IMPORTANT: Paste your Gemini API Key here
+// 🟢 END: FIX 🟢
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- Firebase Initialization ---
     const app = initializeApp(window.firebaseConfig);
@@ -116,8 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayQuestion() {
-        // 🟢 START: FIX 🟢
-        // Clear any previous timer to prevent multiple timers running at once.
         clearInterval(timer);
 
         if (currentQuestionIndex >= questionsForQuiz.length) {
@@ -127,10 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const questionData = questionsForQuiz[currentQuestionIndex];
 
-        // Validate that the question data is correct before proceeding.
         if (!questionData || !questionData.question || !Array.isArray(questionData.options)) {
             console.error("Invalid question data:", questionData);
-            // Skip to the next question or end the quiz if data is bad.
             currentQuestionIndex++;
             displayQuestion();
             return;
@@ -140,8 +141,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('question-display').textContent = questionData.question;
         
         updateBookmarkButton();
-        autoGeminiExplanationArea.style.display = 'none';
-        autoGeminiExplanationArea.innerHTML = '';
+        if (autoGeminiExplanationArea) {
+            autoGeminiExplanationArea.style.display = 'none';
+            autoGeminiExplanationArea.innerHTML = '';
+        }
 
         const optionsContainer = document.getElementById('options-container');
         optionsContainer.innerHTML = '';
@@ -161,7 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
         nextButton.style.display = 'inline-block';
         showResultButton.style.display = 'none';
 
-        // Start the timer
         let timeLeft = 20;
         const timerDisplay = document.getElementById('timer-display');
         timerDisplay.textContent = timeLeft;
@@ -173,34 +175,96 @@ document.addEventListener('DOMContentLoaded', () => {
                 showCorrectAnswer(true);
             }
         }, 1000);
-        // 🟢 END: FIX 🟢
     }
 
-    async function getGeminiExplanation(questionText, correctAnswer) {
-        const prompt = `Explain why "${correctAnswer}" is the correct answer for the question: "${questionText}". Keep the explanation concise and easy to understand for a student preparing for an exam.`;
+    function formatExplanation(text) {
+        if (typeof text !== 'string' || !text) {
+            return '<p class="text-justify">No explanation available for this question.</p>';
+        }
+
+        let sanitizedText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         
-        let chatHistory = [];
-        chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-        const payload = { contents: chatHistory };
-        const apiKey = ""; 
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+        const lines = sanitizedText.split('\n');
+        let html = '';
+        let inList = null;
 
-        try {
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const result = await response.json();
+        for (const rawLine of lines) {
+            let line = rawLine.trim();
 
-            if (result.candidates && result.candidates[0]?.content?.parts[0]?.text) {
-                return result.candidates[0].content.parts[0].text;
+            line = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            line = line.replace(/(?<!\*)\*(?!\*|_)(.*?)(?<!\*)\*(?!\*|_)/g, '<em>$1</em>');
+
+            const isOl = /^\d+\.\s/.test(line);
+            const isUl = /^[\*\-]\s/.test(line);
+
+            if (isOl || isUl) {
+                const listType = isOl ? 'ol' : 'ul';
+                if (inList !== listType) {
+                    if (inList) html += `</${inList}>`;
+                    const listClass = listType === 'ol' ? 'list-decimal' : 'list-disc';
+                    html += `<${listType} class="${listClass} list-inside space-y-1 mt-2 pl-4">`;
+                    inList = listType;
+                }
+                html += `<li>${line.replace(/^(\d+\.|\*|\-)\s/, '')}</li>`;
             } else {
-                return "Could not retrieve an explanation at this time.";
+                if (inList) {
+                    html += `</${inList}>`;
+                    inList = null;
+                }
+                if (line) {
+                    html += `<p class="mb-2 text-justify">${line}</p>`;
+                }
             }
-        } catch (error) {
-            console.error("Gemini API Error:", error);
-            return "An error occurred while fetching the explanation.";
+        }
+
+        if (inList) html += `</${inList}>`;
+        
+        return html;
+    }
+
+    async function getGeminiExplanationWithRetry(questionText, correctAnswer, retries = 3, delay = 1000) {
+        if (!GEMINI_API_KEY) {
+            return "Explanation feature is not configured. An API key is required.";
+        }
+
+        const prompt = `Explain why "${correctAnswer}" is the correct answer for the question: "${questionText}". Keep the explanation concise and easy to understand for a student preparing for an exam. Use bolding for key terms and numbered lists for steps if applicable.`;
+        
+        const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_API_KEY}`;
+
+        for (let i = 0; i < retries; i++) {
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                if (result.error) {
+                    console.error("Gemini API Error:", result.error);
+                    return `API Error: ${result.error.message}`;
+                }
+
+                if (result.candidates && result.candidates[0]?.content?.parts[0]?.text) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                    console.error("Gemini API response format unexpected:", result);
+                    throw new Error("Unexpected response format from API.");
+                }
+            } catch (error) {
+                console.error(`Gemini Fetch Error (Attempt ${i + 1}/${retries}):`, error);
+                if (i === retries - 1) {
+                    return "An error occurred while fetching the explanation. Please check your network connection.";
+                }
+                await new Promise(res => setTimeout(res, delay));
+                delay *= 2;
+            }
         }
     }
 
@@ -218,24 +282,35 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('correct-answer-area').innerHTML = `Correct Answer: <strong>${correctAnswer}</strong>`;
             document.getElementById('correct-answer-area').style.display = 'block';
 
-            autoGeminiExplanationArea.style.display = 'block';
-            autoGeminiExplanationArea.innerHTML = '<div class="spinner"></div><p>Loading explanation...</p>';
+            if (autoGeminiExplanationArea) {
+                autoGeminiExplanationArea.style.display = 'block';
+                autoGeminiExplanationArea.innerHTML = '<div class="spinner"></div><p>Loading explanation...</p>';
 
-            const currentQuestion = questionsForQuiz[currentQuestionIndex];
-            
-            if (currentQuestion.explanation && currentQuestion.explanation.trim() !== '') {
-                autoGeminiExplanationArea.innerHTML = `<p>${currentQuestion.explanation}</p>`;
-            } else {
-                try {
-                    const explanation = await getGeminiExplanation(currentQuestion.question, correctAnswer);
-                    autoGeminiExplanationArea.innerHTML = `<p>${explanation}</p>`;
-                    
-                    const questionRef = doc(db, "quizzes", currentQuestion.id);
-                    await updateDoc(questionRef, { explanation: explanation });
-                    currentQuestion.explanation = explanation;
-                } catch (error) {
-                     autoGeminiExplanationArea.innerHTML = `<p>Could not load explanation at this time.</p>`;
-                     console.error("Error getting or saving explanation:", error);
+                const currentQuestion = questionsForQuiz[currentQuestionIndex];
+                
+                if (currentQuestion.explanation && currentQuestion.explanation.trim() !== '') {
+                    autoGeminiExplanationArea.innerHTML = formatExplanation(currentQuestion.explanation);
+                } else {
+                    // 🟢 START: FIX - Added logic to save explanation back to DB 🟢
+                    try {
+                        const explanation = await getGeminiExplanationWithRetry(currentQuestion.question, correctAnswer);
+                        autoGeminiExplanationArea.innerHTML = formatExplanation(explanation);
+                        
+                        // Save the new explanation to Firestore
+                        // This will only work if the user is an admin, due to security rules.
+                        // This is a failsafe; explanations should ideally be added via the admin panel.
+                        const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+                        if (userDoc.exists() && userDoc.data().isAdmin === true) {
+                           const questionRef = doc(db, "quizzes", currentQuestion.id);
+                           await updateDoc(questionRef, { explanation: explanation });
+                           currentQuestion.explanation = explanation; // Update local cache
+                        }
+                    } catch(error) {
+                        console.error("Error during explanation generation/saving:", error);
+                        // The formatExplanation function will handle displaying the error message.
+                        autoGeminiExplanationArea.innerHTML = formatExplanation(error.message);
+                    }
+                    // 🟢 END: FIX 🟢
                 }
             }
         }
