@@ -10,9 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentUser = null;
 
     // --- DOM Element References & State ---
-    const subjectTitlePlaceholder = document.getElementById('subject-title-placeholder');
     const topicContainer = document.getElementById('generic-subject-topic-container');
-    const topicButtonsContainer = document.getElementById('generic-topic-buttons');
     const questionCountContainer = document.getElementById('question-count-container');
     const quizContainer = document.getElementById('quiz-container');
     const startPracticeButton = document.getElementById('start-practice-button');
@@ -21,11 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextButton = document.getElementById('next-button');
     const showResultButton = document.getElementById('show-result-button');
     const bookmarkButton = document.getElementById('bookmark-question-button');
+    const autoGeminiExplanationArea = document.getElementById('auto-gemini-explanation-area');
 
+    // Get subject and topic from previous page
     let selectedSubject = localStorage.getItem('selectedSubject');
-    let selectedTopic = '';
+    let selectedTopic = localStorage.getItem('selectedTopic'); // This is the key change
+
     let questionsForQuiz = [];
-    let allTopics = {};
     let currentQuestionIndex = 0;
     let score = 0;
     let timer;
@@ -42,19 +42,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('header-profile-photo').src = user.photoURL;
             }
 
-            // Fetch user's bookmarks
             const userDocRef = doc(db, "users", user.uid);
             const userDoc = await getDoc(userDocRef);
             if (userDoc.exists() && userDoc.data().bookmarks) {
                 userBookmarks = userDoc.data().bookmarks;
             }
-
-            if (selectedSubject) {
-                loadTopics(selectedSubject);
+            
+            // 🟢 START: UPDATED LOGIC 🟢
+            // Directly prepare the quiz instead of showing topic selection again
+            if (selectedSubject && selectedTopic) {
+                prepareQuizForTopic(selectedSubject, selectedTopic);
             } else {
-                topicContainer.innerHTML = `<h1>Error: No subject selected.</h1><a href="index.html" class="glass-button-base glass-button-primary mt-4">Go Home</a>`;
+                // Fallback if something went wrong
+                topicContainer.innerHTML = `<h1>Error: No subject or topic selected.</h1><a href="index.html" class="glass-button-base glass-button-primary mt-4">Go Home</a>`;
                 showScreen(topicContainer);
             }
+            // 🟢 END: UPDATED LOGIC 🟢
+
         } else {
             window.location.href = 'login.html';
         }
@@ -69,61 +73,52 @@ document.addEventListener('DOMContentLoaded', () => {
         screen.style.display = 'block';
     }
 
-    async function loadTopics(subject) {
-        subjectTitlePlaceholder.textContent = subject;
-        topicButtonsContainer.innerHTML = '<p>Loading topics...</p>';
-
+    // 🟢 START: NEW FUNCTION 🟢
+    /**
+     * Fetches questions for a specific topic and displays the question count screen.
+     * @param {string} subject - The main subject (e.g., "General Awareness").
+     * @param {string} topic - The specific topic (e.g., "History").
+     */
+    async function prepareQuizForTopic(subject, topic) {
         try {
-            const q = query(collection(db, "quizzes"), where("subject", "==", subject));
+            const q = query(collection(db, "quizzes"), where("subject", "==", subject), where("topic", "==", topic));
             const querySnapshot = await getDocs(q);
             
-            allTopics = {};
+            const topicQuestions = [];
             querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                if (!allTopics[data.topic]) {
-                    allTopics[data.topic] = [];
-                }
-                allTopics[data.topic].push({ id: doc.id, ...data });
+                topicQuestions.push({ id: doc.id, ...doc.data() });
             });
 
-            topicButtonsContainer.innerHTML = '';
-            const topicNames = Object.keys(allTopics);
-
-            if (topicNames.length > 0) {
-                topicNames.forEach(topicName => {
-                    const button = document.createElement('button');
-                    button.className = 'topic-button';
-                    button.textContent = topicName;
-                    button.onclick = () => selectTopic(topicName);
-                    topicButtonsContainer.appendChild(button);
-                });
+            if (topicQuestions.length > 0) {
+                questionsForQuiz = topicQuestions; // Store fetched questions
+                document.getElementById('selected-topic-title').textContent = `${subject} - ${topic}`;
+                document.getElementById('total-available-questions').textContent = topicQuestions.length;
+                document.getElementById('num-questions').max = topicQuestions.length;
+                document.getElementById('num-questions').value = Math.min(5, topicQuestions.length);
+                showScreen(questionCountContainer);
             } else {
-                topicButtonsContainer.innerHTML = '<p>No topics available for this subject yet.</p>';
+                questionCountContainer.innerHTML = `<p>No questions found for ${topic}.</p><button id="back-btn" class="glass-button-base glass-button-default mt-4">Go Back</button>`;
+                document.getElementById('back-btn').onclick = () => window.history.back();
+                showScreen(questionCountContainer);
             }
         } catch (error) {
-            console.error("Error loading topics: ", error);
-            topicButtonsContainer.innerHTML = '<p>Could not load topics. Please try again.</p>';
+            console.error("Error fetching questions for topic: ", error);
+            questionCountContainer.innerHTML = `<p>Error loading questions. Please check your database rules and connection.</p><button id="back-btn" class="glass-button-base glass-button-default mt-4">Go Back</button>`;
+            document.getElementById('back-btn').onclick = () => window.history.back();
+            showScreen(questionCountContainer);
         }
-        showScreen(topicContainer);
     }
+    // 🟢 END: NEW FUNCTION 🟢
 
-    function selectTopic(topic) {
-        selectedTopic = topic;
-        const availableQuestions = allTopics[topic].length;
-        document.getElementById('selected-topic-title').textContent = topic;
-        document.getElementById('total-available-questions').textContent = availableQuestions;
-        document.getElementById('num-questions').max = availableQuestions;
-        showScreen(questionCountContainer);
-    }
 
     function startQuiz() {
         const numQuestionsInput = document.getElementById('num-questions');
         const numQuestions = parseInt(numQuestionsInput.value, 10);
-        const maxQuestions = parseInt(numQuestionsInput.max, 10);
+        const maxQuestions = questionsForQuiz.length;
 
         if (numQuestions > 0 && numQuestions <= maxQuestions) {
-            const allQuestions = allTopics[selectedTopic];
-            questionsForQuiz = allQuestions.slice(0, numQuestions);
+            // Shuffle the questions and slice the requested number
+            questionsForQuiz = questionsForQuiz.sort(() => 0.5 - Math.random()).slice(0, numQuestions);
             currentQuestionIndex = 0;
             score = 0;
             userAnswers = [];
@@ -146,9 +141,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const question = questionsForQuiz[currentQuestionIndex];
         document.getElementById('question-number-display').textContent = `Question ${currentQuestionIndex + 1} / ${questionsForQuiz.length}`;
         document.getElementById('question-display').textContent = question.question;
-
-        // Update bookmark button state
+        
         updateBookmarkButton();
+        autoGeminiExplanationArea.style.display = 'none';
+        autoGeminiExplanationArea.innerHTML = '';
+
 
         const optionsContainer = document.getElementById('options-container');
         optionsContainer.innerHTML = '';
@@ -180,7 +177,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
 
-    function selectOption(btn, selectedAnswer, correctAnswer) {
+    async function getGeminiExplanation(questionText, correctAnswer) {
+        const prompt = `Explain why "${correctAnswer}" is the correct answer for the question: "${questionText}". Keep the explanation concise and easy to understand for a student preparing for an exam.`;
+        
+        let chatHistory = [];
+        chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+        const payload = { contents: chatHistory };
+        const apiKey = ""; // This will be provided by the environment
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+
+            if (result.candidates && result.candidates[0]?.content?.parts[0]?.text) {
+                return result.candidates[0].content.parts[0].text;
+            } else {
+                return "Could not retrieve an explanation at this time.";
+            }
+        } catch (error) {
+            console.error("Gemini API Error:", error);
+            return "An error occurred while fetching the explanation.";
+        }
+    }
+
+    async function selectOption(btn, selectedAnswer, correctAnswer) {
         clearInterval(timer);
         const allOptions = document.querySelectorAll('.option-btn');
         allOptions.forEach(b => b.disabled = true);
@@ -193,6 +218,11 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.classList.add('incorrect');
             document.getElementById('correct-answer-area').innerHTML = `Correct Answer: <strong>${correctAnswer}</strong>`;
             document.getElementById('correct-answer-area').style.display = 'block';
+
+            autoGeminiExplanationArea.style.display = 'block';
+            autoGeminiExplanationArea.innerHTML = '<div class="spinner"></div><p>Generating explanation...</p>';
+            const explanation = await getGeminiExplanation(questionsForQuiz[currentQuestionIndex].question, correctAnswer);
+            autoGeminiExplanationArea.innerHTML = `<p>${explanation}</p>`;
         }
         
         userAnswers.push({
@@ -246,18 +276,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const questionId = questionsForQuiz[currentQuestionIndex].id;
         const userDocRef = doc(db, "users", currentUser.uid);
         
-        // Check if the question is already bookmarked
         if (userBookmarks.includes(questionId)) {
-            // Remove it
-            await updateDoc(userDocRef, {
-                bookmarks: arrayRemove(questionId)
-            });
+            await updateDoc(userDocRef, { bookmarks: arrayRemove(questionId) });
             userBookmarks = userBookmarks.filter(id => id !== questionId);
         } else {
-            // Add it
-            await updateDoc(userDocRef, {
-                bookmarks: arrayUnion(questionId)
-            });
+            await updateDoc(userDocRef, { bookmarks: arrayUnion(questionId) });
             userBookmarks.push(questionId);
         }
         updateBookmarkButton();
@@ -304,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Event Listeners ---
     startPracticeButton.addEventListener('click', startQuiz);
     backToHomeBtn.addEventListener('click', () => window.location.href = 'index.html');
-    backToTopicsBtn.addEventListener('click', () => loadTopics(selectedSubject));
+    backToTopicsBtn.addEventListener('click', () => window.history.back()); // Go back to the previous topic page
     nextButton.addEventListener('click', () => {
         currentQuestionIndex++;
         displayQuestion();

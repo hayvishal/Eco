@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quantitative Aptitude Topics - SSC Knockout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dark-mode.css">
+</head>
+<body class="app-background">
+
+    <!-- Main Header -->
+    <header class="main-header" id="main-header">
+        <div class="logo">
+            <img src="image.png" alt="Logo">
+            HiVal
+        </div>
+        <div class="user-profile-section">
+            <a href="about.html" class="header-link">About</a>
+            <span id="header-user-display-name" class="user-display-name">User</span>
+            <img id="header-profile-photo" src="https://placehold.co/40x40/cccccc/333333?text=👤" alt="Profile" class="profile-photo">
+        </div>
+    </header>
+
+    <main class="home-screen-container">
+        <h1 class="text-3xl font-bold mb-4">Quantitative Aptitude Topics</h1>
+        <p class="text-gray-600 mb-6">Please select a topic to practice.</p>
+
+        <div class="quick-access-grid">
+            <div class="quick-access-card" data-topic="Arithmetic">
+                <span class="icon">➕</span>
+                Arithmetic
+            </div>
+            <div class="quick-access-card" data-topic="Algebra">
+                <span class="icon">🔣</span>
+                Algebra
+            </div>
+            <div class="quick-access-card" data-topic="Geometry">
+                <span class="icon">💠</span>
+                Geometry
+            </div>
+            <div class="quick-access-card" data-topic="Mensuration">
+                <span class="icon">📏</span>
+                Mensuration
+            </div>
+            <div class="quick-access-card" data-topic="Trigonometry">
+                <span class="icon">📐</span>
+                Trigonometry
+            </div>
+             <div class="quick-access-card" data-topic="Data Interpretation">
+                <span class="icon">📊</span>
+                Data Interpretation
+            </div>
+        </div>
+
+        <button id="back-to-home-btn" class="glass-button-base glass-button-default mt-8">Back to Home</button>
+    </main>
+
+    <script type="module">
+      const firebaseConfig = {
+        apiKey: "AIzaSyChjZ5N-1FEnejaahfpFPxIq2R7nQuTuDc",
+        authDomain: "test-2378c.firebaseapp.com",
+        projectId: "test-2378c",
+        storageBucket: "test-2378c.appspot.com",
+        messagingSenderId: "440618434249",
+        appId: "1:440618434249:web:f5c3d49edc53545a459718"
+      };
+      window.firebaseConfig = firebaseConfig;
+    </script>
+    <script type="module" src="maths-topics.js"></script>
+    <script type="module" src="settings.js"></script>
+</body>
+</html>
